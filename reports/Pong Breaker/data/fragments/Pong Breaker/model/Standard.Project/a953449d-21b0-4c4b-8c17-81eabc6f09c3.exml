@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Pong Breaker" version="4">
+  <OBJECT>
+    <ID name="Pong Breaker" mc="Standard.Project" uid="a953449d-21b0-4c4b-8c17-81eabc6f09c3"/>
+    <ATTRIBUTES>
+      <ATT name="ProjectContext"></ATT>
+      <ATT name="ProjectDescr"></ATT>
+      <ATT name="Name"><![CDATA[Pong Breaker]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Model">
+        <COMPID name="pong breaker" mc="Standard.Package" uid="51f10130-9d2f-48cc-97ee-25271e03223e"/>
+      </COMP>
+      <COMP relation="DiagramRoot">
+        <COMPID name="Pong Breaker" mc="Infrastructure.DiagramSet" uid="0561ea6a-d026-4923-a836-63d6110b79ec"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>
