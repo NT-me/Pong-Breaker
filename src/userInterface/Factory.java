@@ -58,7 +58,11 @@ public class Factory {
         brique.setX(p.getX());
         brique.setWidth(20);
         brique.setHeight(70);
-        brique.setFill(Color.WHITE);
+        if(s.toString() == "RED"){
+            brique.setFill(Color.RED);
+        }else{
+            brique.setFill(Color.BLUE);
+        }
         return brique;
     }
 }

@@ -14,7 +14,7 @@ import data.Palette;
 import javafx.scene.Node;
 import javafx.scene.shape.Line;
 import tools.HardCodedParameters;
-import tools.Position;
+
 import specifications.ViewerService;
 import specifications.ReadService;
 import specifications.RequireReadService;
@@ -38,7 +38,6 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
-
   private static double xShrink;
   private static double yShrink;
 
@@ -62,7 +61,7 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
 
   @Override
   public void init(){
-    playground = factory.createPlayGround();
+
   }
 
   @Override
