@@ -13,8 +13,8 @@ import tools.Sound;
 import java.util.ArrayList;
 
 public interface ReadService {
-    public Position getPosition();
-    public int getStepNumber();
-    public double getRayon();
-    public Ball getMainBall();
+    public abstract Position getPosition();
+    public abstract int getStepNumber();
+    public abstract double getRayon();
+    public abstract Ball getMainBall();
 }

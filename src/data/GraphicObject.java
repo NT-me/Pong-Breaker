@@ -19,6 +19,9 @@ public class GraphicObject {
         this.position = position;
     }
 
+    public GraphicObject() {
+    }
+
     public Position getPosition() {
         return position;
     }

@@ -31,6 +31,9 @@ public class Viewer implements ViewerService, RequireReadService{
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
 
+  private static double xShrink;
+  private static double yShrink;
+
   private Circle mainBallAvatar;
 
 
@@ -57,8 +60,7 @@ public class Viewer implements ViewerService, RequireReadService{
 
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
     Group panel = new Group();
-    panel.getChildren().addAll(map);
-    panel.getChildren().add(mainBallAvatar);
+    panel.getChildren().addAll(map,mainBallAvatar);
     return panel;
   }
 

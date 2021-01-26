@@ -7,17 +7,20 @@ import java.util.List;
 public class MobileObject extends GraphicObject {
 
     private double speed;
-    private Pair<Integer, Integer> direction;
-    public MobileObject(Position position, double speed, Pair<Integer, Integer> direction) {
+    private Pair<Position,Position> direction;
+    public MobileObject(Position position, double speed, Pair<Position,Position> direction) {
         super(position);
         this.speed = speed;
         this.direction = direction;
     }
 
-    public MobileObject(Position position, boolean displayed, String sprite, String hitbox, double speed, Pair<Integer, Integer> direction) {
+    public MobileObject(Position position, boolean displayed, String sprite, String hitbox, double speed, Pair<Position,Position> direction) {
         super(position, displayed, sprite, hitbox);
         this.speed = speed;
         this.direction = direction;
+    }
+
+    public MobileObject() {
     }
 
     public double getSpeed() {
@@ -28,11 +31,11 @@ public class MobileObject extends GraphicObject {
         this.speed = speed;
     }
 
-    public Pair<Integer, Integer> getDirection() {
+    public Pair<Position,Position> getDirection() {
         return direction;
     }
 
-    public void setDirection(Pair<Integer, Integer> direction) {
+    public void setDirection(Pair<Position,Position> direction) {
         this.direction = direction;
     }
 }
