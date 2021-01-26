@@ -6,6 +6,7 @@
  * ******************************************************/
 package specifications;
 
+import data.Ball;
 import tools.Position;
 import tools.Sound;
 
@@ -13,4 +14,7 @@ import java.util.ArrayList;
 
 public interface WriteService {
     public void setStepNumber(int n);
+    public void setPosition(Position p);
+    public void setRayon(double r);
+    public void setMainBall(Ball ball);
 }

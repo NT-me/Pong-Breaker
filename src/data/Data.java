@@ -18,10 +18,13 @@ public class Data implements DataService{
 
   public Data(){}
   private int stepNumber;
+  private Ball mainBall;
 
   @Override
   public void init(){
+
     stepNumber = 0;
+    mainBall = new Ball(new Position(20,20), 0, 0, 10, "j1");
   }
 
   @Override
@@ -29,4 +32,10 @@ public class Data implements DataService{
 
   @Override
   public void setStepNumber(int n){ stepNumber=n; }
+
+  @Override
+  public Ball getMainBall(){ return mainBall; }
+
+  @Override
+  public void setMainBall(Ball ball){ mainBall=new Ball(ball); }
 }
