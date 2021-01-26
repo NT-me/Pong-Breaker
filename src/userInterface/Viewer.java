@@ -6,6 +6,8 @@
  * ******************************************************/
 package userInterface;
 
+import data.Brick;
+import data.Player;
 import tools.HardCodedParameters;
 
 import specifications.ViewerService;
@@ -24,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Rectangle2D;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Viewer implements ViewerService, RequireReadService{
@@ -34,6 +37,7 @@ public class Viewer implements ViewerService, RequireReadService{
   private static double yShrink;
 
   private ReadService data;
+  private Factory factory = new Factory();
 
   public Viewer(){}
   
@@ -52,7 +56,8 @@ public class Viewer implements ViewerService, RequireReadService{
 
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
     Group panel = new Group();
-    panel.getChildren().addAll(map);
+    panel.getChildren().add(map);
+    panel.getChildren().add(factory.createBrick(new Point(500,400)));
     return panel;
   }
 
