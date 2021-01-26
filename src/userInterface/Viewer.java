@@ -31,8 +31,13 @@ public class Viewer implements ViewerService, RequireReadService{
   private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
+
   private static double xShrink;
   private static double yShrink;
+
+  private Circle mainBallAvatar;
+  private double direction;
+
 
   private ReadService data;
 
@@ -46,6 +51,12 @@ public class Viewer implements ViewerService, RequireReadService{
   @Override
   public void init(){
 
+    direction = Math.random();
+
+    mainBallAvatar = new Circle(20,Color.rgb(0,156,156));
+    mainBallAvatar.setEffect(new Lighting());
+    mainBallAvatar.setTranslateX(data.getMainBall().getPosition().x);
+    mainBallAvatar.setTranslateY(data.getMainBall().getPosition().y);
   }
 
   @Override
@@ -65,7 +76,7 @@ public class Viewer implements ViewerService, RequireReadService{
             ,HardCodedParameters.defaultHeight/4);
     middleCircle.setStroke(Color.WHITE);
     Group panel = new Group();
-    panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface);
+    panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface, mainBallAvatar);
     return panel;
   }
 

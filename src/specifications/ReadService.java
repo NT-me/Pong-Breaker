@@ -6,11 +6,19 @@
  * ******************************************************/
 package specifications;
 
+import data.Ball;
 import tools.Position;
 import tools.Sound;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 
 public interface ReadService {
+    public Position getPosition();
     public int getStepNumber();
+    public double getRayon();
+    public Ball getMainBall();
+    public double getSpeed();
+    public Pair<Position,Position> getDirection();
+
 }
