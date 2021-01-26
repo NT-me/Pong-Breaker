@@ -6,6 +6,7 @@
  * ******************************************************/
 package userInterface;
 
+import data.Wall;
 import tools.HardCodedParameters;
 
 import specifications.ViewerService;
@@ -54,6 +55,8 @@ public class Viewer implements ViewerService, RequireReadService{
     Group panel = new Group();
     panel.getChildren().addAll(map);
     return panel;
+
+
   }
 
   @Override
@@ -65,4 +68,10 @@ public class Viewer implements ViewerService, RequireReadService{
   public void setMainWindowHeight(double height){
     yShrink=height/defaultMainHeight;
   }
+
+
+
+
+
+
 }
