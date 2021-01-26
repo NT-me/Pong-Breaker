@@ -5,24 +5,35 @@ import tools.Position;
 
 public class Palette extends MobileObject {
     private double width;
+    private double height;
     private String player;
     private Integer PV;
     private Integer RespawnCoolDown;
 
-    public Palette(Position position, boolean displayed, String sprite, double speed, Pair<Integer, Integer> direction, double width, String player, Integer PV, Integer respawnCoolDown) {
+    public Palette(Position position, boolean displayed, String sprite, double speed, Pair<Integer, Integer> direction, double width, double height, String player, Integer PV, Integer respawnCoolDown) {
         super(position, displayed, sprite, speed, direction);
         this.width = width;
         this.player = player;
         this.PV = PV;
+        this.height = height;
         RespawnCoolDown = respawnCoolDown;
     }
 
-    public Palette(Position position, double speed, Pair<Integer, Integer> direction, double width, String player, Integer PV, Integer respawnCoolDown) {
+    public Palette(Position position, double speed, Pair<Integer, Integer> direction, double width, double height, String player, Integer PV, Integer respawnCoolDown) {
         super(position, speed, direction);
         this.width = width;
         this.player = player;
         this.PV = PV;
+        this.height = height;
         RespawnCoolDown = respawnCoolDown;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
     }
 
     public double getWidth() {

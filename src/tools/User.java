@@ -7,5 +7,5 @@
 package tools;
 
 public class User {
-  public static enum COMMAND { LEFT, RIGHT, UP, DOWN, NONE };
+  public static enum COMMAND { LEFT, RIGHT, UP, DOWN, RLEFT, RRIGHT, RUP, RDOWN, NONE };
 }

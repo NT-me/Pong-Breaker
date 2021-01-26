@@ -10,6 +10,7 @@ public class HardCodedParameters {
   //---HARD-CODED-PARAMETERS---//
   public static String defaultParamFileName = "in.parameters";
   public static final int defaultWidth = 800, defaultHeight = 600;
+  public static double paletteStep = 10;
 
   public static final int enginePaceMillis = 100,
                           spriteSlowDownRate = 7;
