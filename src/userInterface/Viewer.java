@@ -90,8 +90,6 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
 
     panel.getChildren().addAll(mainBallAvatar, paletteBlue, paletteRed,factory.createBrick(new Point(500,400)));
     return panel;
-
-
   }
 
   @Override
@@ -103,10 +101,4 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   public void setMainWindowHeight(double height){
     yShrink=height/defaultMainHeight;
   }
-
-
-
-
-
-
 }
