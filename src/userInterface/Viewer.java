@@ -6,6 +6,7 @@
  * ******************************************************/
 package userInterface;
 
+import javafx.scene.shape.Line;
 import tools.HardCodedParameters;
 
 import specifications.ViewerService;
@@ -51,8 +52,20 @@ public class Viewer implements ViewerService, RequireReadService{
   public Parent getPanel(){
 
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
+    Rectangle leftSurface = new Rectangle(-1,HardCodedParameters.defaultHeight/4,
+            HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
+    leftSurface.setStroke(Color.WHITE);
+    Rectangle rightSurface = new Rectangle((HardCodedParameters.defaultWidth/8)*7,HardCodedParameters.defaultHeight/4,
+            HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
+    rightSurface.setStroke(Color.WHITE);
+    Line middleLine = new Line(HardCodedParameters.defaultWidth/2,0,
+            HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight);
+    middleLine.setStroke(Color.WHITE);
+    Circle middleCircle = new Circle(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2
+            ,HardCodedParameters.defaultHeight/4);
+    middleCircle.setStroke(Color.WHITE);
     Group panel = new Group();
-    panel.getChildren().addAll(map);
+    panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface);
     return panel;
   }
 
