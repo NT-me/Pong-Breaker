@@ -35,6 +35,7 @@ public class Viewer implements ViewerService, RequireReadService{
   private static double yShrink;
 
   private Circle mainBallAvatar;
+  private double direction;
 
 
   private ReadService data;
@@ -49,6 +50,8 @@ public class Viewer implements ViewerService, RequireReadService{
   @Override
   public void init(){
 
+    direction = Math.random();
+
     mainBallAvatar = new Circle(20,Color.rgb(0,156,156));
     mainBallAvatar.setEffect(new Lighting());
     mainBallAvatar.setTranslateX(data.getMainBall().getPosition().x);
@@ -60,7 +63,8 @@ public class Viewer implements ViewerService, RequireReadService{
 
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
     Group panel = new Group();
-    panel.getChildren().addAll(map,mainBallAvatar);
+    panel.getChildren().addAll(map);
+    panel.getChildren().add(mainBallAvatar);
     return panel;
   }
 

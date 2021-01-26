@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Ball extends MobileObject {
 
-    private Integer rayon;
+    private double rayon;
     private String player;
 
-    public Ball(Position position, double speed, Pair<Position,Position> direction, Integer rayon, String player) {
+    public Ball(Position position, double speed, Pair<Position,Position> direction, double rayon, String player) {
         super(position, speed, direction);
         this.rayon = rayon;
         this.player = player;
@@ -18,10 +18,10 @@ public class Ball extends MobileObject {
     public Ball() {
     }
 
-    public Integer getRayon() {
+    public double getRayon() {
         return rayon;
     }
-    public void setRayon(Integer rayon) {
+    public void setRayon(double rayon) {
         this.rayon = rayon;
     }
 

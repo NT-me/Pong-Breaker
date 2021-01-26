@@ -27,6 +27,7 @@ public class Engine implements EngineService, RequireDataService{
   private User.COMMAND command;
   private Random gen;
   private boolean moveLeft,moveRight,moveUp,moveDown;
+  private double ballVX,ballVY;
 
   public Engine(){}
 
@@ -37,13 +38,19 @@ public class Engine implements EngineService, RequireDataService{
   
   @Override
   public void init(){
+
     engineClock = new Timer();
+    ballVX = 0;
+    ballVY = 0;
   }
 
   @Override
   public void start(){
     engineClock.schedule(new TimerTask(){
       public void run() {
+        updateSpeedBall();
+        updatePositionBall();
+
         data.setStepNumber(data.getStepNumber()+1);
       }
     },0,HardCodedParameters.enginePaceMillis);
@@ -54,4 +61,14 @@ public class Engine implements EngineService, RequireDataService{
     engineClock.cancel();
   }
 
+  private void updateSpeedBall(){
+    ballVX*=data.getSpeed();
+    ballVY*=data.getSpeed();
+  }
+
+  private void updatePositionBall(){
+    
+    data.setPosition(new Position(data.getPosition().x+ballVY,data.getPosition().y+ballVY));
+    //if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
+  }
 }
