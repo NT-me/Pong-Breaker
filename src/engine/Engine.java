@@ -53,7 +53,14 @@ public class Engine implements EngineService, RequireDataService{
     blueVY = 0;
     redVX = 0;
     redVY = 0;
-    ballVX = 0;
+    int chooseSide = new Random().nextInt(2);
+    if (chooseSide == 0){
+      ballVX = HardCodedParameters.paletteHeight-0.1;
+    }
+    else if (chooseSide == 1){
+      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+    }
+
     ballVY = 0;
   }
 
@@ -67,15 +74,20 @@ public class Engine implements EngineService, RequireDataService{
         updateSpeedBall();
         updatePositionBall();
         if (collisionPaletteMainBall(data.getBlue())){
-          ballVX = blueVX;
+          ballVX = blueVX+10;
           ballVY = blueVY;
+          if (data.getSpeed() <= 1.5){
+            data.setSpeed(data.getSpeed()*1.1);
+          }
           blueVX = 0;
           blueVY = 0;
-          System.out.println("COUCOU");
         }
         if (collisionPaletteMainBall(data.getRed())){
-          ballVX = redVX;
+          ballVX = redVX-10;
           ballVY = redVY;
+          if (data.getSpeed() <= 1.5){
+            data.setSpeed(data.getSpeed()*1.1);
+          }
           redVX = 0;
           redVY = 0;
         }
@@ -136,48 +148,44 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updatePositionPalette(){
-    data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
-    data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+    if (data.getBluePosition().x+blueVX <= HardCodedParameters.defaultWidth/6){
+      data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
+    }
+
+    if (data.getRedPosition().x+redVX >= 5*(HardCodedParameters.defaultWidth/6)){
+      data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+    }
+
+
   }
 
   private void updateSpeedBall(){
+    if (data.getSpeed() > 1){
+      data.setSpeed(data.getSpeed()*0.99);
+    }
     ballVX*=data.getSpeed();
     ballVY*=data.getSpeed();
-
   }
 
   private void updatePositionBall(){
+
+    if (ballVX >= HardCodedParameters.paletteHeight){
+      ballVX = HardCodedParameters.paletteHeight-0.1;
+    }
+    if (ballVX <= -HardCodedParameters.paletteHeight){
+      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+    }
+    System.out.println(ballVX);
     data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
-    //if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
+
   }
 
   private boolean collisionPaletteMainBall(Palette pal){
-    /*
-    double circleDistanceX = Math.abs(mainBall.getPosition().x-pal.getPosition().x);
-    double circleDistanceY = Math.abs(mainBall.getPosition().y-pal.getPosition().y);
-
-    if (circleDistanceX > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
-    if (circleDistanceY > (pal.getHeight()/2 + mainBall.getRayon())) { return false; }
-
-    if (circleDistanceX <= (pal.getWidth()/2)) { return true; }
-    if (circleDistanceY <= (pal.getHeight()/2)) { return true; }
-
-    double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
-
-    return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
-    */
-
     Ball mainBall = data.getMainBall();
     Position NO = pal.getPosition();
     Position NE = new Position(NO.x+pal.getHeight(), NO.y);
     Position SE = new Position(NO.x+pal.getHeight(),NO.y+ pal.getWidth());
     Position SO = new Position(NO.x,NO.y+ pal.getWidth());
-
-    System.out.println("pointInRectangle(NO, NE, SE, SO, mainBall.getPosition()) : "+ pointInRectangle(NO, NE, SE, SO, mainBall.getPosition()));
-    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NO, NE) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NO, NE));
-    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NE, SE) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NE, SE));
-    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SE, SO) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SE, SO));
-    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SO, NO) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SO, NO));
 
     return pointInRectangle(NO, NE, SE, SO, mainBall.getPosition())
             || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NO, NE)

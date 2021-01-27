@@ -29,7 +29,7 @@ public class Data implements DataService{
     direction = new Pair<Integer,Integer>(0,0);
     stepNumber = 0;
     double paletteWidth = 200;
-    double paletteHeight = 10;
+    double paletteHeight = HardCodedParameters.paletteHeight;
     Pair<Integer, Integer> dir0 = new Pair<Integer, Integer>(0,0);
     Position posBlue = new Position((double)paletteHeight*2,(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
     this.blue = new Palette(posBlue, (double)0, dir0, paletteWidth, paletteHeight, "Blue", 15, 10);
@@ -37,7 +37,7 @@ public class Data implements DataService{
     Position posRed = new Position(HardCodedParameters.defaultWidth-(paletteHeight*4),(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
     this.red = new Palette(posRed, (double)0, dir0, paletteWidth, paletteHeight, "Red", 15, 10);
     position = new Position(0,0);
-    mainBall = new Ball(new Position(200,200), 1, direction, 10, "j1");
+    mainBall = new Ball(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2), 1, direction, 10, "j1");
   }
 
   @Override
