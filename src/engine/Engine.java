@@ -63,8 +63,13 @@ public class Engine implements EngineService, RequireDataService{
 
     redVX = 0;
     redVY = 0;
-
-    ballVX = 0;
+    int chooseSide = new Random().nextInt(2);
+    if (chooseSide == 0){
+      ballVX = HardCodedParameters.paletteHeight-0.1;
+    }
+    else if (chooseSide == 1){
+      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+    }
     ballVY = 0;
 
     creaVX = 0;
@@ -82,16 +87,21 @@ public class Engine implements EngineService, RequireDataService{
         updatePositionBall();
         updateCreaBallState();
         if (collisionPaletteMainBall(data.getBlue())){
-          ballVX = blueVX;
+          ballVX = blueVX+10;
           ballVY = blueVY;
+          if (data.getSpeed() <= 1.5){
+            data.setSpeed(data.getSpeed()*1.1);
+          }
           blueVX = 0;
           blueVY = 0;
           data.getMainBall().setPlayer("j1");
-
         }
         if (collisionPaletteMainBall(data.getRed())){
-          ballVX = redVX;
+          ballVX = redVX-10;
           ballVY = redVY;
+          if (data.getSpeed() <= 1.5){
+            data.setSpeed(data.getSpeed()*1.1);
+          }
           redVX = 0;
           redVY = 0;
           data.getMainBall().setPlayer("j2");
@@ -171,7 +181,9 @@ public class Engine implements EngineService, RequireDataService{
   private void updatePositionPalette(){
     if (data.getNorth().getPosition().y <= data.getBluePosition().y){
       if (data.getSouth().getPosition().y >= data.getBluePosition().y)
-        data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
+         if (data.getBluePosition().x+blueVX <= HardCodedParameters.defaultWidth/6){
+      data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
+    }
       else
         data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y-10));
     }
@@ -181,41 +193,94 @@ public class Engine implements EngineService, RequireDataService{
 
     if (data.getNorth().getPosition().y <= data.getRedPosition().y){
       if (data.getSouth().getPosition().y >= data.getRedPosition().y)
-        data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+         if (data.getRedPosition().x+redVX >= 5*(HardCodedParameters.defaultWidth/6)){
+      data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+    }
       else
         data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y-10));
     }
     else
       data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y+10));
-
-
   }
 
   private void updateSpeedBall(){
+    if (data.getSpeed() > 1){
+      data.setSpeed(data.getSpeed()*0.99);
+    }
     ballVX*=data.getSpeed();
     ballVY*=data.getSpeed();
-
   }
 
   private void updatePositionBall(){
+
+    if (ballVX >= HardCodedParameters.paletteHeight){
+      ballVX = HardCodedParameters.paletteHeight-0.1;
+    }
+    if (ballVX <= -HardCodedParameters.paletteHeight){
+      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+    }
+    System.out.println(ballVX);
     data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
-    //if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
+
   }
 
   private boolean collisionPaletteMainBall(Palette pal){
     Ball mainBall = data.getMainBall();
-    double circleDistanceX = Math.abs(mainBall.getPosition().x-pal.getPosition().x);
-    double circleDistanceY = Math.abs(mainBall.getPosition().y-pal.getPosition().y);
+    Position NO = pal.getPosition();
+    Position NE = new Position(NO.x+pal.getHeight(), NO.y);
+    Position SE = new Position(NO.x+pal.getHeight(),NO.y+ pal.getWidth());
+    Position SO = new Position(NO.x,NO.y+ pal.getWidth());
 
-    if (circleDistanceX > (pal.getHeight()/2 + mainBall.getRayon())) { return false; }
-    if (circleDistanceY > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
+    return pointInRectangle(NO, NE, SE, SO, mainBall.getPosition())
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NO, NE)
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NE, SE)
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SE, SO)
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SO, NO);
+  }
 
-    if (circleDistanceX <= (pal.getHeight()/2)) { return true; }
-    if (circleDistanceY <= (pal.getWidth()/2)) { return true; }
+  private double crossproduct(Position p, Position q, Position s, Position t){
+    return (((q.x-p.x)*(t.y-s.y))-((q.y-p.y)*(t.x-s.x)));
+  }
 
-    double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
+  public double dotProd(Position p, Position q, Position s, Position t){
+    return ((q.x-p.x)*(t.x-s.x)+(q.y-p.y)*(t.y-s.y));
+  }
 
-    return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
+  /**
+   * Soit AB une droite et C quelconque
+   */
+  public static Position getPerpendicular(Position A, Position B, Position C){
+    double vx = B.x-A.x; //x du vecteur AB
+    double vy = B.y-A.y; //y du vecteur AB
+    double ab2 = vx*vx + vy*vy; //norme au carré de AB
+    double u = ((C.x - A.x) * vx + (C.y - A.y) * vy) / (ab2);
+    return new Position ((int)Math.round(A.x + u * vx), (int)Math.round(A.y + u * vy)); //D appartient à AB
+  }
+
+  public boolean intersectCercle(Position centreCercle, double rayonCercle, Position A, Position B ){
+    Position intersectPoint = getPerpendicular(A, B, centreCercle);
+    if (0 <= dotProd(A, B, A, intersectPoint) && dotProd(A, B, A, intersectPoint) <= dotProd(A, B, A, B)){
+      if (centreCercle.distance(intersectPoint) <= rayonCercle){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Soit ABCD les points du rectangle et P le centre du cercle et rayon le rayon du cercle
+   */
+  private boolean pointInRectangle(Position A, Position B, Position C, Position D, Position P){
+    // 0 ≤ AP·AB ≤ AB·AB and 0 ≤ AP·AD ≤ AD·AD
+    double firstCP = dotProd(A, P, A, B);
+    double firstComp = dotProd(A, B, A, B);
+
+    double secondCP = dotProd(A, P, A, D);
+    double secondComp = dotProd(A, D, A, D);
+
+    return (0 <= firstCP && firstCP <= firstComp) && (0 <= secondCP && secondCP <= secondComp);
+
   }
 
   private boolean collisionWallMainBall(){

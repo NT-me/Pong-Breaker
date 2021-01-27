@@ -12,4 +12,18 @@ public class Position {
     this.x=x;
     this.y=y;
   }
+
+  public double distance(Position other) {
+    double A = (other.x - this.x) * (other.x - this.x);
+    double B = (other.y - this.y) * (other.y - this.y);
+    return Math.sqrt(A + B);
+  }
+
+  @Override
+  public String toString() {
+    return "Position{" +
+            "x=" + x +
+            ", y=" + y +
+            '}';
+  }
 }
