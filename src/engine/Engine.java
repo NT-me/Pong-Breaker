@@ -28,6 +28,7 @@ import tools.User;
 
 import javafx.util.Pair;
 
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -94,7 +95,7 @@ public class Engine implements EngineService, RequireDataService{
           }
           blueVX = 0;
           blueVY = 0;
-          data.getMainBall().setPlayer("j1");
+          data.getMainBall().setPlayer(Player.BLUE);
         }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX-10;
@@ -104,7 +105,7 @@ public class Engine implements EngineService, RequireDataService{
           }
           redVX = 0;
           redVY = 0;
-          data.getMainBall().setPlayer("j2");
+          data.getMainBall().setPlayer(Player.RED);
         }
         if (collisionWallMainBall()){
           data.setMainBallPosition(new Position(data.getMainBallPosition().x,data.getMainBallPosition().y-ballVY));

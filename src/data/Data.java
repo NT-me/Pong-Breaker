@@ -84,7 +84,7 @@ public class Data implements DataService{
     Position posRed = new Position(HardCodedParameters.defaultWidth-(paletteHeight*4),(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
     this.red = new Palette(posRed, (double)0, dir0, paletteWidth, paletteHeight, Player.RED, 15, 10);
     position = new Position(0,0);
-    mainBall = new Ball(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2), 1, direction, 10, "j1");
+    mainBall = new Ball(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2), 1, direction, 10, Player.BLUE);
     creaBall = new Create(new Position(200,100), 1, direction, 15, Player.NONE);
   }
 
