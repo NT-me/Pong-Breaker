@@ -28,8 +28,4 @@ public class Wall extends ImmobileObject {
         super();
     }
 
-s
-
-
-
 }

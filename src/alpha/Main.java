@@ -21,9 +21,8 @@ import specifications.DataService;
 import specifications.EngineService;
 import specifications.ViewerService;
 import tools.HardCodedParameters;
+import tools.User;
 import userInterface.Viewer;
-
-//import algorithm.RandomWalker;
 
 public class Main extends Application{
   //---HARD-CODED-PARAMETERS---//
@@ -56,7 +55,38 @@ public class Main extends Application{
   @Override public void start(Stage stage) {
     final Scene scene = new Scene(((Viewer)viewer).getPanel());
 
-    scene.setFill(Color.CORNFLOWERBLUE);
+    scene.setFill(Color.BLACK);
+
+      scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+          @Override
+          public void handle(KeyEvent event) {
+              if (event.getCode()==KeyCode.Q) engine.setPlayerCommand(User.COMMAND.LEFT);
+              if (event.getCode()==KeyCode.D) engine.setPlayerCommand(User.COMMAND.RIGHT);
+              if (event.getCode()==KeyCode.Z) engine.setPlayerCommand(User.COMMAND.UP);
+              if (event.getCode()==KeyCode.S) engine.setPlayerCommand(User.COMMAND.DOWN);
+
+              if (event.getCode()==KeyCode.LEFT) engine.setPlayerCommand(User.COMMAND.RLEFT);
+              if (event.getCode()==KeyCode.RIGHT) engine.setPlayerCommand(User.COMMAND.RRIGHT);
+              if (event.getCode()==KeyCode.UP) engine.setPlayerCommand(User.COMMAND.RUP);
+              if (event.getCode()==KeyCode.DOWN) engine.setPlayerCommand(User.COMMAND.RDOWN);
+              event.consume();
+          }
+      });
+      scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
+          @Override
+          public void handle(KeyEvent event) {
+              if (event.getCode()==KeyCode.Q) engine.releasePlayerCommand(User.COMMAND.LEFT);
+              if (event.getCode()==KeyCode.D) engine.releasePlayerCommand(User.COMMAND.RIGHT);
+              if (event.getCode()==KeyCode.Z) engine.releasePlayerCommand(User.COMMAND.UP);
+              if (event.getCode()==KeyCode.S) engine.releasePlayerCommand(User.COMMAND.DOWN);
+
+              if (event.getCode()==KeyCode.LEFT) engine.releasePlayerCommand(User.COMMAND.RLEFT);
+              if (event.getCode()==KeyCode.RIGHT) engine.releasePlayerCommand(User.COMMAND.RRIGHT);
+              if (event.getCode()==KeyCode.UP) engine.releasePlayerCommand(User.COMMAND.RUP);
+              if (event.getCode()==KeyCode.DOWN) engine.releasePlayerCommand(User.COMMAND.RDOWN);
+              event.consume();
+          }
+      });
 
     scene.widthProperty().addListener(new ChangeListener<Number>() {
         @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
@@ -72,6 +102,7 @@ public class Main extends Application{
     stage.setScene(scene);
     stage.setWidth(HardCodedParameters.defaultWidth);
     stage.setHeight(HardCodedParameters.defaultHeight);
+    stage.setTitle("/!\\|°  Pong Breaker |/!\\");
     stage.setOnShown(new EventHandler<WindowEvent>() {
       @Override public void handle(WindowEvent event) {
         engine.start();
@@ -83,6 +114,13 @@ public class Main extends Application{
       }
     });
     stage.show();
+
+      timer = new AnimationTimer() {
+          @Override public void handle(long l) {
+              scene.setRoot(((Viewer)viewer).getPanel());
+          }
+      };
+      timer.start();
 
   }
 
