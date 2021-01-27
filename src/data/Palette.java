@@ -6,11 +6,11 @@ import tools.Position;
 public class Palette extends MobileObject {
     private double width;
     private double height;
-    private String player;
+    private Player player;
     private Integer PV;
     private Integer RespawnCoolDown;
 
-    public Palette(Position position, boolean displayed, String sprite, double speed, Pair<Integer, Integer> direction, double width, double height, String player, Integer PV, Integer respawnCoolDown) {
+    public Palette(Position position, boolean displayed, String sprite, double speed, Pair<Integer, Integer> direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
         super(position, displayed, sprite, speed, direction);
         this.width = width;
         this.player = player;
@@ -19,7 +19,7 @@ public class Palette extends MobileObject {
         RespawnCoolDown = respawnCoolDown;
     }
 
-    public Palette(Position position, double speed, Pair<Integer, Integer> direction, double width, double height, String player, Integer PV, Integer respawnCoolDown) {
+    public Palette(Position position, double speed, Pair<Integer, Integer> direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
         super(position, speed, direction);
         this.width = width;
         this.player = player;
@@ -44,11 +44,11 @@ public class Palette extends MobileObject {
         this.width = width;
     }
 
-    public String getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(String player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 

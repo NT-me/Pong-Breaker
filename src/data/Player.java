@@ -1,5 +1,5 @@
 package data;
 
 public enum Player {
-    RED, BLUE
+    RED, BLUE, NONE
 }
