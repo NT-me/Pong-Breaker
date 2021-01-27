@@ -6,6 +6,8 @@
  * ******************************************************/
 package userInterface;
 
+import data.Palette;
+import data.Player;
 import data.Wall;
 import data.Ball;
 import data.Brick;
@@ -13,6 +15,7 @@ import data.Player;
 import data.Palette;
 import javafx.scene.Node;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import tools.HardCodedParameters;
 
 import specifications.ViewerService;
@@ -38,6 +41,7 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
+
   private static double xShrink;
   private static double yShrink;
 
@@ -81,13 +85,13 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
     paletteRed = factory.createPalette(red);
     paletteRed.setFill(javafx.scene.paint.Color.RED);
 
+    Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
+    ArrayList<Shape> field = factory.createField();
+
     Group panel = new Group();
-
-    for (int i = 0; i < playground.size();++i){
-      panel.getChildren().add((Node) playground.get(i));
-    }
-
-    panel.getChildren().addAll(mainBallAvatar, paletteBlue, paletteRed,factory.createBrick(new Point(500,400)));
+    panel.getChildren().add(map);
+    panel.getChildren().addAll(field);
+    panel.getChildren().add(factory.createBrick(new Point(500,400),Player.BLUE));
     return panel;
   }
 

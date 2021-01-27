@@ -1,9 +1,11 @@
 package userInterface;
 import data.Palette;
+import data.Player;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import tools.HardCodedParameters;
 
 import java.awt.*;
@@ -13,35 +15,25 @@ public class Factory {
     public Factory() {
     }
 
-    public ArrayList<Object> createPlayGround(){
-        ArrayList<Object> res = new ArrayList<Object>();
-
-        Rectangle leftSurface = new Rectangle(
-                -1,
-                HardCodedParameters.defaultHeight/4,
-                HardCodedParameters.defaultWidth/8,
-                HardCodedParameters.defaultHeight/2);
+    public ArrayList<Shape> createField(){
+        ArrayList<Shape> field = new ArrayList<>();
+        Rectangle leftSurface = new Rectangle(-1, HardCodedParameters.defaultHeight/4,
+                HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
         leftSurface.setStroke(Color.WHITE);
-        Rectangle rightSurface = new Rectangle((HardCodedParameters.defaultWidth/8)*7,
-                HardCodedParameters.defaultHeight/4,
-                HardCodedParameters.defaultWidth/8,
-                HardCodedParameters.defaultHeight/2);
+        field.add(leftSurface);
+        Rectangle rightSurface = new Rectangle((HardCodedParameters.defaultWidth/8)*7,HardCodedParameters.defaultHeight/4,
+                HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
         rightSurface.setStroke(Color.WHITE);
-        Line middleLine = new Line(HardCodedParameters.defaultWidth/2,
-                0,
-                HardCodedParameters.defaultWidth/2,
-                HardCodedParameters.defaultHeight);
+        field.add(rightSurface);
+        Line middleLine = new Line(HardCodedParameters.defaultWidth/2,0,
+                HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight);
         middleLine.setStroke(Color.WHITE);
-        Circle middleCircle = new Circle(HardCodedParameters.defaultWidth/2,
-                HardCodedParameters.defaultHeight/2
+        field.add(middleLine);
+        Circle middleCircle = new Circle(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2
                 ,HardCodedParameters.defaultHeight/4);
         middleCircle.setStroke(Color.WHITE);
-        res.add(leftSurface);
-        res.add(rightSurface);
-        res.add(middleLine);
-        res.add(middleCircle);
-
-        return res;
+        field.add(middleCircle);
+        return field;
     }
 
     public Rectangle createPalette(Palette pal){
@@ -52,12 +44,12 @@ public class Factory {
                 pal.getWidth());
     }
 
-    public Rectangle createBrick(Point p){
+    public Rectangle createBrick(Point p, Player s){
         Rectangle brique = new Rectangle();
         brique.setY(p.getY());
         brique.setX(p.getX());
-        brique.setWidth(20);
-        brique.setHeight(70);
+        brique.setWidth(80);
+        brique.setHeight(120);
         if(s.toString() == "RED"){
             brique.setFill(Color.RED);
         }else{
