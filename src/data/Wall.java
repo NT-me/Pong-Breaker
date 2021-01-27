@@ -15,6 +15,7 @@ import specifications.DataService;
 import specifications.EngineService;
 import specifications.ViewerService;
 import tools.HardCodedParameters;
+import tools.Position;
 import userInterface.Viewer;
 import javafx.scene.shape.Line;
 
@@ -28,4 +29,6 @@ public class Wall extends ImmobileObject {
         super();
     }
 
+    public Wall(Position position, boolean displayed, String sprite) {
+    }
 }

@@ -14,6 +14,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -60,7 +62,7 @@ public class Main extends Application{
       scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
           @Override
           public void handle(KeyEvent event) {
-              if (event.getCode()==KeyCode.Q) engine.setPlayerCommand(User.COMMAND.LEFT);
+              if (event.getCode()== KeyCode.Q) engine.setPlayerCommand(User.COMMAND.LEFT);
               if (event.getCode()==KeyCode.D) engine.setPlayerCommand(User.COMMAND.RIGHT);
               if (event.getCode()==KeyCode.Z) engine.setPlayerCommand(User.COMMAND.UP);
               if (event.getCode()==KeyCode.S) engine.setPlayerCommand(User.COMMAND.DOWN);
