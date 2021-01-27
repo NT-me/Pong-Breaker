@@ -7,15 +7,22 @@ public class GraphicObject {
     private boolean displayed;
     private String sprite;
 
+
     public GraphicObject(Position position, boolean displayed, String sprite) {
         this.position = position;
         this.displayed = displayed;
         this.sprite = sprite;
+
     }
 
     public GraphicObject(Position position) {
         this.position = position;
     }
+
+
+    public GraphicObject() {
+    }
+
 
     public Position getPosition() {
         return position;
@@ -42,3 +49,4 @@ public class GraphicObject {
     }
 
 }
+

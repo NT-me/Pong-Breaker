@@ -5,8 +5,8 @@
  * $Id: userInterface/Viewer.java 2015-03-11 buixuan.
  * ******************************************************/
 package userInterface;
-
 import data.Palette;
+import javafx.scene.shape.Line;
 import tools.HardCodedParameters;
 import tools.Position;
 import specifications.ViewerService;
@@ -31,8 +31,12 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
+
   private static double xShrink;
   private static double yShrink;
+
+  private Circle mainBallAvatar;
+  private double direction;
   private ReadService data;
   private ImageView paletteView;
   private Image paletteSpriteSheet;
@@ -49,10 +53,14 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
 
   @Override
   public void init(){
-    paletteSpriteSheet = new Image("file:src/images/paletteBlue.png");
-    paletteView = new ImageView(paletteSpriteSheet);
-    heroesAvatarViewports = new ArrayList<Rectangle2D>();
-    heroesAvatarViewports.add(new Rectangle2D(570,194,115,190));
+
+    direction = Math.random();
+
+    mainBallAvatar = new Circle(20,Color.rgb(0,156,156));
+    mainBallAvatar.setEffect(new Lighting());
+    mainBallAvatar.setTranslateX(data.getMainBall().getPosition().x);
+    mainBallAvatar.setTranslateY(data.getMainBall().getPosition().y);
+
   }
 
   @Override
@@ -66,8 +74,22 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
     paletteRed.setFill(javafx.scene.paint.Color.RED);
 
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
+    Rectangle leftSurface = new Rectangle(-1,HardCodedParameters.defaultHeight/4,
+            HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
+    leftSurface.setStroke(Color.WHITE);
+    Rectangle rightSurface = new Rectangle((HardCodedParameters.defaultWidth/8)*7,HardCodedParameters.defaultHeight/4,
+            HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
+    rightSurface.setStroke(Color.WHITE);
+    Line middleLine = new Line(HardCodedParameters.defaultWidth/2,0,
+            HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight);
+    middleLine.setStroke(Color.WHITE);
+    Circle middleCircle = new Circle(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2
+            ,HardCodedParameters.defaultHeight/4);
+    middleCircle.setStroke(Color.WHITE);
     Group panel = new Group();
-    panel.getChildren().addAll(map, paletteBlue, paletteRed);
+
+    panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface, mainBallAvatar, paletteBlue, paletteRed);
+
     return panel;
   }
 

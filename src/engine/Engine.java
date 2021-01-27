@@ -29,6 +29,7 @@ public class Engine implements EngineService, RequireDataService{
   private boolean moveLeft,moveRight,moveUp,moveDown;
   private boolean RmoveLeft,RmoveRight,RmoveUp,RmoveDown;
   private double blueVX,blueVY,redVX,redVY;
+  private double ballVX,ballVY;
 
   public Engine(){}
 
@@ -39,6 +40,7 @@ public class Engine implements EngineService, RequireDataService{
   
   @Override
   public void init(){
+
     engineClock = new Timer();
     moveLeft = false;
     moveRight = false;
@@ -49,6 +51,8 @@ public class Engine implements EngineService, RequireDataService{
     blueVY = 0;
     redVX = 0;
     redVY = 0;
+    ballVX = 0;
+    ballVY = 0;
   }
 
   @Override
@@ -58,6 +62,8 @@ public class Engine implements EngineService, RequireDataService{
         updateSpeedPalette();
         updateCommandPalette();
         updatePositionPalette();
+        updateSpeedBall();
+        updatePositionBall();
         data.setStepNumber(data.getStepNumber()+1);
       }
     },0,HardCodedParameters.enginePaceMillis);
@@ -119,4 +125,14 @@ public class Engine implements EngineService, RequireDataService{
     data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
   }
 
+  private void updateSpeedBall(){
+    ballVX*=data.getSpeed();
+    ballVY*=data.getSpeed();
+  }
+
+  private void updatePositionBall(){
+    
+    data.setPosition(new Position(data.getPosition().x+ballVY,data.getPosition().y+ballVY));
+    //if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
+  }
 }

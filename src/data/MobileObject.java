@@ -2,6 +2,7 @@ package data;
 
 import javafx.util.Pair;
 import tools.Position;
+import java.util.List;
 
 public class MobileObject extends GraphicObject {
 
@@ -12,12 +13,14 @@ public class MobileObject extends GraphicObject {
 
     public MobileObject(Position position, boolean displayed, String sprite, double speed, Pair<Integer, Integer> direction) {
         super(position, displayed, sprite);
+
         this.speed = speed;
         this.direction = direction;
     }
 
     public MobileObject(Position position, double speed, Pair<Integer, Integer> direction) {
         super(position);
+
         this.speed = speed;
         this.direction = direction;
     }
@@ -28,6 +31,7 @@ public class MobileObject extends GraphicObject {
 
     public Pair<Integer, Integer> getDirection() {
         return direction;
+
     }
 
     public void setSpeed(double speed) {
@@ -39,3 +43,4 @@ public class MobileObject extends GraphicObject {
     }
 
 }
+

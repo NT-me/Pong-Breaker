@@ -6,33 +6,22 @@
  * ******************************************************/
 package alpha;
 
-import tools.HardCodedParameters;
-import tools.User;
-import tools.Sound;
-
+import data.Data;
+import engine.Engine;
+import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import specifications.DataService;
 import specifications.EngineService;
 import specifications.ViewerService;
-
-import data.Data;
-import engine.Engine;
+import tools.HardCodedParameters;
 import userInterface.Viewer;
-//import algorithm.RandomWalker;
-
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.event.EventHandler;
-import javafx.animation.AnimationTimer;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class Main extends Application{
   //---HARD-CODED-PARAMETERS---//
@@ -112,6 +101,7 @@ public class Main extends Application{
     stage.setScene(scene);
     stage.setWidth(HardCodedParameters.defaultWidth);
     stage.setHeight(HardCodedParameters.defaultHeight);
+    stage.setTitle("/!\\|°  Pong Breaker |/!\\");
     stage.setOnShown(new EventHandler<WindowEvent>() {
       @Override public void handle(WindowEvent event) {
         engine.start();
