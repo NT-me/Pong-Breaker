@@ -66,6 +66,7 @@ public class Main extends Application{
               if (event.getCode()==KeyCode.D) engine.setPlayerCommand(User.COMMAND.RIGHT);
               if (event.getCode()==KeyCode.Z) engine.setPlayerCommand(User.COMMAND.UP);
               if (event.getCode()==KeyCode.S) engine.setPlayerCommand(User.COMMAND.DOWN);
+              if(event.getCode()==KeyCode.C) engine.createBrick(User.COMMAND.CREATE);
 
               if (event.getCode()==KeyCode.LEFT) engine.setPlayerCommand(User.COMMAND.RLEFT);
               if (event.getCode()==KeyCode.RIGHT) engine.setPlayerCommand(User.COMMAND.RRIGHT);

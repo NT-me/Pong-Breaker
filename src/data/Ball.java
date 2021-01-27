@@ -2,14 +2,13 @@ package data;
 
 import javafx.util.Pair;
 import tools.Position;
-import java.util.List;
 
 public class Ball extends MobileObject {
 
     private double rayon;
-    private String player;
+    private Player player;
 
-    public Ball(Position position, double speed, Pair<Integer,Integer> direction, double rayon, String player) {
+    public Ball(Position position, double speed, Pair<Integer,Integer> direction, double rayon, Player player) {
         super(position, speed, direction);
         this.rayon = rayon;
         this.player = player;
@@ -23,11 +22,11 @@ public class Ball extends MobileObject {
         this.rayon = rayon;
     }
 
-    public String getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(String player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 

@@ -7,27 +7,24 @@
 package engine;
 
 import data.Ball;
+import data.Brick;
 import data.Palette;
-import tools.HardCodedParameters;
-import tools.User;
-import tools.Position;
-import tools.Sound;
-
-import specifications.EngineService;
+import data.Player;
 import specifications.DataService;
+import specifications.EngineService;
 import specifications.RequireDataService;
+import tools.HardCodedParameters;
+import tools.Position;
+import tools.User;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Random;
-import java.util.ArrayList;
 
 public class Engine implements EngineService, RequireDataService{
   private static final double friction=HardCodedParameters.friction;
   private Timer engineClock;
   private DataService data;
   private User.COMMAND command;
-  private Random gen;
   private boolean moveLeft,moveRight,moveUp,moveDown;
   private boolean RmoveLeft,RmoveRight,RmoveUp,RmoveDown;
   private double blueVX,blueVY,redVX,redVY;
@@ -114,6 +111,14 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RDOWN) RmoveDown=false;
   }
 
+  public void createBrickBlue(User.COMMAND create) {
+    createBrick();
+  }
+
+  public void createBrickRed(User.COMMAND create) {
+    createBrick();
+  }
+
   private void updateSpeedPalette(){
     blueVX*=HardCodedParameters.friction;
     blueVY*=HardCodedParameters.friction;
@@ -164,5 +169,25 @@ public class Engine implements EngineService, RequireDataService{
     double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
 
     return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
+  }
+
+  public void createBrickBlue(Ball b) {
+    int x = (int) (b.getPosition().x - 320) / 80;// position exploitable sur les x
+    int y = (int) (b.getPosition().y / 90);//position exploitable sur les y
+
+    if (b.getPosition().x < HardCodedParameters.defaultWidth / 2 && b.getPlayer() == Player.BLUE
+            && data.getMatrice()[x][y] != 1) {
+      data.setMatrice(x, y, 1);
+      Brick brick = new Brick(Player.BLUE, true);
+      brick.setPosition(new Position(320+(x*80),y*90));
+      data.getBricks().add(brick);
+    }
+    if (b.getPosition().x > HardCodedParameters.defaultWidth / 2 && b.getPlayer() == Player.RED
+            && data.getMatrice()[x][y] != 1) {
+      data.setMatrice(x, y, 1);
+      Brick brick = new Brick(Player.RED, true);
+      brick.setPosition(new Position(640+(x*80),y*90));
+      data.getBricks().add(brick);
+    }
   }
 }

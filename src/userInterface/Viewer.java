@@ -43,7 +43,8 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private Image paletteSpriteSheet;
   private ArrayList<Rectangle2D> heroesAvatarViewports;
   private Rectangle paletteBlue, paletteRed;
-  private ArrayList<Object> playground;
+
+
 
 
   public Viewer(){}
