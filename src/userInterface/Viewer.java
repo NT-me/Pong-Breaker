@@ -82,6 +82,7 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
     panel.getChildren().add(map);
     panel.getChildren().addAll(field);
     panel.getChildren().add(factory.createBrick(new Point(500,400),Player.BLUE));
+    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue);
     return panel;
   }
 
