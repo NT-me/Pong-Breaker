@@ -6,33 +6,23 @@
  * ******************************************************/
 package userInterface;
 
-import data.Palette;
-import data.Player;
-import data.Wall;
 import data.Ball;
-import data.Brick;
-import data.Player;
 import data.Palette;
-import javafx.scene.Node;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
-import tools.HardCodedParameters;
-
-import specifications.ViewerService;
-import specifications.ReadService;
-import specifications.RequireReadService;
-
+import data.Player;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.scene.text.Font;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.shape.Shape;
+import specifications.ReadService;
+import specifications.RequireReadService;
+import specifications.ViewerService;
+import tools.HardCodedParameters;
 
 import java.awt.*;
 import java.util.ArrayList;
