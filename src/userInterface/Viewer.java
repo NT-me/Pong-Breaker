@@ -6,30 +6,23 @@
  * ******************************************************/
 package userInterface;
 
-import data.Wall;
 import data.Ball;
-import data.Brick;
-import data.Player;
 import data.Palette;
-import javafx.scene.Node;
-import javafx.scene.shape.Line;
-import tools.HardCodedParameters;
-import tools.Position;
-import specifications.ViewerService;
-import specifications.ReadService;
-import specifications.RequireReadService;
-
+import data.Player;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.scene.text.Font;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.shape.Shape;
+import specifications.ReadService;
+import specifications.RequireReadService;
+import specifications.ViewerService;
+import tools.HardCodedParameters;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -50,7 +43,8 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private Image paletteSpriteSheet;
   private ArrayList<Rectangle2D> heroesAvatarViewports;
   private Rectangle paletteBlue, paletteRed;
-  private ArrayList<Object> playground;
+
+
 
 
   public Viewer(){}
@@ -62,7 +56,7 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
 
   @Override
   public void init(){
-    playground = factory.createPlayGround();
+
   }
 
   @Override
@@ -82,16 +76,15 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
     paletteRed = factory.createPalette(red);
     paletteRed.setFill(javafx.scene.paint.Color.RED);
 
+    Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
+    ArrayList<Shape> field = factory.createField();
+
     Group panel = new Group();
-
-    for (int i = 0; i < playground.size();++i){
-      panel.getChildren().add((Node) playground.get(i));
-    }
-
-    panel.getChildren().addAll(mainBallAvatar, paletteBlue, paletteRed,factory.createBrick(new Point(500,400)));
+    panel.getChildren().add(map);
+    panel.getChildren().addAll(field);
+    panel.getChildren().add(factory.createBrick(new Point(500,400),Player.BLUE));
+    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue);
     return panel;
-
-
   }
 
   @Override
@@ -103,10 +96,4 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   public void setMainWindowHeight(double height){
     yShrink=height/defaultMainHeight;
   }
-
-
-
-
-
-
 }
