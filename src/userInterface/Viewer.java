@@ -5,6 +5,8 @@
  * $Id: userInterface/Viewer.java 2015-03-11 buixuan.
  * ******************************************************/
 package userInterface;
+import data.Brick;
+import data.Player;
 import data.Palette;
 import javafx.scene.shape.Line;
 import tools.HardCodedParameters;
@@ -25,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Rectangle2D;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Viewer<rectangle> implements ViewerService, RequireReadService{
@@ -38,6 +41,7 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private Circle mainBallAvatar;
   private double direction;
   private ReadService data;
+  private Factory factory = new Factory();
   private ImageView paletteView;
   private Image paletteSpriteSheet;
   private ArrayList<Rectangle2D> heroesAvatarViewports;
@@ -87,9 +91,10 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
             ,HardCodedParameters.defaultHeight/4);
     middleCircle.setStroke(Color.WHITE);
     Group panel = new Group();
+    panel.getChildren().add(map);
+    panel.getChildren().add(factory.createBrick(new Point(500,400)));
 
     panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface, mainBallAvatar, paletteBlue, paletteRed);
-
     return panel;
   }
 
