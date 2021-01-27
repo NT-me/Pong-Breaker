@@ -24,11 +24,13 @@ import java.awt.*;
 
 public class Wall extends ImmobileObject {
 
-
+    private Position end;
     public Wall() {
         super();
     }
 
-    public Wall(Position position, boolean displayed, String sprite) {
+    public Wall(Position start, Position end, boolean displayed, String sprite) {
+        super(start, displayed, sprite);
+        this.end = end;
     }
 }

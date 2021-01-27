@@ -8,6 +8,9 @@ package engine;
 
 import data.Ball;
 import data.Palette;
+import data.Wall;
+import data.Goal;
+
 import tools.HardCodedParameters;
 import tools.User;
 import tools.Position;
@@ -70,13 +73,20 @@ public class Engine implements EngineService, RequireDataService{
           ballVY = blueVY;
           blueVX = 0;
           blueVY = 0;
-
+          data.getMainBall().setPlayer("j1");
         }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX;
           ballVY = redVY;
           redVX = 0;
           redVY = 0;
+          data.getMainBall().setPlayer("j2");
+        }
+        if (collisionWallMainBall()){
+
+        }
+        if (collisionGoalMainBall()){
+          System.out.println(data.getMainBall().getPlayer() + " a marqué");
         }
         data.setStepNumber(data.getStepNumber()+1);
       }
@@ -135,8 +145,26 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updatePositionPalette(){
-    data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
-    data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+    if (data.getNorth().getPosition().y <= data.getBluePosition().y){
+      if (data.getSouth().getPosition().y >= data.getBluePosition().y)
+        data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
+      else
+        data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y-10));
+    }
+    else
+      data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y+10));
+
+
+    if (data.getNorth().getPosition().y <= data.getRedPosition().y){
+      if (data.getSouth().getPosition().y >= data.getRedPosition().y)
+        data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+      else
+        data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y-10));
+    }
+    else
+      data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y+10));
+
+
   }
 
   private void updateSpeedBall(){
@@ -155,14 +183,36 @@ public class Engine implements EngineService, RequireDataService{
     double circleDistanceX = Math.abs(mainBall.getPosition().x-pal.getPosition().x);
     double circleDistanceY = Math.abs(mainBall.getPosition().y-pal.getPosition().y);
 
-    if (circleDistanceX > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
     if (circleDistanceX > (pal.getHeight()/2 + mainBall.getRayon())) { return false; }
+    if (circleDistanceY > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
 
-    if (circleDistanceX <= (pal.getWidth()/2)) { return true; }
-    if (circleDistanceY <= (pal.getHeight()/2)) { return true; }
+    if (circleDistanceX <= (pal.getHeight()/2)) { return true; }
+    if (circleDistanceY <= (pal.getWidth()/2)) { return true; }
 
     double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
 
     return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
+  }
+
+  private boolean collisionWallMainBall(){
+    return false;
+  }
+
+  private boolean collisionGoalMainBall(){
+    Ball mainBall = data.getMainBall();
+    Goal goalBlue = data.getWest();
+    Goal goalRed = data.getEast();
+    double circleDistanceBlue = Math.abs(mainBall.getPosition().x-goalBlue.getPosition().x);
+    double circleDistanceRed = Math.abs(goalRed.getPosition().x-mainBall.getPosition().x);
+
+    if (circleDistanceBlue > (0 + mainBall.getRayon())) {
+      if (circleDistanceRed > (0 + mainBall.getRayon())){
+        return false;
+      }
+      else
+        return true;
+    }
+    else
+      return true;
   }
 }

@@ -8,6 +8,9 @@ package specifications;
 
 import data.Palette;
 import data.Ball;
+import data.Wall;
+import data.Goal;
+
 import tools.Position;
 import tools.Sound;
 import javafx.util.Pair;
@@ -26,5 +29,8 @@ public interface ReadService {
     public double getSpeed();
     public Pair<Integer,Integer> getDirection();
 
-
+    public Wall getNorth();
+    public Wall getSouth();
+    public Goal getEast();
+    public Goal getWest();
 }
