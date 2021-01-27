@@ -28,6 +28,7 @@ public interface ReadService {
     public double getRayon();
     public Ball getMainBall();
     public double getSpeed();
-    public Pair<Position,Position> getDirection();
+    public Pair<Integer,Integer> getDirection();
+    public void setDirection(Pair<Integer,Integer> direction);
 
 }

@@ -9,14 +9,12 @@ public class Ball extends MobileObject {
     private double rayon;
     private String player;
 
-    public Ball(Position position, double speed, Pair<Position,Position> direction, double rayon, String player) {
+    public Ball(Position position, double speed, Pair<Integer,Integer> direction, double rayon, String player) {
         super(position, speed, direction);
         this.rayon = rayon;
         this.player = player;
     }
 
-    public Ball() {
-    }
 
     public double getRayon() {
         return rayon;

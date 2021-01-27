@@ -9,12 +9,8 @@ package data;
 import javafx.util.Pair;
 import tools.HardCodedParameters;
 import tools.Position;
-import tools.Sound;
 
 import specifications.DataService;
-
-import javafx.util.Pair;
-import java.util.ArrayList;
 
 public class Data implements DataService{
   private Palette blue;
@@ -25,12 +21,12 @@ public class Data implements DataService{
   private double rayon;
   private Position position;
   private Ball mainBall;
-  private Pair<Position,Position> direction;
+  private Pair<Integer,Integer> direction;
   private double speed;
 
   @Override
   public void init(){
-    direction = new Pair<Position,Position>(new Position(200,200), new Position(200,250));
+    direction = new Pair<Integer,Integer>(0,0);
     stepNumber = 0;
     double paletteWidth = 200;
     double paletteHeight = 10;
@@ -78,7 +74,7 @@ public class Data implements DataService{
   public double getSpeed(){return mainBall.getSpeed();}
 
   @Override
-  public Pair<Position,Position> getDirection(){return mainBall.getDirection();}
+  public Pair<Integer,Integer> getDirection(){return mainBall.getDirection();}
 
   @Override
   public void setStepNumber(int n){ stepNumber=n; }
@@ -111,7 +107,9 @@ public class Data implements DataService{
   public void setSpeed(double speed){mainBall.setSpeed(speed);}
 
   @Override
-  public void setDirection(Pair<Position,Position> direction){mainBall.setDirection(direction);}
+  public void setDirection(Pair<Integer, Integer> direction){
+    mainBall.setDirection(direction);
+  }
 
   @Override
   public Ball getMainBall(){ return mainBall; }

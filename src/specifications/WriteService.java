@@ -19,5 +19,5 @@ public interface WriteService {
     public void setRayon(double r);
     public void setMainBall(Ball ball);
     public void setSpeed(double speed);
-    public void setDirection(Pair<Position,Position> direction);
+    public void setDirection(Pair<Integer,Integer> direction);
 }
