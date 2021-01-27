@@ -7,14 +7,17 @@
 package data;
 
 import javafx.util.Pair;
+import specifications.DataService;
 import tools.HardCodedParameters;
 import tools.Position;
 
-import specifications.DataService;
+import java.util.ArrayList;
 
 public class Data implements DataService{
   private Palette blue;
   private Palette red;
+  private int[][] matrice;
+  private Create creaBall;
 
   public Data(){  }
   private int stepNumber;
@@ -22,6 +25,27 @@ public class Data implements DataService{
   private Ball mainBall;
   private Pair<Integer,Integer> direction;
   private double speed;
+  private ArrayList<Brick> bricks;
+
+  @Override
+  public int[][] getMatrice() {
+    return matrice;
+  }
+
+  @Override
+  public void setMatrice(int x, int y, int val) {
+    this.matrice[x][y] = val;
+  }
+
+  @Override
+  public ArrayList<Brick> getBricks() {
+    return bricks;
+  }
+
+  @Override
+  public void setBricks(ArrayList<Brick> bricks) {
+    this.bricks = bricks;
+  }
 
   private Position NO;
   private Position NE;
@@ -46,19 +70,32 @@ public class Data implements DataService{
     west = new Goal(NO, SO, true, "", "j1");
     east = new Goal(NE, SE, true, "", "j2");
 
-
+    matrice = new int[4][8];
+    bricks = new ArrayList<>();
     direction = new Pair<Integer,Integer>(0,0);
+
     stepNumber = 0;
     double paletteWidth = 200;
     double paletteHeight = 10;
     Pair<Integer, Integer> dir0 = new Pair<Integer, Integer>(0,0);
     Position posBlue = new Position((double)paletteHeight*2,(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
-    this.blue = new Palette(posBlue, (double)0, dir0, paletteWidth, paletteHeight, "Blue", 15, 10);
+    this.blue = new Palette(posBlue, (double)0, dir0, paletteWidth, paletteHeight, Player.BLUE, 15, 10);
 
     Position posRed = new Position(HardCodedParameters.defaultWidth-(paletteHeight*4),(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
-    this.red = new Palette(posRed, (double)0, dir0, paletteWidth, paletteHeight, "Red", 15, 10);
+    this.red = new Palette(posRed, (double)0, dir0, paletteWidth, paletteHeight, Player.RED, 15, 10);
     position = new Position(0,0);
-    mainBall = new Ball(new Position(200,200), 1, direction, 10, "j1");
+    mainBall = new Ball(new Position(200,200), 1, direction, 10, Player.RED);
+    creaBall = new Create(new Position(200,100), 1, direction, 15, Player.NONE);
+  }
+
+  @Override
+  public Create getCreaBall() {
+    return creaBall;
+  }
+
+  @Override
+  public void setCreaBall(Create creaBall) {
+    this.creaBall = creaBall;
   }
 
   @Override
@@ -154,6 +191,5 @@ public class Data implements DataService{
   public Ball getMainBall(){ return mainBall; }
 
   @Override
-  public void setMainBall(Ball ball){ mainBall=new Ball(ball.getPosition(), 0, direction, 10, "j1"); }
-
+  public void setMainBall(Ball ball){ mainBall=new Ball(ball.getPosition(), 0, direction, 10, Player.RED); }
 }

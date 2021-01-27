@@ -6,6 +6,8 @@
  * ******************************************************/
 package specifications;
 
+import data.Brick;
+import data.Create;
 import data.Palette;
 import data.Ball;
 import data.Wall;
@@ -28,6 +30,12 @@ public interface ReadService {
     public Ball getMainBall();
     public double getSpeed();
     public Pair<Integer,Integer> getDirection();
+    public int[][] getMatrice() ;
+    public void setMatrice(int x,int y, int val) ;
+    public ArrayList<Brick> getBricks() ;
+    public void setBricks(ArrayList<Brick> bricks);
+    public Create getCreaBall();
+    public void setCreaBall(Create creaBall);
 
     public Wall getNorth();
     public Wall getSouth();

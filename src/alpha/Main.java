@@ -67,6 +67,8 @@ public class Main extends Application{
               if (event.getCode()==KeyCode.Z) engine.setPlayerCommand(User.COMMAND.UP);
               if (event.getCode()==KeyCode.S) engine.setPlayerCommand(User.COMMAND.DOWN);
 
+              if(event.getCode()==KeyCode.C) engine.setPlayerCommand(User.COMMAND.CREATE);
+
               if (event.getCode()==KeyCode.LEFT) engine.setPlayerCommand(User.COMMAND.RLEFT);
               if (event.getCode()==KeyCode.RIGHT) engine.setPlayerCommand(User.COMMAND.RRIGHT);
               if (event.getCode()==KeyCode.UP) engine.setPlayerCommand(User.COMMAND.RUP);
@@ -81,6 +83,8 @@ public class Main extends Application{
               if (event.getCode()==KeyCode.D) engine.releasePlayerCommand(User.COMMAND.RIGHT);
               if (event.getCode()==KeyCode.Z) engine.releasePlayerCommand(User.COMMAND.UP);
               if (event.getCode()==KeyCode.S) engine.releasePlayerCommand(User.COMMAND.DOWN);
+
+              if(event.getCode()==KeyCode.C) engine.releasePlayerCommand(User.COMMAND.CREATE);
 
               if (event.getCode()==KeyCode.LEFT) engine.releasePlayerCommand(User.COMMAND.RLEFT);
               if (event.getCode()==KeyCode.RIGHT) engine.releasePlayerCommand(User.COMMAND.RRIGHT);

@@ -7,6 +7,7 @@
 package engine;
 
 import data.Ball;
+import data.Brick;
 import data.Palette;
 import data.Wall;
 import data.Goal;
@@ -17,26 +18,29 @@ import tools.Position;
 import tools.Sound;
 
 import specifications.EngineService;
+import data.Player;
 import specifications.DataService;
+import specifications.EngineService;
 import specifications.RequireDataService;
+import tools.HardCodedParameters;
+import tools.Position;
+import tools.User;
 
 import javafx.util.Pair;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Random;
-import java.util.ArrayList;
 
 public class Engine implements EngineService, RequireDataService{
-  private static final double friction=HardCodedParameters.friction;
   private Timer engineClock;
   private DataService data;
   private User.COMMAND command;
-  private Random gen;
   private boolean moveLeft,moveRight,moveUp,moveDown;
   private boolean RmoveLeft,RmoveRight,RmoveUp,RmoveDown;
+  private boolean creaBallToBrick;
   private double blueVX,blueVY,redVX,redVY;
   private double ballVX,ballVY;
+  private double creaVX,creaVY;
 
   public Engine(){}
 
@@ -53,12 +57,18 @@ public class Engine implements EngineService, RequireDataService{
     moveUp = false;
     moveDown = false;
     command = User.COMMAND.NONE;
+
     blueVX = 0;
     blueVY = 0;
+
     redVX = 0;
     redVY = 0;
+
     ballVX = 0;
     ballVY = 0;
+
+    creaVX = 0;
+    creaVY = 0;
   }
 
   @Override
@@ -70,12 +80,14 @@ public class Engine implements EngineService, RequireDataService{
         updatePositionPalette();
         updateSpeedBall();
         updatePositionBall();
+        updateCreaBallState();
         if (collisionPaletteMainBall(data.getBlue())){
           ballVX = blueVX;
           ballVY = blueVY;
           blueVX = 0;
           blueVY = 0;
           data.getMainBall().setPlayer("j1");
+
         }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX;
@@ -113,6 +125,8 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RRIGHT) RmoveRight=true;
     if (c==User.COMMAND.RUP) RmoveUp=true;
     if (c==User.COMMAND.RDOWN) RmoveDown=true;
+
+    if (c==User.COMMAND.CREATE) creaBallToBrick=true;
   }
 
   @Override
@@ -126,6 +140,12 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RRIGHT) RmoveRight=false;
     if (c==User.COMMAND.RUP) RmoveUp=false;
     if (c==User.COMMAND.RDOWN) RmoveDown=false;
+
+    if (c==User.COMMAND.CREATE) creaBallToBrick=false;
+  }
+
+  private void updateCreaBallState(){
+    createBrick(data.getCreaBall());
   }
 
   private void updateSpeedPalette(){
@@ -233,5 +253,26 @@ public class Engine implements EngineService, RequireDataService{
     }
     else
       return true;
+  }
+    
+  public void createBrick(Ball b) {
+    int x = (int) (b.getPosition().x - 320) / 80;// position exploitable sur les x
+    int y = (int) (b.getPosition().y / 90);//position exploitable sur les y
+
+    if (b.getPosition().x < HardCodedParameters.defaultWidth / 2 && b.getPlayer() == Player.BLUE
+            && data.getMatrice()[x][y] != 1) {
+      data.setMatrice(x, y, 1);
+      Brick brick = new Brick(Player.BLUE, true);
+      brick.setPosition(new Position(320+(x*80),y*90));
+      data.getBricks().add(brick);
+    }
+    if (b.getPosition().x > HardCodedParameters.defaultWidth / 2 && b.getPlayer() == Player.RED
+            && data.getMatrice()[x][y] != 1) {
+      data.setMatrice(x, y, 1);
+      Brick brick = new Brick(Player.RED, true);
+      brick.setPosition(new Position(640+(x*80),y*90));
+      data.getBricks().add(brick);
+    }
+
   }
 }
