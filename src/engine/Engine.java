@@ -20,6 +20,8 @@ import specifications.EngineService;
 import specifications.DataService;
 import specifications.RequireDataService;
 
+import javafx.util.Pair;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Random;
@@ -83,10 +85,12 @@ public class Engine implements EngineService, RequireDataService{
           data.getMainBall().setPlayer("j2");
         }
         if (collisionWallMainBall()){
-
+          data.setMainBallPosition(new Position(data.getMainBallPosition().x,data.getMainBallPosition().y-ballVY));
+          //data.getMainBall().setDirection(new Pair<Integer,Integer>(data.getMainBall().getDirection().getKey(),data.getMainBall().getDirection().getValue()*0));
         }
         if (collisionGoalMainBall()){
           System.out.println(data.getMainBall().getPlayer() + " a marqué");
+          data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
         }
         data.setStepNumber(data.getStepNumber()+1);
       }
@@ -195,8 +199,23 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private boolean collisionWallMainBall(){
-    return false;
+    Ball mainBall = data.getMainBall();
+    Wall north = data.getNorth();
+    Wall south = data.getSouth();
+    double circleDistanceNorth = Math.abs(mainBall.getPosition().y-north.getPosition().y);
+    double circleDistanceSouth = Math.abs(south.getPosition().y-mainBall.getPosition().y);
+
+    if (circleDistanceNorth > (0 + mainBall.getRayon())) {
+      if (circleDistanceSouth > (0 + mainBall.getRayon())){
+        return false;
+      }
+      else
+        return true;
+    }
+    else
+      return true;
   }
+
 
   private boolean collisionGoalMainBall(){
     Ball mainBall = data.getMainBall();
