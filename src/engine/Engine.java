@@ -8,6 +8,7 @@ package engine;
 
 import data.Ball;
 import data.Palette;
+import javafx.geometry.Pos;
 import tools.HardCodedParameters;
 import tools.User;
 import tools.Position;
@@ -70,7 +71,7 @@ public class Engine implements EngineService, RequireDataService{
           ballVY = blueVY;
           blueVX = 0;
           blueVY = 0;
-
+          System.out.println("COUCOU");
         }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX;
@@ -151,12 +152,12 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private boolean collisionPaletteMainBall(Palette pal){
-    Ball mainBall = data.getMainBall();
+    /*
     double circleDistanceX = Math.abs(mainBall.getPosition().x-pal.getPosition().x);
     double circleDistanceY = Math.abs(mainBall.getPosition().y-pal.getPosition().y);
 
     if (circleDistanceX > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
-    if (circleDistanceX > (pal.getHeight()/2 + mainBall.getRayon())) { return false; }
+    if (circleDistanceY > (pal.getHeight()/2 + mainBall.getRayon())) { return false; }
 
     if (circleDistanceX <= (pal.getWidth()/2)) { return true; }
     if (circleDistanceY <= (pal.getHeight()/2)) { return true; }
@@ -164,5 +165,69 @@ public class Engine implements EngineService, RequireDataService{
     double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
 
     return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
+    */
+
+    Ball mainBall = data.getMainBall();
+    Position NO = pal.getPosition();
+    Position NE = new Position(NO.x+pal.getHeight(), NO.y);
+    Position SE = new Position(NO.x+pal.getHeight(),NO.y+ pal.getWidth());
+    Position SO = new Position(NO.x,NO.y+ pal.getWidth());
+
+    System.out.println("pointInRectangle(NO, NE, SE, SO, mainBall.getPosition()) : "+ pointInRectangle(NO, NE, SE, SO, mainBall.getPosition()));
+    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NO, NE) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NO, NE));
+    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NE, SE) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NE, SE));
+    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SE, SO) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SE, SO));
+    System.out.println("intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SO, NO) : "+ intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SO, NO));
+
+    return pointInRectangle(NO, NE, SE, SO, mainBall.getPosition())
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NO, NE)
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), NE, SE)
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SE, SO)
+            || intersectCercle(mainBall.getPosition(), mainBall.getRayon(), SO, NO);
+  }
+
+  private double crossproduct(Position p, Position q, Position s, Position t){
+    return (((q.x-p.x)*(t.y-s.y))-((q.y-p.y)*(t.x-s.x)));
+  }
+
+  public double dotProd(Position p, Position q, Position s, Position t){
+    return ((q.x-p.x)*(t.x-s.x)+(q.y-p.y)*(t.y-s.y));
+  }
+
+  /**
+   * Soit AB une droite et C quelconque
+   */
+  public static Position getPerpendicular(Position A, Position B, Position C){
+    double vx = B.x-A.x; //x du vecteur AB
+    double vy = B.y-A.y; //y du vecteur AB
+    double ab2 = vx*vx + vy*vy; //norme au carré de AB
+    double u = ((C.x - A.x) * vx + (C.y - A.y) * vy) / (ab2);
+    return new Position ((int)Math.round(A.x + u * vx), (int)Math.round(A.y + u * vy)); //D appartient à AB
+  }
+
+  public boolean intersectCercle(Position centreCercle, double rayonCercle, Position A, Position B ){
+    Position intersectPoint = getPerpendicular(A, B, centreCercle);
+    if (0 <= dotProd(A, B, A, intersectPoint) && dotProd(A, B, A, intersectPoint) <= dotProd(A, B, A, B)){
+      if (centreCercle.distance(intersectPoint) <= rayonCercle){
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Soit ABCD les points du rectangle et P le centre du cercle et rayon le rayon du cercle
+   */
+  private boolean pointInRectangle(Position A, Position B, Position C, Position D, Position P){
+    // 0 ≤ AP·AB ≤ AB·AB and 0 ≤ AP·AD ≤ AD·AD
+    double firstCP = dotProd(A, P, A, B);
+    double firstComp = dotProd(A, B, A, B);
+
+    double secondCP = dotProd(A, P, A, D);
+    double secondComp = dotProd(A, D, A, D);
+
+    return (0 <= firstCP && firstCP <= firstComp) && (0 <= secondCP && secondCP <= secondComp);
+
   }
 }
