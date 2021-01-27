@@ -5,10 +5,10 @@
  * $Id: userInterface/Viewer.java 2015-03-11 buixuan.
  * ******************************************************/
 package userInterface;
-
+import data.Palette;
 import javafx.scene.shape.Line;
 import tools.HardCodedParameters;
-
+import tools.Position;
 import specifications.ViewerService;
 import specifications.ReadService;
 import specifications.RequireReadService;
@@ -27,7 +27,7 @@ import javafx.geometry.Rectangle2D;
 
 import java.util.ArrayList;
 
-public class Viewer implements ViewerService, RequireReadService{
+public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
@@ -37,9 +37,12 @@ public class Viewer implements ViewerService, RequireReadService{
 
   private Circle mainBallAvatar;
   private double direction;
-
-
   private ReadService data;
+  private ImageView paletteView;
+  private Image paletteSpriteSheet;
+  private ArrayList<Rectangle2D> heroesAvatarViewports;
+  private Rectangle paletteBlue, paletteRed;
+
 
   public Viewer(){}
   
@@ -57,10 +60,18 @@ public class Viewer implements ViewerService, RequireReadService{
     mainBallAvatar.setEffect(new Lighting());
     mainBallAvatar.setTranslateX(data.getMainBall().getPosition().x);
     mainBallAvatar.setTranslateY(data.getMainBall().getPosition().y);
+
   }
 
   @Override
   public Parent getPanel(){
+    Palette blue = data.getBlue();
+    paletteBlue = new Rectangle(blue.getPosition().x, blue.getPosition().y, blue.getHeight(), blue.getWidth());
+    paletteBlue.setFill(javafx.scene.paint.Color.BLUE);
+
+    Palette red = data.getRed();
+    paletteRed = new Rectangle(red.getPosition().x, red.getPosition().y, red.getHeight(), red.getWidth());
+    paletteRed.setFill(javafx.scene.paint.Color.RED);
 
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
     Rectangle leftSurface = new Rectangle(-1,HardCodedParameters.defaultHeight/4,
@@ -76,7 +87,9 @@ public class Viewer implements ViewerService, RequireReadService{
             ,HardCodedParameters.defaultHeight/4);
     middleCircle.setStroke(Color.WHITE);
     Group panel = new Group();
-    panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface, mainBallAvatar);
+
+    panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface, mainBallAvatar, paletteBlue, paletteRed);
+
     return panel;
   }
 

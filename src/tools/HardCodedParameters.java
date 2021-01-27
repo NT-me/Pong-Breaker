@@ -9,6 +9,7 @@ package tools;
 public class HardCodedParameters {
   //---HARD-CODED-PARAMETERS---//
   public static String defaultParamFileName = "in.parameters";
+  public static double paletteStep = 10;
   public static final int defaultWidth = 1280, defaultHeight = 720;
 
   public static final int enginePaceMillis = 100,

@@ -6,21 +6,23 @@ public class GraphicObject {
     private Position position;
     private boolean displayed;
     private String sprite;
-    private String hitbox;
 
-    public GraphicObject(Position position, boolean displayed, String sprite, String hitbox) {
+
+    public GraphicObject(Position position, boolean displayed, String sprite) {
         this.position = position;
         this.displayed = displayed;
         this.sprite = sprite;
-        this.hitbox = hitbox;
+
     }
 
     public GraphicObject(Position position) {
         this.position = position;
     }
 
+
     public GraphicObject() {
     }
+
 
     public Position getPosition() {
         return position;
@@ -46,11 +48,5 @@ public class GraphicObject {
         this.sprite = sprite;
     }
 
-    public String getHitbox() {
-        return hitbox;
-    }
-
-    public void setHitbox(String hitbox) {
-        this.hitbox = hitbox;
-    }
 }
+
