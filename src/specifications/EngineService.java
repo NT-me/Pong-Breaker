@@ -6,6 +6,7 @@
  * ******************************************************/
 package specifications;
 
+import data.Ball;
 import tools.User;
 
 public interface EngineService{
@@ -14,5 +15,5 @@ public interface EngineService{
   public void stop();
   public void setPlayerCommand(User.COMMAND c);
   public void releasePlayerCommand(User.COMMAND c);
-  public void createBrick(User.COMMAND create);
+  public void createBrick(Ball b);
 }

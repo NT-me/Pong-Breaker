@@ -21,14 +21,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Engine implements EngineService, RequireDataService{
-  private static final double friction=HardCodedParameters.friction;
   private Timer engineClock;
   private DataService data;
   private User.COMMAND command;
   private boolean moveLeft,moveRight,moveUp,moveDown;
   private boolean RmoveLeft,RmoveRight,RmoveUp,RmoveDown;
+  private boolean creaBallToBrick;
   private double blueVX,blueVY,redVX,redVY;
   private double ballVX,ballVY;
+  private double creaVX,creaVY;
 
   public Engine(){}
 
@@ -45,12 +46,18 @@ public class Engine implements EngineService, RequireDataService{
     moveUp = false;
     moveDown = false;
     command = User.COMMAND.NONE;
+
     blueVX = 0;
     blueVY = 0;
+
     redVX = 0;
     redVY = 0;
+
     ballVX = 0;
     ballVY = 0;
+
+    creaVX = 0;
+    creaVY = 0;
   }
 
   @Override
@@ -62,12 +69,12 @@ public class Engine implements EngineService, RequireDataService{
         updatePositionPalette();
         updateSpeedBall();
         updatePositionBall();
+        updateCreaBallState();
         if (collisionPaletteMainBall(data.getBlue())){
           ballVX = blueVX;
           ballVY = blueVY;
           blueVX = 0;
           blueVY = 0;
-
         }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX;
@@ -96,6 +103,8 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RRIGHT) RmoveRight=true;
     if (c==User.COMMAND.RUP) RmoveUp=true;
     if (c==User.COMMAND.RDOWN) RmoveDown=true;
+
+    if (c==User.COMMAND.CREATE) creaBallToBrick=true;
   }
 
   @Override
@@ -109,14 +118,12 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RRIGHT) RmoveRight=false;
     if (c==User.COMMAND.RUP) RmoveUp=false;
     if (c==User.COMMAND.RDOWN) RmoveDown=false;
+
+    if (c==User.COMMAND.CREATE) creaBallToBrick=false;
   }
 
-  public void createBrickBlue(User.COMMAND create) {
-    createBrick();
-  }
-
-  public void createBrickRed(User.COMMAND create) {
-    createBrick();
+  private void updateCreaBallState(){
+    createBrick(data.getCreaBall());
   }
 
   private void updateSpeedPalette(){
@@ -171,7 +178,7 @@ public class Engine implements EngineService, RequireDataService{
     return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
   }
 
-  public void createBrickBlue(Ball b) {
+  public void createBrick(Ball b) {
     int x = (int) (b.getPosition().x - 320) / 80;// position exploitable sur les x
     int y = (int) (b.getPosition().y / 90);//position exploitable sur les y
 
