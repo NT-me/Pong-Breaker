@@ -37,7 +37,7 @@ public class Data implements DataService{
     Position posRed = new Position(HardCodedParameters.defaultWidth-(paletteHeight*4),(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
     this.red = new Palette(posRed, (double)0, dir0, paletteWidth, paletteHeight, "Red", 15, 10);
     position = new Position(0,0);
-    mainBall = new Ball(new Position(200,200), 0, direction, 10, "j1");
+    mainBall = new Ball(new Position(200,200), 1, direction, 10, "j1");
   }
 
   @Override
@@ -68,7 +68,7 @@ public class Data implements DataService{
   public double getRayon(){return mainBall.getRayon();}
 
   @Override
-  public Position getPosition(){return mainBall.getPosition();}
+  public Position getMainBallPosition(){return mainBall.getPosition();}
 
   @Override
   public double getSpeed(){return mainBall.getSpeed();}
@@ -101,7 +101,9 @@ public class Data implements DataService{
   public void setRayon(double n){ mainBall.setRayon(n);}
 
   @Override
-  public void setPosition(Position p){mainBall.setPosition(p);}
+  public void setMainBallPosition(Position p){
+    mainBall.setPosition(p);
+  }
 
   @Override
   public void setSpeed(double speed){mainBall.setSpeed(speed);}

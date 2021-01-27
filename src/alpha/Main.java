@@ -57,7 +57,7 @@ public class Main extends Application{
   @Override public void start(Stage stage) {
     final Scene scene = new Scene(((Viewer)viewer).getPanel());
 
-    scene.setFill(Color.CORNFLOWERBLUE);
+    scene.setFill(Color.BLACK);
 
       scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
           @Override

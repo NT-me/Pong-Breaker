@@ -7,6 +7,7 @@
 package specifications;
 
 import data.Ball;
+import data.Palette;
 import tools.Position;
 import tools.Sound;
 
@@ -15,9 +16,13 @@ import javafx.util.Pair;
 
 public interface WriteService {
     public void setStepNumber(int n);
-    public void setPosition(Position p);
+    public void setMainBallPosition(Position p);
     public void setRayon(double r);
     public void setMainBall(Ball ball);
     public void setSpeed(double speed);
-    public void setDirection(Pair<Integer,Integer> direction);
+    public void setDirection(Pair<Integer,Integer> direction); // Va servir a rien
+    public void setBlue(Palette blue);
+    public void setBluePosition(Position p);
+    public void setRed(Palette red);
+    public void setRedPosition(Position p);
 }

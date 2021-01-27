@@ -5,9 +5,11 @@
  * $Id: userInterface/Viewer.java 2015-03-11 buixuan.
  * ******************************************************/
 package userInterface;
+import data.Ball;
 import data.Brick;
 import data.Player;
 import data.Palette;
+import javafx.scene.Node;
 import javafx.scene.shape.Line;
 import tools.HardCodedParameters;
 import tools.Position;
@@ -46,6 +48,7 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   private Image paletteSpriteSheet;
   private ArrayList<Rectangle2D> heroesAvatarViewports;
   private Rectangle paletteBlue, paletteRed;
+  private ArrayList<Object> playground;
 
 
   public Viewer(){}
@@ -57,44 +60,33 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
 
   @Override
   public void init(){
-
-    direction = Math.random();
-
-    mainBallAvatar = new Circle(20,Color.rgb(0,156,156));
-    mainBallAvatar.setEffect(new Lighting());
-    mainBallAvatar.setTranslateX(data.getMainBall().getPosition().x);
-    mainBallAvatar.setTranslateY(data.getMainBall().getPosition().y);
-
+    playground = factory.createPlayGround();
   }
 
   @Override
   public Parent getPanel(){
+    direction = Math.random();
+
+    Ball mainBall = data.getMainBall();
+    mainBallAvatar = new Circle(mainBall.getPosition().x,mainBall.getPosition().y, mainBall.getRayon(),Color.rgb(0,156,156));
+    mainBallAvatar.setEffect(new Lighting());
+
+
     Palette blue = data.getBlue();
-    paletteBlue = new Rectangle(blue.getPosition().x, blue.getPosition().y, blue.getHeight(), blue.getWidth());
+    paletteBlue = factory.createPalette(blue);
     paletteBlue.setFill(javafx.scene.paint.Color.BLUE);
 
     Palette red = data.getRed();
-    paletteRed = new Rectangle(red.getPosition().x, red.getPosition().y, red.getHeight(), red.getWidth());
+    paletteRed = factory.createPalette(red);
     paletteRed.setFill(javafx.scene.paint.Color.RED);
 
-    Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
-    Rectangle leftSurface = new Rectangle(-1,HardCodedParameters.defaultHeight/4,
-            HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
-    leftSurface.setStroke(Color.WHITE);
-    Rectangle rightSurface = new Rectangle((HardCodedParameters.defaultWidth/8)*7,HardCodedParameters.defaultHeight/4,
-            HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
-    rightSurface.setStroke(Color.WHITE);
-    Line middleLine = new Line(HardCodedParameters.defaultWidth/2,0,
-            HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight);
-    middleLine.setStroke(Color.WHITE);
-    Circle middleCircle = new Circle(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2
-            ,HardCodedParameters.defaultHeight/4);
-    middleCircle.setStroke(Color.WHITE);
     Group panel = new Group();
-    panel.getChildren().add(map);
-    panel.getChildren().add(factory.createBrick(new Point(500,400)));
 
-    panel.getChildren().addAll(map,middleCircle,middleLine,leftSurface,rightSurface, mainBallAvatar, paletteBlue, paletteRed);
+    for (int i = 0; i < playground.size();++i){
+      panel.getChildren().add((Node) playground.get(i));
+    }
+
+    panel.getChildren().addAll(mainBallAvatar, paletteBlue, paletteRed,factory.createBrick(new Point(500,400)));
     return panel;
   }
 

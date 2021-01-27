@@ -6,6 +6,8 @@
  * ******************************************************/
 package engine;
 
+import data.Ball;
+import data.Palette;
 import tools.HardCodedParameters;
 import tools.User;
 import tools.Position;
@@ -40,7 +42,6 @@ public class Engine implements EngineService, RequireDataService{
   
   @Override
   public void init(){
-
     engineClock = new Timer();
     moveLeft = false;
     moveRight = false;
@@ -64,6 +65,19 @@ public class Engine implements EngineService, RequireDataService{
         updatePositionPalette();
         updateSpeedBall();
         updatePositionBall();
+        if (collisionPaletteMainBall(data.getBlue())){
+          ballVX = blueVX;
+          ballVY = blueVY;
+          blueVX = 0;
+          blueVY = 0;
+
+        }
+        if (collisionPaletteMainBall(data.getRed())){
+          ballVX = redVX;
+          ballVY = redVY;
+          redVX = 0;
+          redVY = 0;
+        }
         data.setStepNumber(data.getStepNumber()+1);
       }
     },0,HardCodedParameters.enginePaceMillis);
@@ -128,11 +142,27 @@ public class Engine implements EngineService, RequireDataService{
   private void updateSpeedBall(){
     ballVX*=data.getSpeed();
     ballVY*=data.getSpeed();
+
   }
 
   private void updatePositionBall(){
-    
-    data.setPosition(new Position(data.getPosition().x+ballVY,data.getPosition().y+ballVY));
+    data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
     //if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
+  }
+
+  private boolean collisionPaletteMainBall(Palette pal){
+    Ball mainBall = data.getMainBall();
+    double circleDistanceX = Math.abs(mainBall.getPosition().x-pal.getPosition().x);
+    double circleDistanceY = Math.abs(mainBall.getPosition().y-pal.getPosition().y);
+
+    if (circleDistanceX > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
+    if (circleDistanceX > (pal.getHeight()/2 + mainBall.getRayon())) { return false; }
+
+    if (circleDistanceX <= (pal.getWidth()/2)) { return true; }
+    if (circleDistanceY <= (pal.getHeight()/2)) { return true; }
+
+    double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
+
+    return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
   }
 }
