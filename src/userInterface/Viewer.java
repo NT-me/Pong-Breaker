@@ -5,6 +5,8 @@
  * $Id: userInterface/Viewer.java 2015-03-11 buixuan.
  * ******************************************************/
 package userInterface;
+
+import data.Wall;
 import data.Ball;
 import data.Brick;
 import data.Player;
@@ -88,6 +90,8 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
 
     panel.getChildren().addAll(mainBallAvatar, paletteBlue, paletteRed,factory.createBrick(new Point(500,400)));
     return panel;
+
+
   }
 
   @Override
@@ -99,4 +103,10 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   public void setMainWindowHeight(double height){
     yShrink=height/defaultMainHeight;
   }
+
+
+
+
+
+
 }
