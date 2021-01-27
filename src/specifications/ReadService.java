@@ -10,6 +10,9 @@ import data.Brick;
 import data.Create;
 import data.Palette;
 import data.Ball;
+import data.Wall;
+import data.Goal;
+
 import tools.Position;
 import tools.Sound;
 import javafx.util.Pair;
@@ -34,5 +37,8 @@ public interface ReadService {
     public Create getCreaBall();
     public void setCreaBall(Create creaBall);
 
-
+    public Wall getNorth();
+    public Wall getSouth();
+    public Goal getEast();
+    public Goal getWest();
 }

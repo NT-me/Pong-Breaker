@@ -9,6 +9,15 @@ package engine;
 import data.Ball;
 import data.Brick;
 import data.Palette;
+import data.Wall;
+import data.Goal;
+
+import tools.HardCodedParameters;
+import tools.User;
+import tools.Position;
+import tools.Sound;
+
+import specifications.EngineService;
 import data.Player;
 import specifications.DataService;
 import specifications.EngineService;
@@ -16,6 +25,8 @@ import specifications.RequireDataService;
 import tools.HardCodedParameters;
 import tools.Position;
 import tools.User;
+
+import javafx.util.Pair;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -75,12 +86,23 @@ public class Engine implements EngineService, RequireDataService{
           ballVY = blueVY;
           blueVX = 0;
           blueVY = 0;
+          data.getMainBall().setPlayer("j1");
+
         }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX;
           ballVY = redVY;
           redVX = 0;
           redVY = 0;
+          data.getMainBall().setPlayer("j2");
+        }
+        if (collisionWallMainBall()){
+          data.setMainBallPosition(new Position(data.getMainBallPosition().x,data.getMainBallPosition().y-ballVY));
+          //data.getMainBall().setDirection(new Pair<Integer,Integer>(data.getMainBall().getDirection().getKey(),data.getMainBall().getDirection().getValue()*0));
+        }
+        if (collisionGoalMainBall()){
+          System.out.println(data.getMainBall().getPlayer() + " a marqué");
+          data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
         }
         data.setStepNumber(data.getStepNumber()+1);
       }
@@ -147,8 +169,26 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updatePositionPalette(){
-    data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
-    data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+    if (data.getNorth().getPosition().y <= data.getBluePosition().y){
+      if (data.getSouth().getPosition().y >= data.getBluePosition().y)
+        data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
+      else
+        data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y-10));
+    }
+    else
+      data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y+10));
+
+
+    if (data.getNorth().getPosition().y <= data.getRedPosition().y){
+      if (data.getSouth().getPosition().y >= data.getRedPosition().y)
+        data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
+      else
+        data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y-10));
+    }
+    else
+      data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y+10));
+
+
   }
 
   private void updateSpeedBall(){
@@ -167,17 +207,54 @@ public class Engine implements EngineService, RequireDataService{
     double circleDistanceX = Math.abs(mainBall.getPosition().x-pal.getPosition().x);
     double circleDistanceY = Math.abs(mainBall.getPosition().y-pal.getPosition().y);
 
-    if (circleDistanceX > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
     if (circleDistanceX > (pal.getHeight()/2 + mainBall.getRayon())) { return false; }
+    if (circleDistanceY > (pal.getWidth()/2 + mainBall.getRayon())) { return false; }
 
-    if (circleDistanceX <= (pal.getWidth()/2)) { return true; }
-    if (circleDistanceY <= (pal.getHeight()/2)) { return true; }
+    if (circleDistanceX <= (pal.getHeight()/2)) { return true; }
+    if (circleDistanceY <= (pal.getWidth()/2)) { return true; }
 
     double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
 
     return (cornerDistance_sq <= (mainBall.getRayon())*(mainBall.getRayon()));
   }
 
+  private boolean collisionWallMainBall(){
+    Ball mainBall = data.getMainBall();
+    Wall north = data.getNorth();
+    Wall south = data.getSouth();
+    double circleDistanceNorth = Math.abs(mainBall.getPosition().y-north.getPosition().y);
+    double circleDistanceSouth = Math.abs(south.getPosition().y-mainBall.getPosition().y);
+
+    if (circleDistanceNorth > (0 + mainBall.getRayon())) {
+      if (circleDistanceSouth > (0 + mainBall.getRayon())){
+        return false;
+      }
+      else
+        return true;
+    }
+    else
+      return true;
+  }
+
+
+  private boolean collisionGoalMainBall(){
+    Ball mainBall = data.getMainBall();
+    Goal goalBlue = data.getWest();
+    Goal goalRed = data.getEast();
+    double circleDistanceBlue = Math.abs(mainBall.getPosition().x-goalBlue.getPosition().x);
+    double circleDistanceRed = Math.abs(goalRed.getPosition().x-mainBall.getPosition().x);
+
+    if (circleDistanceBlue > (0 + mainBall.getRayon())) {
+      if (circleDistanceRed > (0 + mainBall.getRayon())){
+        return false;
+      }
+      else
+        return true;
+    }
+    else
+      return true;
+  }
+    
   public void createBrick(Ball b) {
     int x = (int) (b.getPosition().x - 320) / 80;// position exploitable sur les x
     int y = (int) (b.getPosition().y / 90);//position exploitable sur les y
@@ -196,5 +273,6 @@ public class Engine implements EngineService, RequireDataService{
       brick.setPosition(new Position(640+(x*80),y*90));
       data.getBricks().add(brick);
     }
+
   }
 }

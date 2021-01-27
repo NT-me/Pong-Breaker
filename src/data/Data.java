@@ -21,7 +21,6 @@ public class Data implements DataService{
 
   public Data(){  }
   private int stepNumber;
-  private double rayon;
   private Position position;
   private Ball mainBall;
   private Pair<Integer,Integer> direction;
@@ -48,8 +47,29 @@ public class Data implements DataService{
     this.bricks = bricks;
   }
 
+  private Position NO;
+  private Position NE;
+  private Position SO;
+  private Position SE;
+
+  private Wall north;
+  private Wall south;
+  private Goal east;
+  private Goal west;
+
+
   @Override
   public void init(){
+    NO = new Position(0,0);
+    NE = new Position(HardCodedParameters.defaultWidth,0);
+    SO = new Position(0,HardCodedParameters.defaultHeight);
+    SE = new Position(HardCodedParameters.defaultWidth,HardCodedParameters.defaultHeight);
+
+    north = new Wall(NO, NE, true, "");
+    south = new Wall(SO, SE, true, "");
+    west = new Goal(NO, SO, true, "", "j1");
+    east = new Goal(NE, SE, true, "", "j2");
+
     matrice = new int[4][8];
     bricks = new ArrayList<>();
     direction = new Pair<Integer,Integer>(0,0);
@@ -99,6 +119,18 @@ public class Data implements DataService{
   }
 
   @Override
+  public Wall getNorth(){ return north; }
+
+  @Override
+  public Wall getSouth(){ return south; }
+
+  @Override
+  public Goal getEast(){ return east; }
+
+  @Override
+  public Goal getWest(){ return west; }
+
+  @Override
   public int getStepNumber(){ return stepNumber; }
 
   @Override
@@ -118,7 +150,10 @@ public class Data implements DataService{
 
   @Override
   public void setBluePosition(Position p){
-    this.blue.setPosition(p);
+    if(p.x <= HardCodedParameters.defaultWidth/6)
+      if(p.x >= west.getPosition().x)
+        this.blue.setPosition(p);
+
   }
 
   @Override
@@ -128,7 +163,9 @@ public class Data implements DataService{
 
   @Override
   public void setRedPosition(Position p){
-    this.red.setPosition(p);
+    if(p.x >= 5*HardCodedParameters.defaultWidth/6)
+      if(p.x <= east.getPosition().x-5)
+        this.red.setPosition(p);
   }
 
   @Override
