@@ -6,33 +6,25 @@
  * ******************************************************/
 package alpha;
 
-import tools.HardCodedParameters;
-import tools.User;
-import tools.Sound;
-
-import specifications.DataService;
-import specifications.EngineService;
-import specifications.ViewerService;
-
 import data.Data;
 import engine.Engine;
-import userInterface.Viewer;
-//import algorithm.RandomWalker;
-
-import javafx.application.Application;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import javafx.event.EventHandler;
 import javafx.animation.AnimationTimer;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import specifications.DataService;
+import specifications.EngineService;
+import specifications.ViewerService;
+import tools.HardCodedParameters;
+import tools.User;
+import userInterface.Viewer;
 
 public class Main extends Application{
   //---HARD-CODED-PARAMETERS---//
@@ -67,6 +59,37 @@ public class Main extends Application{
 
     scene.setFill(Color.CORNFLOWERBLUE);
 
+      scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+          @Override
+          public void handle(KeyEvent event) {
+              if (event.getCode()==KeyCode.Q) engine.setPlayerCommand(User.COMMAND.LEFT);
+              if (event.getCode()==KeyCode.D) engine.setPlayerCommand(User.COMMAND.RIGHT);
+              if (event.getCode()==KeyCode.Z) engine.setPlayerCommand(User.COMMAND.UP);
+              if (event.getCode()==KeyCode.S) engine.setPlayerCommand(User.COMMAND.DOWN);
+
+              if (event.getCode()==KeyCode.LEFT) engine.setPlayerCommand(User.COMMAND.RLEFT);
+              if (event.getCode()==KeyCode.RIGHT) engine.setPlayerCommand(User.COMMAND.RRIGHT);
+              if (event.getCode()==KeyCode.UP) engine.setPlayerCommand(User.COMMAND.RUP);
+              if (event.getCode()==KeyCode.DOWN) engine.setPlayerCommand(User.COMMAND.RDOWN);
+              event.consume();
+          }
+      });
+      scene.setOnKeyReleased(new EventHandler<KeyEvent>(){
+          @Override
+          public void handle(KeyEvent event) {
+              if (event.getCode()==KeyCode.Q) engine.releasePlayerCommand(User.COMMAND.LEFT);
+              if (event.getCode()==KeyCode.D) engine.releasePlayerCommand(User.COMMAND.RIGHT);
+              if (event.getCode()==KeyCode.Z) engine.releasePlayerCommand(User.COMMAND.UP);
+              if (event.getCode()==KeyCode.S) engine.releasePlayerCommand(User.COMMAND.DOWN);
+
+              if (event.getCode()==KeyCode.LEFT) engine.releasePlayerCommand(User.COMMAND.RLEFT);
+              if (event.getCode()==KeyCode.RIGHT) engine.releasePlayerCommand(User.COMMAND.RRIGHT);
+              if (event.getCode()==KeyCode.UP) engine.releasePlayerCommand(User.COMMAND.RUP);
+              if (event.getCode()==KeyCode.DOWN) engine.releasePlayerCommand(User.COMMAND.RDOWN);
+              event.consume();
+          }
+      });
+
     scene.widthProperty().addListener(new ChangeListener<Number>() {
         @Override public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
           viewer.setMainWindowWidth(newSceneWidth.doubleValue());
@@ -81,6 +104,7 @@ public class Main extends Application{
     stage.setScene(scene);
     stage.setWidth(HardCodedParameters.defaultWidth);
     stage.setHeight(HardCodedParameters.defaultHeight);
+    stage.setTitle("/!\\|°  Pong Breaker |/!\\");
     stage.setOnShown(new EventHandler<WindowEvent>() {
       @Override public void handle(WindowEvent event) {
         engine.start();
@@ -92,6 +116,13 @@ public class Main extends Application{
       }
     });
     stage.show();
+
+      timer = new AnimationTimer() {
+          @Override public void handle(long l) {
+              scene.setRoot(((Viewer)viewer).getPanel());
+          }
+      };
+      timer.start();
 
   }
 

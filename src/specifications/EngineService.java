@@ -12,4 +12,6 @@ public interface EngineService{
   public void init();
   public void start();
   public void stop();
+  public void setPlayerCommand(User.COMMAND c);
+  public void releasePlayerCommand(User.COMMAND c);
 }
