@@ -34,11 +34,14 @@ public interface ReadService {
     public void setMatrice(int x,int y, int val) ;
     public ArrayList<Brick> getBricks() ;
     public void setBricks(ArrayList<Brick> bricks);
-    public Create getCreaBall();
-    public void setCreaBall(Create creaBall);
+    public Create getBcreaBall();
+    public void setBcreaBall(Create bcreaBall);
 
     public Wall getNorth();
     public Wall getSouth();
     public Goal getEast();
     public Goal getWest();
+
+    public Create getRcreaBall();
+    public void setRcreaBall(Create bcreaBall);
 }

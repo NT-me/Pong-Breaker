@@ -17,9 +17,12 @@ public class Data implements DataService{
   private Palette blue;
   private Palette red;
   private int[][] matrice;
-  private Create creaBall;
+  private Create BcreaBall;
+  private Create RcreaBall;
 
-  public Data(){  }
+  public Data(){
+
+  }
   private int stepNumber;
   private Position position;
   private Ball mainBall;
@@ -84,17 +87,26 @@ public class Data implements DataService{
     this.red = new Palette(posRed, (double)0, dir0, paletteWidth, paletteHeight, Player.RED, 15, 10);
     position = new Position(0,0);
     mainBall = new Ball(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2), 1, direction, 10, Player.BLUE);
-    creaBall = new Create(new Position(200,100), 1, direction, 15, Player.NONE);
   }
 
   @Override
-  public Create getCreaBall() {
-    return creaBall;
+  public Create getBcreaBall() {
+    return BcreaBall;
   }
 
   @Override
-  public void setCreaBall(Create creaBall) {
-    this.creaBall = creaBall;
+  public void setBcreaBall(Create bcreaBall) {
+    this.BcreaBall = bcreaBall;
+  }
+
+  @Override
+  public Create getRcreaBall() {
+    return RcreaBall;
+  }
+
+  @Override
+  public void setRcreaBall(Create rcreaBall) {
+    this.RcreaBall = rcreaBall;
   }
 
   @Override
