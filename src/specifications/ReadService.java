@@ -26,6 +26,8 @@ public interface ReadService {
     public Position getBluePosition();
     public Palette getRed();
     public Position getRedPosition();
+    public double getBlueWidth();
+    public double getRedWidth();
     public double getRayon();
     public Ball getMainBall();
     public double getSpeed();
