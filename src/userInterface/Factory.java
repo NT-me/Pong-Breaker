@@ -1,6 +1,9 @@
 package userInterface;
+import data.Ball;
+import data.Create;
 import data.Palette;
 import data.Player;
+import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -36,12 +39,19 @@ public class Factory {
         return field;
     }
 
-    public Rectangle createPalette(Palette pal){
-        return new Rectangle(
+    public Rectangle createAvatarPalette(Palette pal){
+        Rectangle palette = new Rectangle(
                 pal.getPosition().x,
                 pal.getPosition().y,
                 pal.getHeight(),
                 pal.getWidth());
+        if(pal.getPlayer() == Player.BLUE){
+            palette.setFill(javafx.scene.paint.Color.BLUE);
+        }
+        else{
+            palette.setFill(javafx.scene.paint.Color.RED);
+        }
+        return palette;
     }
 
     public Rectangle createBrick(Point p, Player s){
@@ -56,5 +66,20 @@ public class Factory {
             brique.setFill(Color.BLUE);
         }
         return brique;
+    }
+
+    public Circle createAvatarBall(Ball b){
+        if(b instanceof Create){
+            Create createBall = (Create) b;
+            Circle createBallAvatar = new Circle(createBall.getPosition().x,createBall.getPosition().y,createBall.getRayon(),Color.DARKGRAY);
+            createBallAvatar.setEffect(new Lighting());
+            return createBallAvatar;
+        }
+        if(b instanceof Ball){
+            Circle mainBallAvatar = new Circle(b.getPosition().x, b.getPosition().y, b.getRayon(),Color.rgb(0,156,156));
+            mainBallAvatar.setEffect(new Lighting());
+            return mainBallAvatar;
+        }
+        return null;
     }
 }

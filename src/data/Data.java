@@ -108,6 +108,11 @@ public class Data implements DataService{
   public Position getMainBallPosition(){return mainBall.getPosition();}
 
   @Override
+  public Position getCreateBallPosition() {
+    return creaBall.getPosition();
+  }
+
+  @Override
   public double getSpeed(){return mainBall.getSpeed();}
 
   @Override
@@ -140,6 +145,11 @@ public class Data implements DataService{
   @Override
   public void setMainBallPosition(Position p){
     mainBall.setPosition(p);
+  }
+
+  @Override
+  public void setCreateBallPosition(Position p) {
+
   }
 
   @Override

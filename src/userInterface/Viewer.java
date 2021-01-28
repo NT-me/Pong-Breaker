@@ -6,16 +6,12 @@
  * ******************************************************/
 package userInterface;
 
-import data.Ball;
-import data.Palette;
 import data.Player;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -28,14 +24,13 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Viewer<rectangle> implements ViewerService, RequireReadService{
-  private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
   private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
                               defaultMainHeight=HardCodedParameters.defaultHeight;
 
   private static double xShrink;
   private static double yShrink;
 
-  private Circle mainBallAvatar;
+  private Circle mainBallAvatar, creaBallAvatar;
   private double direction;
   private ReadService data;
   private Factory factory = new Factory();
@@ -63,18 +58,11 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   public Parent getPanel(){
     direction = Math.random();
 
-    Ball mainBall = data.getMainBall();
-    mainBallAvatar = new Circle(mainBall.getPosition().x,mainBall.getPosition().y, mainBall.getRayon(),Color.rgb(0,156,156));
-    mainBallAvatar.setEffect(new Lighting());
+    creaBallAvatar = factory.createAvatarBall(data.getCreaBall());
+    mainBallAvatar = factory.createAvatarBall(data.getMainBall());
 
-
-    Palette blue = data.getBlue();
-    paletteBlue = factory.createPalette(blue);
-    paletteBlue.setFill(javafx.scene.paint.Color.BLUE);
-
-    Palette red = data.getRed();
-    paletteRed = factory.createPalette(red);
-    paletteRed.setFill(javafx.scene.paint.Color.RED);
+    paletteBlue = factory.createAvatarPalette(data.getBlue());
+    paletteRed = factory.createAvatarPalette(data.getRed());
 
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
     ArrayList<Shape> field = factory.createField();
@@ -83,7 +71,7 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
     panel.getChildren().add(map);
     panel.getChildren().addAll(field);
     panel.getChildren().add(factory.createBrick(new Point(500,400),Player.BLUE));
-    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue);
+    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue,creaBallAvatar);
     return panel;
   }
 

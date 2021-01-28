@@ -1,5 +1,6 @@
 package data;
 
+import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 import tools.Position;
 
@@ -11,4 +12,11 @@ public class Create extends Ball{
         active = false;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
