@@ -90,8 +90,8 @@ public class Engine implements EngineService, RequireDataService{
         if (collisionPaletteMainBall(data.getBlue())){
           ballVX = blueVX+10;
           ballVY = blueVY;
-          if (data.getSpeed() <= 1.5){
-            data.setSpeed(data.getSpeed()*1.1);
+          if (data.getSpeed() <= 1.3){
+            data.setSpeed(data.getSpeed()*1.08);
           }
           blueVX = 0;
           blueVY = 0;
@@ -100,19 +100,26 @@ public class Engine implements EngineService, RequireDataService{
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX-10;
           ballVY = redVY;
-          if (data.getSpeed() <= 1.5){
-            data.setSpeed(data.getSpeed()*1.1);
+          if (data.getSpeed() <= 1.3){
+            data.setSpeed(data.getSpeed()*1.08);
           }
           redVX = 0;
           redVY = 0;
           data.getMainBall().setPlayer(Player.RED);
         }
         if (collisionWallMainBall()){
-          data.setMainBallPosition(new Position(data.getMainBallPosition().x,data.getMainBallPosition().y-ballVY));
-          //data.getMainBall().setDirection(new Pair<Integer,Integer>(data.getMainBall().getDirection().getKey(),data.getMainBall().getDirection().getValue()*0));
+            ballVY = -ballVY;
         }
         if (collisionGoalMainBall()){
           System.out.println(data.getMainBall().getPlayer() + " a marqué");
+          ballVY = 0;
+          int chooseSide = new Random().nextInt(2);
+          if (chooseSide == 0){
+            ballVX = HardCodedParameters.paletteHeight-0.1;
+          }
+          else if (chooseSide == 1){
+            ballVX = -(HardCodedParameters.paletteHeight-0.1);
+          }
           data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
         }
         data.setStepNumber(data.getStepNumber()+1);
@@ -181,22 +188,32 @@ public class Engine implements EngineService, RequireDataService{
 
   private void updatePositionPalette(){
     if (data.getNorth().getPosition().y <= data.getBluePosition().y){
-      if (data.getSouth().getPosition().y >= data.getBluePosition().y)
-         if (data.getBluePosition().x+blueVX <= HardCodedParameters.defaultWidth/6){
-      data.setBluePosition(new Position(data.getBluePosition().x+blueVX,data.getBluePosition().y+blueVY));
-    }
+      if (data.getSouth().getPosition().y >= data.getBluePosition().y) {
+        if (data.getBluePosition().x + blueVX <= HardCodedParameters.defaultWidth / 6) {
+          if (data.getBluePosition().x + blueVX >= data.getWest().getPosition().x)
+            data.setBluePosition(new Position(data.getBluePosition().x + blueVX, data.getBluePosition().y + blueVY));
+          else
+            data.setBluePosition(new Position(data.getBluePosition().x + 10, data.getBluePosition().y));
+        }
+        else
+            data.setBluePosition(new Position(data.getBluePosition().x - 10, data.getBluePosition().y));
+        }
       else
         data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y-10));
-    }
+      }
     else
       data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y+10));
-
 
     if (data.getNorth().getPosition().y <= data.getRedPosition().y){
       if (data.getSouth().getPosition().y >= data.getRedPosition().y)
          if (data.getRedPosition().x+redVX >= 5*(HardCodedParameters.defaultWidth/6)){
-      data.setRedPosition(new Position(data.getRedPosition().x+redVX,data.getRedPosition().y+redVY));
-    }
+           if (data.getRedPosition().x + redVX <= data.getEast().getPosition().x)
+              data.setRedPosition(new Position(data.getRedPosition().x + redVX, data.getRedPosition().y + redVY));
+           else
+              data.setRedPosition(new Position(data.getRedPosition().x - 10, data.getRedPosition().y));
+         }
+         else
+           data.setRedPosition(new Position(data.getRedPosition().x + 10, data.getRedPosition().y));
       else
         data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y-10));
     }
@@ -220,7 +237,6 @@ public class Engine implements EngineService, RequireDataService{
     if (ballVX <= -HardCodedParameters.paletteHeight){
       ballVX = -(HardCodedParameters.paletteHeight-0.1);
     }
-    System.out.println(ballVX);
     data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
 
   }
@@ -288,11 +304,11 @@ public class Engine implements EngineService, RequireDataService{
     Ball mainBall = data.getMainBall();
     Wall north = data.getNorth();
     Wall south = data.getSouth();
-    double circleDistanceNorth = Math.abs(mainBall.getPosition().y-north.getPosition().y);
-    double circleDistanceSouth = Math.abs(south.getPosition().y-mainBall.getPosition().y);
+    double circleDistanceNorth = mainBall.getPosition().y-north.getPosition().y;
+    double circleDistanceSouth = south.getPosition().y-mainBall.getPosition().y;
 
-    if (circleDistanceNorth > (0 + mainBall.getRayon())) {
-      if (circleDistanceSouth > (0 + mainBall.getRayon())){
+    if (circleDistanceNorth > (20 + mainBall.getRayon())) {
+      if (circleDistanceSouth > (20 + mainBall.getRayon())){
         return false;
       }
       else
@@ -307,18 +323,14 @@ public class Engine implements EngineService, RequireDataService{
     Ball mainBall = data.getMainBall();
     Goal goalBlue = data.getWest();
     Goal goalRed = data.getEast();
-    double circleDistanceBlue = Math.abs(mainBall.getPosition().x-goalBlue.getPosition().x);
-    double circleDistanceRed = Math.abs(goalRed.getPosition().x-mainBall.getPosition().x);
+    double circleDistanceBlue = mainBall.getPosition().x-goalBlue.getPosition().x;
+    double circleDistanceRed = goalRed.getPosition().x-mainBall.getPosition().x;
 
-    if (circleDistanceBlue > (0 + mainBall.getRayon())) {
-      if (circleDistanceRed > (0 + mainBall.getRayon())){
-        return false;
-      }
-      else
+    if (circleDistanceBlue <= (0 + mainBall.getRayon()))
         return true;
-    }
-    else
-      return true;
+    if (circleDistanceRed <= (0 + mainBall.getRayon()))
+        return true;
+    return false;
   }
     
   public void createBrick(Ball b) {

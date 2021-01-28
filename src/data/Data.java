@@ -150,10 +150,7 @@ public class Data implements DataService{
 
   @Override
   public void setBluePosition(Position p){
-    if(p.x <= HardCodedParameters.defaultWidth/6)
-      if(p.x >= west.getPosition().x)
         this.blue.setPosition(p);
-
   }
 
   @Override
@@ -163,8 +160,6 @@ public class Data implements DataService{
 
   @Override
   public void setRedPosition(Position p){
-    if(p.x >= 5*HardCodedParameters.defaultWidth/6)
-      if(p.x <= east.getPosition().x-5)
         this.red.setPosition(p);
   }
 
