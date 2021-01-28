@@ -7,6 +7,7 @@
 package userInterface;
 
 import data.Ball;
+import data.Brick;
 import data.Palette;
 import data.Player;
 import javafx.geometry.Rectangle2D;
@@ -67,6 +68,13 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
     mainBallAvatar = new Circle(mainBall.getPosition().x,mainBall.getPosition().y, mainBall.getRayon(),Color.rgb(0,156,156));
     mainBallAvatar.setEffect(new Lighting());
 
+    Circle creaBallRed = null;
+    try{
+      creaBallRed = factory.createCreaBall(data.getRcreaBall());
+    }
+    catch(NullPointerException E){
+      creaBallRed = new Circle(-100,-100, 0, Color.rgb(0,0,0));
+    }
 
     Palette blue = data.getBlue();
     paletteBlue = factory.createPalette(blue);
@@ -79,11 +87,18 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
     Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
     ArrayList<Shape> field = factory.createField();
 
+    ArrayList<Brick> brickList = data.getBricks();
+
     Group panel = new Group();
     panel.getChildren().add(map);
     panel.getChildren().addAll(field);
-    panel.getChildren().add(factory.createBrick(new Point(500,400),Player.BLUE));
-    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue);
+
+
+    for (Brick B : brickList){
+      panel.getChildren().add(factory.createBrick(new Point((int)B.getPosition().x,(int)B.getPosition().y),B.getColor()));
+    }
+
+    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue,creaBallRed);
     return panel;
   }
 

@@ -17,6 +17,8 @@ public class User {
     RDOWN,
     NONE ,
     BLAUNCHCREATE,
-    RLAUNCHCREATE
+    RLAUNCHCREATE,
+    RCREATEBRICK,
+    BCREATEBRICK
   };
 }

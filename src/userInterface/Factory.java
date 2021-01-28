@@ -1,4 +1,5 @@
 package userInterface;
+import data.Create;
 import data.Palette;
 import data.Player;
 import javafx.scene.paint.Color;
@@ -46,15 +47,22 @@ public class Factory {
 
     public Rectangle createBrick(Point p, Player s){
         Rectangle brique = new Rectangle();
-        brique.setY(p.getY());
-        brique.setX(p.getX());
-        brique.setWidth(80);
-        brique.setHeight(120);
+        brique.setY(p.getY()+10);
+        brique.setX(p.getX()+10);
+        brique.setWidth(70);
+        brique.setHeight(80);
         if(s.toString() == "RED"){
             brique.setFill(Color.RED);
         }else{
             brique.setFill(Color.BLUE);
         }
         return brique;
+    }
+
+    public Circle createCreaBall(Create cr){
+        return new Circle(cr.getPosition().x,
+                cr.getPosition().y,
+                cr.getRayon(),
+                Color.rgb(0,255,0));
     }
 }
