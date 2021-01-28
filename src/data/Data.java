@@ -6,6 +6,7 @@
  * ******************************************************/
 package data;
 
+import javafx.geometry.Pos;
 import javafx.util.Pair;
 import specifications.DataService;
 import tools.HardCodedParameters;
@@ -175,7 +176,7 @@ public class Data implements DataService{
 
   @Override
   public void setRcreaPosition(Position p){
-      if(p.x >= west.getPosition().x)
+      if(p.x >= west.getPosition().x || (p.x == -200 && p.y == -200))
         this.RcreaBall.setPosition(p);
 
   }

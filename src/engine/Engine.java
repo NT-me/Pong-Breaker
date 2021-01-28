@@ -182,6 +182,8 @@ public class Engine implements EngineService, RequireDataService{
 
     if(RcreaBallToBrick){
       createBrick(data.getRcreaBall());
+      data.setRcreaPosition(new Position(-200,-200));
+      System.out.println(data.getRcreaBall().getPosition());
     }
 
     if(BcreaBallLaunch){
