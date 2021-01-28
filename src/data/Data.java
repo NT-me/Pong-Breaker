@@ -159,6 +159,16 @@ public class Data implements DataService{
   }
 
   @Override
+  public double getBlueWidth(){
+    return blue.getWidth();
+  }
+
+  @Override
+  public double getRedWidth(){
+    return red.getWidth();
+  }
+
+  @Override
   public void setRedPosition(Position p){
         this.red.setPosition(p);
   }

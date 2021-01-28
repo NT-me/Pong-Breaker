@@ -188,7 +188,7 @@ public class Engine implements EngineService, RequireDataService{
 
   private void updatePositionPalette(){
     if (data.getNorth().getPosition().y <= data.getBluePosition().y){
-      if (data.getSouth().getPosition().y >= data.getBluePosition().y) {
+      if (data.getSouth().getPosition().y >= data.getBluePosition().y + data.getBlueWidth()) {
         if (data.getBluePosition().x + blueVX <= HardCodedParameters.defaultWidth / 6) {
           if (data.getBluePosition().x + blueVX >= data.getWest().getPosition().x)
             data.setBluePosition(new Position(data.getBluePosition().x + blueVX, data.getBluePosition().y + blueVY));
@@ -205,7 +205,7 @@ public class Engine implements EngineService, RequireDataService{
       data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y+10));
 
     if (data.getNorth().getPosition().y <= data.getRedPosition().y){
-      if (data.getSouth().getPosition().y >= data.getRedPosition().y)
+      if (data.getSouth().getPosition().y >= (data.getRedPosition().y + + data.getRedWidth()))
          if (data.getRedPosition().x+redVX >= 5*(HardCodedParameters.defaultWidth/6)){
            if (data.getRedPosition().x + redVX <= data.getEast().getPosition().x)
               data.setRedPosition(new Position(data.getRedPosition().x + redVX, data.getRedPosition().y + redVY));
