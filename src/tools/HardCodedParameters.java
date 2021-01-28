@@ -12,7 +12,7 @@ public class HardCodedParameters {
   public static double paletteStep = 10, paletteHeight = 30;
   public static final int defaultWidth = 1280, defaultHeight = 720;
 
-  public static final int enginePaceMillis = 100,
+  public static final int enginePaceMillis = 50,
                           spriteSlowDownRate = 7;
   public static final double friction = 0.50;
 

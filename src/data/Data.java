@@ -57,7 +57,6 @@ public class Data implements DataService{
   private Goal east;
   private Goal west;
 
-
   @Override
   public void init(){
     NO = new Position(0,0);
@@ -67,8 +66,8 @@ public class Data implements DataService{
 
     north = new Wall(NO, NE, true, "");
     south = new Wall(SO, SE, true, "");
-    west = new Goal(NO, SO, true, "", "j1");
-    east = new Goal(NE, SE, true, "", "j2");
+    west = new Goal(NO, SO, true, "", Player.BLUE);
+    east = new Goal(NE, SE, true, "", Player.RED);
 
     matrice = new int[4][8];
     bricks = new ArrayList<>();

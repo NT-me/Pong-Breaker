@@ -15,18 +15,11 @@ import data.Goal;
 import tools.HardCodedParameters;
 import tools.User;
 import tools.Position;
-import tools.Sound;
 
 import specifications.EngineService;
 import data.Player;
 import specifications.DataService;
-import specifications.EngineService;
 import specifications.RequireDataService;
-import tools.HardCodedParameters;
-import tools.Position;
-import tools.User;
-
-import javafx.util.Pair;
 
 import java.util.Random;
 import java.util.Timer;
@@ -38,7 +31,7 @@ public class Engine implements EngineService, RequireDataService{
   private User.COMMAND command;
   private boolean moveLeft,moveRight,moveUp,moveDown;
   private boolean RmoveLeft,RmoveRight,RmoveUp,RmoveDown;
-  private boolean creaBallToBrick;
+  private boolean RcreaBallToBrick, BcreaBallToBrick;
   private double blueVX,blueVY,redVX,redVY;
   private double ballVX,ballVY;
   private double creaVX,creaVY;
@@ -137,7 +130,8 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RUP) RmoveUp=true;
     if (c==User.COMMAND.RDOWN) RmoveDown=true;
 
-    if (c==User.COMMAND.CREATE) creaBallToBrick=true;
+    if (c==User.COMMAND.BLAUNCHCREATE) BcreaBallToBrick=true;
+    if (c==User.COMMAND.RLAUNCHCREATE) RcreaBallToBrick=true;
   }
 
   @Override
@@ -152,11 +146,12 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RUP) RmoveUp=false;
     if (c==User.COMMAND.RDOWN) RmoveDown=false;
 
-    if (c==User.COMMAND.CREATE) creaBallToBrick=false;
+    if (c==User.COMMAND.BLAUNCHCREATE) BcreaBallToBrick=false;
+    if (c==User.COMMAND.RLAUNCHCREATE) RcreaBallToBrick=false;
   }
 
   private void updateCreaBallState(){
-    createBrick(data.getCreaBall());
+    //createBrick(data.getCreaBall());
   }
 
   private void updateSpeedPalette(){
@@ -220,7 +215,6 @@ public class Engine implements EngineService, RequireDataService{
     if (ballVX <= -HardCodedParameters.paletteHeight){
       ballVX = -(HardCodedParameters.paletteHeight-0.1);
     }
-    System.out.println(ballVX);
     data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
 
   }
@@ -302,7 +296,6 @@ public class Engine implements EngineService, RequireDataService{
       return true;
   }
 
-
   private boolean collisionGoalMainBall(){
     Ball mainBall = data.getMainBall();
     Goal goalBlue = data.getWest();
@@ -339,6 +332,5 @@ public class Engine implements EngineService, RequireDataService{
       brick.setPosition(new Position(640+(x*80),y*90));
       data.getBricks().add(brick);
     }
-
   }
 }

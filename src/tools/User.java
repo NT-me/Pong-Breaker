@@ -7,5 +7,16 @@
 package tools;
 
 public class User {
-  public static enum COMMAND { LEFT, RIGHT, UP, DOWN, RLEFT, RRIGHT, RUP, RDOWN, NONE , CREATE};
+  public static enum COMMAND { LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+    RLEFT,
+    RRIGHT,
+    RUP,
+    RDOWN,
+    NONE ,
+    BLAUNCHCREATE,
+    RLAUNCHCREATE
+  };
 }
