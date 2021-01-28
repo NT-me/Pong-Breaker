@@ -20,6 +20,8 @@ public class Factory {
 
     public ArrayList<Shape> createField(){
         ArrayList<Shape> field = new ArrayList<>();
+        Rectangle map = new Rectangle(HardCodedParameters.defaultWidth, HardCodedParameters.defaultHeight);
+        field.add(map);
         Rectangle leftSurface = new Rectangle(-1, HardCodedParameters.defaultHeight/4,
                 HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
         leftSurface.setStroke(Color.WHITE);
@@ -75,11 +77,8 @@ public class Factory {
             createBallAvatar.setEffect(new Lighting());
             return createBallAvatar;
         }
-        if(b instanceof Ball){
-            Circle mainBallAvatar = new Circle(b.getPosition().x, b.getPosition().y, b.getRayon(),Color.rgb(0,156,156));
-            mainBallAvatar.setEffect(new Lighting());
-            return mainBallAvatar;
-        }
-        return null;
+        Circle mainBallAvatar = new Circle(b.getPosition().x, b.getPosition().y, b.getRayon(),Color.rgb(0,156,156));
+        mainBallAvatar.setEffect(new Lighting());
+        return mainBallAvatar;
     }
 }

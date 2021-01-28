@@ -35,7 +35,7 @@ public interface ReadService {
     public void setMatrice(int x,int y, int val) ;
     public ArrayList<Brick> getBricks() ;
     public void setBricks(ArrayList<Brick> bricks);
-    public Create getCreaBall();
+    public Create getCreateBall();
     public void setCreaBall(Create creaBall);
 
     public Wall getNorth();

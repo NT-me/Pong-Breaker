@@ -89,7 +89,7 @@ public class Data implements DataService{
   }
 
   @Override
-  public Create getCreaBall() {
+  public Create getCreateBall() {
     return creaBall;
   }
 
