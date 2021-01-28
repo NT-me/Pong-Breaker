@@ -9,15 +9,6 @@ package engine;
 import data.Ball;
 import data.Brick;
 import data.Palette;
-import data.Wall;
-import data.Goal;
-
-import tools.HardCodedParameters;
-import tools.User;
-import tools.Position;
-import tools.Sound;
-
-import specifications.EngineService;
 import data.Player;
 import specifications.DataService;
 import specifications.EngineService;
@@ -86,6 +77,7 @@ public class Engine implements EngineService, RequireDataService{
         updatePositionPalette();
         updateSpeedBall();
         updatePositionBall();
+        updatePositionCreateBall();
         updateCreaBallState();
         if (collisionPaletteMainBall(data.getBlue())){
           ballVX = blueVX+10;
@@ -96,6 +88,12 @@ public class Engine implements EngineService, RequireDataService{
           blueVX = 0;
           blueVY = 0;
           data.getMainBall().setPlayer(Player.BLUE);
+        }
+        if (collisionPaletteCreateBall(data.getBlue())){
+          creaVX = blueVX;
+          creaVY = blueVY;
+          blueVX = 0;
+          blueVY = 0;
         }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX-10;
@@ -114,6 +112,12 @@ public class Engine implements EngineService, RequireDataService{
         if (collisionGoalMainBall()){
           System.out.println(data.getMainBall().getPlayer() + " a marqué");
           data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
+        }
+        if (collisionPaletteMainBall(data.getRed())){
+          creaVX = redVX;
+          creaVY = redVY;
+          redVX = 0;
+          redVY = 0;
         }
         data.setStepNumber(data.getStepNumber()+1);
       }
@@ -210,6 +214,7 @@ public class Engine implements EngineService, RequireDataService{
     }
     ballVX*=data.getSpeed();
     ballVY*=data.getSpeed();
+
   }
 
   private void updatePositionBall(){
@@ -222,7 +227,11 @@ public class Engine implements EngineService, RequireDataService{
     }
     System.out.println(ballVX);
     data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
+    //if (data.getHeroesPosition().x<0) data.setHeroesPosition(new Position(0,data.getHeroesPosition().y));
+  }
 
+  private void updatePositionCreateBall(){
+    data.setCreateBallPosition(new Position(data.getCreateBallPosition().x+creaVX,data.getCreateBallPosition().y+creaVY));
   }
 
   private boolean collisionPaletteMainBall(Palette pal){
@@ -320,7 +329,23 @@ public class Engine implements EngineService, RequireDataService{
     else
       return true;
   }
-    
+
+  private boolean collisionPaletteCreateBall(Palette pal){
+    Create createBall = data.getCreaBall();
+    double circleDistanceX = Math.abs(createBall.getPosition().x-pal.getPosition().x);
+    double circleDistanceY = Math.abs(createBall.getPosition().y-pal.getPosition().y);
+
+    if (circleDistanceX > (pal.getWidth()/2 + createBall.getRayon())) { return false; }
+    if (circleDistanceX > (pal.getHeight()/2 + createBall.getRayon())) { return false; }
+
+    if (circleDistanceX <= (pal.getWidth()/2)) { return true; }
+    if (circleDistanceY <= (pal.getHeight()/2)) { return true; }
+
+    double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
+
+    return (cornerDistance_sq <= (createBall.getRayon())*(createBall.getRayon()));
+  }
+
   public void createBrick(Ball b) {
     int x = (int) (b.getPosition().x - 320) / 80;// position exploitable sur les x
     int y = (int) (b.getPosition().y / 90);//position exploitable sur les y
@@ -339,6 +364,5 @@ public class Engine implements EngineService, RequireDataService{
       brick.setPosition(new Position(640+(x*80),y*90));
       data.getBricks().add(brick);
     }
-
   }
 }

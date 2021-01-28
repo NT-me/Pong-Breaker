@@ -17,6 +17,7 @@ import javafx.util.Pair;
 public interface WriteService {
     public void setStepNumber(int n);
     public void setMainBallPosition(Position p);
+    public void setCreateBallPosition(Position p);
     public void setRayon(double r);
     public void setMainBall(Ball ball);
     public void setSpeed(double speed);

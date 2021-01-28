@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public interface ReadService {
     public Position getMainBallPosition();
+    public Position getCreateBallPosition();
     public int getStepNumber();
     public Palette getBlue();
     public Position getBluePosition();
