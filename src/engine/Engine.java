@@ -6,10 +6,7 @@
  * ******************************************************/
 package engine;
 
-import data.Ball;
-import data.Brick;
-import data.Palette;
-import data.Player;
+import data.*;
 import specifications.DataService;
 import specifications.EngineService;
 import specifications.RequireDataService;
@@ -95,6 +92,12 @@ public class Engine implements EngineService, RequireDataService{
           blueVX = 0;
           blueVY = 0;
         }
+        if (collisionPaletteCreateBall(data.getBlue())){
+          creaVX = blueVX;
+          creaVY = blueVY;
+          blueVX = 0;
+          blueVY = 0;
+        }
         if (collisionPaletteMainBall(data.getRed())){
           ballVX = redVX-10;
           ballVY = redVY;
@@ -112,6 +115,12 @@ public class Engine implements EngineService, RequireDataService{
         if (collisionGoalMainBall()){
           System.out.println(data.getMainBall().getPlayer() + " a marqué");
           data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
+        }
+        if (collisionPaletteMainBall(data.getRed())){
+          creaVX = redVX;
+          creaVY = redVY;
+          redVX = 0;
+          redVY = 0;
         }
         if (collisionPaletteMainBall(data.getRed())){
           creaVX = redVX;
@@ -328,6 +337,22 @@ public class Engine implements EngineService, RequireDataService{
     }
     else
       return true;
+  }
+
+  private boolean collisionPaletteCreateBall(Palette pal){
+    Create createBall = data.getCreaBall();
+    double circleDistanceX = Math.abs(createBall.getPosition().x-pal.getPosition().x);
+    double circleDistanceY = Math.abs(createBall.getPosition().y-pal.getPosition().y);
+
+    if (circleDistanceX > (pal.getWidth()/2 + createBall.getRayon())) { return false; }
+    if (circleDistanceX > (pal.getHeight()/2 + createBall.getRayon())) { return false; }
+
+    if (circleDistanceX <= (pal.getWidth()/2)) { return true; }
+    if (circleDistanceY <= (pal.getHeight()/2)) { return true; }
+
+    double cornerDistance_sq = (circleDistanceX - pal.getWidth()/2)*(circleDistanceX - pal.getWidth()/2) + (circleDistanceY - pal.getHeight()/2)*(circleDistanceY - pal.getHeight()/2);
+
+    return (cornerDistance_sq <= (createBall.getRayon())*(createBall.getRayon()));
   }
 
   private boolean collisionPaletteCreateBall(Palette pal){

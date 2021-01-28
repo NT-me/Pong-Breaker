@@ -6,9 +6,18 @@
  * ******************************************************/
 package userInterface;
 
+import data.Ball;
+import data.Palette;
 import data.Player;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import specifications.ReadService;
 import specifications.RequireReadService;
@@ -22,6 +31,7 @@ public class Viewer implements ViewerService, RequireReadService{
   private static double xShrink;
   private static double yShrink;
 
+  private Circle mainBallAvatar;
   private double direction;
   private ReadService data;
   private Factory factory = new Factory();
@@ -52,10 +62,10 @@ public class Viewer implements ViewerService, RequireReadService{
     ArrayList<Shape> field = factory.createField();
 
     Group panel = new Group();
+    panel.getChildren().add(map);
     panel.getChildren().addAll(field);
     panel.getChildren().add(factory.createBrick(new Point(500,400),Player.BLUE));
-    panel.getChildren().addAll(data.getMainBall().getAvatar(),data.getRed().getAvatar(),
-            data.getBlue().getAvatar(),data.getCreateBall().getAvatar());
+    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue);
     return panel;
   }
 

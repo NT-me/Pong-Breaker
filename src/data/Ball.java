@@ -29,10 +29,6 @@ public class Ball extends MobileObject {
         this.VX = VX;
     }
 
-    public double getVY() {
-        return VY;
-    }
-
     public void setVY(double VY) {
         this.VY = VY;
     }
@@ -48,7 +44,6 @@ public class Ball extends MobileObject {
     public double getRayon() {
         return rayon;
     }
-
     public void setRayon(double rayon) {
         this.rayon = rayon;
     }
