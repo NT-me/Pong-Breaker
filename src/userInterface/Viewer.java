@@ -35,6 +35,7 @@ public class Viewer implements ViewerService, RequireReadService{
   private double direction;
   private ReadService data;
   private Factory factory = new Factory();
+  private ArrayList<Shape> field;
 
   @Override
   public void bindReadService(ReadService service){
@@ -43,7 +44,6 @@ public class Viewer implements ViewerService, RequireReadService{
 
   @Override
   public void init(){
-
   }
 
   @Override
@@ -62,10 +62,9 @@ public class Viewer implements ViewerService, RequireReadService{
     ArrayList<Shape> field = factory.createField();
 
     Group panel = new Group();
-    panel.getChildren().add(map);
     panel.getChildren().addAll(field);
     panel.getChildren().add(factory.createBrick(new Point(500,400),Player.BLUE));
-    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue);
+    panel.getChildren().addAll(data.getMainBall().getAvatar(),data.getRed().getAvatar(),data.getBlue().getAvatar());
     return panel;
   }
 

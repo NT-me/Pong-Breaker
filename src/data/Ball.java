@@ -29,6 +29,10 @@ public class Ball extends MobileObject {
         this.VX = VX;
     }
 
+    public double getVY() {
+        return VY;
+    }
+
     public void setVY(double VY) {
         this.VY = VY;
     }
