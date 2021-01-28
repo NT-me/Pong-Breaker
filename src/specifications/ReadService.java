@@ -46,4 +46,6 @@ public interface ReadService {
 
     public Create getRcreaBall();
     public void setRcreaBall(Create bcreaBall);
+    public void setBcreaPosition(Position p);
+    public void setRcreaPosition(Position p);
 }

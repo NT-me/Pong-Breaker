@@ -6,18 +6,14 @@
  * ******************************************************/
 package engine;
 
-import data.Ball;
-import data.Brick;
-import data.Palette;
-import data.Wall;
-import data.Goal;
+import data.*;
 
+import javafx.util.Pair;
 import tools.HardCodedParameters;
 import tools.User;
 import tools.Position;
 
 import specifications.EngineService;
-import data.Player;
 import specifications.DataService;
 import specifications.RequireDataService;
 
@@ -31,10 +27,12 @@ public class Engine implements EngineService, RequireDataService{
   private User.COMMAND command;
   private boolean moveLeft,moveRight,moveUp,moveDown;
   private boolean RmoveLeft,RmoveRight,RmoveUp,RmoveDown;
+  private boolean RcreaBallLaucnh, BcreaBallLaunch;
   private boolean RcreaBallToBrick, BcreaBallToBrick;
   private double blueVX,blueVY,redVX,redVY;
   private double ballVX,ballVY;
-  private double creaVX,creaVY;
+  private double BcreaVX,BcreaVY;
+  private double RcreaVX,RcreaVY;
 
   public Engine(){}
 
@@ -66,20 +64,26 @@ public class Engine implements EngineService, RequireDataService{
     }
     ballVY = 0;
 
-    creaVX = 0;
-    creaVY = 0;
+    BcreaVX = 10;
+    BcreaVY = 0;
+
+    RcreaVX = -10;
+    RcreaVY = 0;
   }
 
   @Override
   public void start(){
     engineClock.schedule(new TimerTask(){
       public void run() {
+
         updateSpeedPalette();
         updateCommandPalette();
         updatePositionPalette();
         updateSpeedBall();
         updatePositionBall();
         updateCreaBallState();
+        updatePositionCreaBall();
+
         if (collisionPaletteMainBall(data.getBlue())){
           ballVX = blueVX+10;
           ballVY = blueVY;
@@ -98,7 +102,7 @@ public class Engine implements EngineService, RequireDataService{
           }
           redVX = 0;
           redVY = 0;
-          data.getMainBall().setPlayer(Player.RED);
+
         }
         if (collisionWallMainBall()){
             ballVY = -ballVY;
@@ -114,6 +118,12 @@ public class Engine implements EngineService, RequireDataService{
             ballVX = -(HardCodedParameters.paletteHeight-0.1);
           }
           data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
+        }
+        for (Brick bri : data.getBricks()){
+          if (collisionBallBrick(data.getMainBall(), bri)){
+            ballVX = -ballVX;
+            ballVY = -ballVY;
+          }
         }
         data.setStepNumber(data.getStepNumber()+1);
       }
@@ -137,8 +147,11 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RUP) RmoveUp=true;
     if (c==User.COMMAND.RDOWN) RmoveDown=true;
 
-    if (c==User.COMMAND.BLAUNCHCREATE) BcreaBallToBrick=true;
-    if (c==User.COMMAND.RLAUNCHCREATE) RcreaBallToBrick=true;
+    if (c==User.COMMAND.BLAUNCHCREATE) BcreaBallLaunch =true;
+    if (c==User.COMMAND.RLAUNCHCREATE) RcreaBallLaucnh =true;
+
+    if (c==User.COMMAND.BCREATEBRICK) BcreaBallToBrick =true;
+    if (c==User.COMMAND.RCREATEBRICK) RcreaBallToBrick =true;
   }
 
   @Override
@@ -153,12 +166,48 @@ public class Engine implements EngineService, RequireDataService{
     if (c==User.COMMAND.RUP) RmoveUp=false;
     if (c==User.COMMAND.RDOWN) RmoveDown=false;
 
-    if (c==User.COMMAND.BLAUNCHCREATE) BcreaBallToBrick=false;
-    if (c==User.COMMAND.RLAUNCHCREATE) RcreaBallToBrick=false;
+    if (c==User.COMMAND.BLAUNCHCREATE) BcreaBallLaunch =false;
+    if (c==User.COMMAND.RLAUNCHCREATE) RcreaBallLaucnh =false;
+
+    if (c==User.COMMAND.BCREATEBRICK) BcreaBallToBrick =false;
+    if (c==User.COMMAND.RCREATEBRICK) RcreaBallToBrick =false;
   }
 
   private void updateCreaBallState(){
-    //createBrick(data.getCreaBall());
+    Pair<Integer, Integer> dir0 = new Pair<Integer, Integer>(0,0);
+    if(RcreaBallLaucnh){
+      Position centR = new Position(data.getRed().getPosition().x+data.getRed().getHeight(), data.getRed().getPosition().y+(data.getRed().getWidth())/2);
+      data.setRcreaBall(new Create(centR, 1, dir0, 5, Player.RED));
+    }
+
+    if(RcreaBallToBrick){
+      createBrick(data.getRcreaBall());
+    }
+
+    if(BcreaBallLaunch){
+      Position centR = new Position(data.getBlue().getPosition().x, (data.getBlue().getPosition().y+data.getBlue().getHeight())/2);
+      data.setBcreaBall(new Create(centR, 1, dir0, 5, Player.BLUE));
+    }
+
+    if(BcreaBallToBrick){
+      createBrick(data.getBcreaBall());
+    }
+  }
+
+  private void updatePositionCreaBall(){
+    try{
+      data.setRcreaPosition(new Position(data.getRcreaBall().getPosition().x+RcreaVX,data.getRcreaBall().getPosition().y+RcreaVY));
+    }
+    catch (NullPointerException E){
+
+    }
+
+    try{
+      data.setBcreaPosition(new Position(data.getBcreaBall().getPosition().x+BcreaVX,data.getBcreaBall().getPosition().y+BcreaVY));
+    }
+    catch (NullPointerException E){
+
+    }
   }
 
   private void updateSpeedPalette(){
@@ -295,6 +344,20 @@ public class Engine implements EngineService, RequireDataService{
 
   }
 
+  private boolean collisionBallBrick(Ball b, Brick bri){
+    Position NO = bri.getPosition();
+    Position NE = new Position(NO.x+90, NO.y);
+    Position SE = new Position(NO.x+90,NO.y+ 80);
+    Position SO = new Position(NO.x,NO.y+ 80);
+
+    return pointInRectangle(NO, NE, SE, SO, b.getPosition())
+            || intersectCercle(b.getPosition(), b.getRayon(), NO, NE)
+            || intersectCercle(b.getPosition(), b.getRayon(), NE, SE)
+            || intersectCercle(b.getPosition(), b.getRayon(), SE, SO)
+            || intersectCercle(b.getPosition(), b.getRayon(), SO, NO)
+            && b.getPlayer() != bri.getColor();
+  }
+
   private boolean collisionWallMainBall(){
     Ball mainBall = data.getMainBall();
     Wall north = data.getNorth();
@@ -331,19 +394,24 @@ public class Engine implements EngineService, RequireDataService{
     int x = (int) (b.getPosition().x - 320) / 80;// position exploitable sur les x
     int y = (int) (b.getPosition().y / 90);//position exploitable sur les y
 
-    if (b.getPosition().x < HardCodedParameters.defaultWidth / 2 && b.getPlayer() == Player.BLUE
-            && data.getMatrice()[x][y] != 1) {
-      data.setMatrice(x, y, 1);
-      Brick brick = new Brick(Player.BLUE, true);
-      brick.setPosition(new Position(320+(x*80),y*90));
-      data.getBricks().add(brick);
-    }
-    if (b.getPosition().x > HardCodedParameters.defaultWidth / 2 && b.getPlayer() == Player.RED
-            && data.getMatrice()[x][y] != 1) {
-      data.setMatrice(x, y, 1);
-      Brick brick = new Brick(Player.RED, true);
-      brick.setPosition(new Position(640+(x*80),y*90));
-      data.getBricks().add(brick);
+  if(b.getPosition().x > HardCodedParameters.defaultWidth / 4 && b.getPosition().x < 3*HardCodedParameters.defaultWidth / 4) {
+      if (b.getPosition().x < HardCodedParameters.defaultWidth / 2
+              && b.getPlayer() == Player.BLUE
+              && data.getMatrice()[x][y] != 1) {
+        data.setMatrice(x, y, 1);
+        Brick brick = new Brick(Player.BLUE, true);
+        brick.setPosition(new Position(320 + (x * 80), y * 90));
+        data.getBricks().add(brick);
+      }
+      if (b.getPosition().x > HardCodedParameters.defaultWidth / 2
+              && b.getPlayer() == Player.RED
+              && data.getMatrice()[x][y] != 1) {
+        data.setMatrice(x, y, 1);
+        Brick brick = new Brick(Player.RED, true);
+        brick.setPosition(new Position(320 + (x * 80), y * 90));
+        System.out.println(brick.getPosition());
+        data.getBricks().add(brick);
+      }
     }
   }
 }

@@ -20,15 +20,17 @@ public class Data implements DataService{
   private Create BcreaBall;
   private Create RcreaBall;
 
-  public Data(){
 
-  }
   private int stepNumber;
   private Position position;
   private Ball mainBall;
   private Pair<Integer,Integer> direction;
   private double speed;
   private ArrayList<Brick> bricks;
+
+  public Data(){
+
+  }
 
   @Override
   public int[][] getMatrice() {
@@ -72,7 +74,7 @@ public class Data implements DataService{
     west = new Goal(NO, SO, true, "", Player.BLUE);
     east = new Goal(NE, SE, true, "", Player.RED);
 
-    matrice = new int[4][8];
+    matrice = new int[8][8];
     bricks = new ArrayList<>();
     direction = new Pair<Integer,Integer>(0,0);
 
@@ -162,6 +164,20 @@ public class Data implements DataService{
   @Override
   public void setBluePosition(Position p){
         this.blue.setPosition(p);
+  }
+
+  @Override
+  public void setBcreaPosition(Position p){
+      if(p.x >= west.getPosition().x)
+        this.BcreaBall.setPosition(p);
+
+  }
+
+  @Override
+  public void setRcreaPosition(Position p){
+      if(p.x >= west.getPosition().x)
+        this.RcreaBall.setPosition(p);
+
   }
 
   @Override
