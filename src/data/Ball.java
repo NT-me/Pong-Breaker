@@ -1,5 +1,6 @@
 package data;
 
+import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 import tools.Position;
 
@@ -7,11 +8,13 @@ public class Ball extends MobileObject {
 
     private double rayon;
     private Player player;
+    private Circle avatar;
 
     public Ball(Position position, double speed, Pair<Integer,Integer> direction, double rayon, Player player) {
         super(position, speed, direction);
         this.rayon = rayon;
         this.player = player;
+        this.avatar = null;
     }
 
 
@@ -30,6 +33,13 @@ public class Ball extends MobileObject {
         this.player = player;
     }
 
+    public Circle getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Circle avatar) {
+        this.avatar = avatar;
+    }
 
     public void Collision(){
 

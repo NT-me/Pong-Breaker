@@ -1,7 +1,9 @@
 package userInterface;
+import data.Ball;
 import data.Create;
 import data.Palette;
 import data.Player;
+import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -18,6 +20,8 @@ public class Factory {
 
     public ArrayList<Shape> createField(){
         ArrayList<Shape> field = new ArrayList<>();
+        Rectangle map = new Rectangle(HardCodedParameters.defaultWidth, HardCodedParameters.defaultHeight);
+        field.add(map);
         Rectangle leftSurface = new Rectangle(-1, HardCodedParameters.defaultHeight/4,
                 HardCodedParameters.defaultWidth/8,HardCodedParameters.defaultHeight/2);
         leftSurface.setStroke(Color.WHITE);
@@ -37,12 +41,32 @@ public class Factory {
         return field;
     }
 
+    public Circle createBall(Ball b){
+        if(b instanceof Create) {
+            return new Circle(b.getPosition().x,
+                    b.getPosition().y,
+                    b.getRayon(),
+                    Color.rgb(0, 255, 0));
+        }
+        Circle avatar =  new Circle(b.getPosition().x,b.getPosition().y, b.getRayon(),Color.rgb(0,156,156));
+        avatar.setEffect(new Lighting());
+        return avatar;
+    }
+
+
     public Rectangle createPalette(Palette pal){
-        return new Rectangle(
+        Rectangle palette = new Rectangle(
                 pal.getPosition().x,
                 pal.getPosition().y,
                 pal.getHeight(),
                 pal.getWidth());
+        if(pal.getPlayer() == Player.RED){
+            palette.setFill(Color.RED);
+        }
+        if(pal.getPlayer() == Player.BLUE){
+            palette.setFill(Color.BLUE);
+        }
+        return palette;
     }
 
     public Rectangle createBrick(Point p, Player s){
@@ -57,12 +81,5 @@ public class Factory {
             brique.setFill(Color.BLUE);
         }
         return brique;
-    }
-
-    public Circle createCreaBall(Create cr){
-        return new Circle(cr.getPosition().x,
-                cr.getPosition().y,
-                cr.getRayon(),
-                Color.rgb(0,255,0));
     }
 }

@@ -6,19 +6,12 @@
  * ******************************************************/
 package userInterface;
 
-import data.Ball;
 import data.Brick;
-import data.Palette;
-import data.Player;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.effect.Lighting;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import specifications.ReadService;
 import specifications.RequireReadService;
@@ -28,27 +21,25 @@ import tools.HardCodedParameters;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Viewer<rectangle> implements ViewerService, RequireReadService{
+public class Viewer implements ViewerService, RequireReadService{
   private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
-  private static final double defaultMainWidth=HardCodedParameters.defaultWidth,
-                              defaultMainHeight=HardCodedParameters.defaultHeight;
 
   private static double xShrink;
   private static double yShrink;
 
-  private Circle mainBallAvatar;
   private double direction;
   private ReadService data;
   private Factory factory = new Factory();
   private ImageView paletteView;
-  private Image paletteSpriteSheet;
-  private ArrayList<Rectangle2D> heroesAvatarViewports;
-  private Rectangle paletteBlue, paletteRed;
+  private Circle creaBallRed;
+  private ArrayList<Shape> field;
+  private ArrayList<Brick> brickList;
 
+  public Viewer(){
+    this.field = new ArrayList<>();
+    this.brickList = new ArrayList<>();
 
-
-
-  public Viewer(){}
+  }
   
   @Override
   public void bindReadService(ReadService service){
@@ -64,51 +55,45 @@ public class Viewer<rectangle> implements ViewerService, RequireReadService{
   public Parent getPanel(){
     direction = Math.random();
 
-    Ball mainBall = data.getMainBall();
-    mainBallAvatar = new Circle(mainBall.getPosition().x,mainBall.getPosition().y, mainBall.getRayon(),Color.rgb(0,156,156));
-    mainBallAvatar.setEffect(new Lighting());
+    //Crée l'image de la balle classique
+    data.getMainBall().setAvatar(factory.createBall(data.getMainBall()));
 
-    Circle creaBallRed = null;
     try{
-      creaBallRed = factory.createCreaBall(data.getRcreaBall());
+      data.getRcreaBall().setAvatar(factory.createBall(data.getRcreaBall()));
     }
     catch(NullPointerException E){
       creaBallRed = new Circle(-100,-100, 0, Color.rgb(0,0,0));
     }
 
-    Palette blue = data.getBlue();
-    paletteBlue = factory.createPalette(blue);
-    paletteBlue.setFill(javafx.scene.paint.Color.BLUE);
+    //Recuperation des images de palettes
+    data.getBlue().setAvatar(factory.createPalette(data.getBlue()));
+    data.getRed().setAvatar(factory.createPalette(data.getRed()));
 
-    Palette red = data.getRed();
-    paletteRed = factory.createPalette(red);
-    paletteRed.setFill(javafx.scene.paint.Color.RED);
+    //Creation du terrain
+    field = factory.createField();
 
-    Rectangle map = new Rectangle(defaultMainWidth, defaultMainHeight);
-    ArrayList<Shape> field = factory.createField();
-
-    ArrayList<Brick> brickList = data.getBricks();
+    //Recuperation des briques existantes
+    brickList = data.getBricks();
 
     Group panel = new Group();
-    panel.getChildren().add(map);
+
     panel.getChildren().addAll(field);
-
-
     for (Brick B : brickList){
       panel.getChildren().add(factory.createBrick(new Point((int)B.getPosition().x,(int)B.getPosition().y),B.getColor()));
     }
 
-    panel.getChildren().addAll(mainBallAvatar,paletteRed,paletteBlue,creaBallRed);
+    panel.getChildren().addAll(data.getMainBall().getAvatar(),data.getRed().getAvatar()
+            ,data.getBlue().getAvatar(),creaBallRed);
     return panel;
   }
 
   @Override
   public void setMainWindowWidth(double width){
-    xShrink=width/defaultMainWidth;
+    xShrink=width/HardCodedParameters.defaultWidth;
   }
 
   @Override
   public void setMainWindowHeight(double height){
-    yShrink=height/defaultMainHeight;
+    yShrink=height/HardCodedParameters.defaultHeight;
   }
 }
