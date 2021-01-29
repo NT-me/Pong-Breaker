@@ -1,5 +1,6 @@
 package data;
 
+import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
 import tools.Position;
 
@@ -9,6 +10,7 @@ public class Palette extends MobileObject {
     private Player player;
     private Integer PV;
     private Integer RespawnCoolDown;
+    private Rectangle avatar;
 
     public Palette(Position position, boolean displayed, String sprite, double speed, Pair<Integer, Integer> direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
         super(position, displayed, sprite, speed, direction);
@@ -17,8 +19,8 @@ public class Palette extends MobileObject {
         this.PV = PV;
         this.height = height;
         RespawnCoolDown = respawnCoolDown;
+        this.avatar = null;
     }
-
     public Palette(Position position, double speed, Pair<Integer, Integer> direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
         super(position, speed, direction);
         this.width = width;
@@ -26,6 +28,15 @@ public class Palette extends MobileObject {
         this.PV = PV;
         this.height = height;
         RespawnCoolDown = respawnCoolDown;
+        this.avatar = null;
+    }
+
+    public Rectangle getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Rectangle avatar) {
+        this.avatar = avatar;
     }
 
     public double getHeight() {
