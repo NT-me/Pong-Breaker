@@ -164,7 +164,16 @@ public class Data implements DataService{
 
   @Override
   public void setBluePosition(Position p){
-        this.blue.setPosition(p);
+
+    if (getNorth().getPosition().y > getBluePosition().y)
+      p.y = getBluePosition().y +10;
+    if (getSouth().getPosition().y < getBluePosition().y + getBlueWidth())
+      p.y = getBluePosition().y -10;
+    if (getBluePosition().x > HardCodedParameters.defaultWidth / 6)
+      p.x = getBluePosition().x -10;
+    if (getBluePosition().x < getWest().getPosition().x)
+      p.x = getBluePosition().x +10;
+    this.blue.setPosition(p);
   }
 
   @Override
@@ -198,7 +207,16 @@ public class Data implements DataService{
 
   @Override
   public void setRedPosition(Position p){
-        this.red.setPosition(p);
+
+    if (getNorth().getPosition().y > getRedPosition().y)
+      p.y = getRedPosition().y +10;
+    if (getSouth().getPosition().y < getRedPosition().y + getRedWidth())
+      p.y = getRedPosition().y -10;
+    if (getRedPosition().x < 5*HardCodedParameters.defaultWidth / 6)
+      p.x = getRedPosition().x +10;
+    if (getRedPosition().x > getEast().getPosition().x)
+      p.x = getRedPosition().x -10;
+    this.red.setPosition(p);
   }
 
   @Override

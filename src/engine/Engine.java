@@ -233,39 +233,9 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updatePositionPalette(){
-    if (data.getNorth().getPosition().y <= data.getBluePosition().y){
-      if (data.getSouth().getPosition().y >= data.getBluePosition().y + data.getBlueWidth()) {
-        if (data.getBluePosition().x + blueVX <= HardCodedParameters.defaultWidth / 6) {
-          if (data.getBluePosition().x + blueVX >= data.getWest().getPosition().x)
-            data.setBluePosition(new Position(data.getBluePosition().x + blueVX, data.getBluePosition().y + blueVY));
-          else
-            data.setBluePosition(new Position(data.getBluePosition().x + 10, data.getBluePosition().y));
-        }
-        else
-            data.setBluePosition(new Position(data.getBluePosition().x - 10, data.getBluePosition().y));
-        }
-      else
-        data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y-10));
-      }
-    else
-      data.setBluePosition(new Position(data.getBluePosition().x,data.getBluePosition().y+10));
-
-    if (data.getNorth().getPosition().y <= data.getRedPosition().y){
-      if (data.getSouth().getPosition().y >= (data.getRedPosition().y + + data.getRedWidth()))
-         if (data.getRedPosition().x+redVX >= 5*(HardCodedParameters.defaultWidth/6)){
-           if (data.getRedPosition().x + redVX <= data.getEast().getPosition().x)
-              data.setRedPosition(new Position(data.getRedPosition().x + redVX, data.getRedPosition().y + redVY));
-           else
-              data.setRedPosition(new Position(data.getRedPosition().x - 10, data.getRedPosition().y));
-         }
-         else
-           data.setRedPosition(new Position(data.getRedPosition().x + 10, data.getRedPosition().y));
-      else
-        data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y-10));
-    }
-    else
-      data.setRedPosition(new Position(data.getRedPosition().x,data.getRedPosition().y+10));
-  }
+    data.setBluePosition(new Position(data.getBluePosition().x + blueVX, data.getBluePosition().y + blueVY));
+    data.setRedPosition(new Position(data.getRedPosition().x + redVX, data.getRedPosition().y + redVY));
+}
 
   private void updateSpeedBall(){
     if (data.getSpeed() > 1){
