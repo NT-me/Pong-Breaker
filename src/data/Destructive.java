@@ -5,7 +5,7 @@ import tools.Position;
 
 public class Destructive extends Ball{
 
-    public Destructive(Position position, double speed, Pair<Integer, Integer> direction, double rayon, Player player) {
+    public Destructive(Position position, double speed, Position direction, double rayon, Player player) {
         super(position, speed, direction, rayon, player);
     }
 }

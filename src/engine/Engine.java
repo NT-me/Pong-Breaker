@@ -77,6 +77,7 @@ public class Engine implements EngineService, RequireDataService{
   public void start(){
     engineClock.schedule(new TimerTask(){
       public void run() {
+
         updateSpeedPalette();
         updateCommandPalette();
         updatePositionPalette();
@@ -90,23 +91,22 @@ public class Engine implements EngineService, RequireDataService{
         Palette[] tabPalette = {data.getBlue(), data.getRed()};
 
         if (collisionPaletteBalls(data.getBlue(), data.getMainBall())){
-          ballVX = blueVX+10;
-          ballVY = blueVY;
+          data.setMainBallDirection(new Position(data.getRedDirection().x+10,
+                                                    data.getRedDirection().y));
           if (data.getSpeed() <= 1.3){
             data.setSpeed(data.getSpeed()*1.08);
           }
-          blueVX = 0;
-          blueVY = 0;
+          data.setBlueDirection(new Position(0, 0));
           data.setMainBallPlayer(Player.BLUE);
         }
+
         if (collisionPaletteBalls(data.getRed(), data.getMainBall())){
-          ballVX = redVX-10;
-          ballVY = redVY;
+          data.setMainBallDirection(new Position(data.getBlueDirection().x-10,
+                                                    data.getBlueDirection().y));
           if (data.getSpeed() <= 1.3){
             data.setSpeed(data.getSpeed()*1.08);
           }
-          redVX = 0;
-          redVY = 0;
+          data.setRedDirection(new Position(0,0));
           data.setMainBallPlayer(Player.RED);
         }
 
@@ -148,7 +148,6 @@ public class Engine implements EngineService, RequireDataService{
           else if (data.getMainBall().getPlayer() == Player.RED && data.getMainBallPosition().x < HardCodedParameters.defaultWidth/2){
             data.setScoreR(data.getScoreR() + 1);
           }
-          ballVY = 0;
           data.setMainBallPlayer(Player.NONE);
           int chooseSide = new Random().nextInt(2);
           if (chooseSide == 0){
@@ -238,7 +237,7 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updateDestBallState(){
-    Pair<Integer, Integer> dir0 = new Pair<Integer, Integer>(0,0);
+    Position dir0 = new Position(0,0);
     if(RdestBallLaucnh){
       Position centR = new Position(data.getRed().getPosition().x,
               data.getRed().getPosition().y+(data.getRed().getWidth())/2);
