@@ -70,6 +70,10 @@ public class Main extends Application{
               if(event.getCode()==KeyCode.C) engine.setPlayerCommand(User.COMMAND.BLAUNCHCREATE);
               if(event.getCode()==KeyCode.EXCLAMATION_MARK) engine.setPlayerCommand(User.COMMAND.RLAUNCHCREATE);
               if(event.getCode()==KeyCode.M) engine.setPlayerCommand(User.COMMAND.RCREATEBRICK);
+              if(event.getCode()==KeyCode.V) engine.setPlayerCommand(User.COMMAND.BCREATEBRICK);
+
+              if(event.getCode()==KeyCode.X) engine.setPlayerCommand(User.COMMAND.BLAUNCHDEST);
+              if(event.getCode()==KeyCode.P) engine.setPlayerCommand(User.COMMAND.RLAUNCHDEST);
 
               if (event.getCode()==KeyCode.LEFT) engine.setPlayerCommand(User.COMMAND.RLEFT);
               if (event.getCode()==KeyCode.RIGHT) engine.setPlayerCommand(User.COMMAND.RRIGHT);
@@ -89,11 +93,15 @@ public class Main extends Application{
               if(event.getCode()==KeyCode.C) engine.releasePlayerCommand(User.COMMAND.BLAUNCHCREATE);
               if(event.getCode()==KeyCode.EXCLAMATION_MARK) engine.releasePlayerCommand(User.COMMAND.RLAUNCHCREATE);
               if(event.getCode()==KeyCode.M) engine.releasePlayerCommand(User.COMMAND.RCREATEBRICK);
+              if(event.getCode()==KeyCode.V) engine.releasePlayerCommand(User.COMMAND.BCREATEBRICK);
 
               if (event.getCode()==KeyCode.LEFT) engine.releasePlayerCommand(User.COMMAND.RLEFT);
               if (event.getCode()==KeyCode.RIGHT) engine.releasePlayerCommand(User.COMMAND.RRIGHT);
               if (event.getCode()==KeyCode.UP) engine.releasePlayerCommand(User.COMMAND.RUP);
               if (event.getCode()==KeyCode.DOWN) engine.releasePlayerCommand(User.COMMAND.RDOWN);
+
+              if(event.getCode()==KeyCode.X) engine.releasePlayerCommand(User.COMMAND.BLAUNCHDEST);
+              if(event.getCode()==KeyCode.P) engine.releasePlayerCommand(User.COMMAND.RLAUNCHDEST);
               event.consume();
           }
       });
