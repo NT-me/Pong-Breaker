@@ -6,12 +6,7 @@
  * ******************************************************/
 package specifications;
 
-import data.Brick;
-import data.Create;
-import data.Palette;
-import data.Ball;
-import data.Wall;
-import data.Goal;
+import data.*;
 
 import tools.Position;
 import tools.Sound;
@@ -48,4 +43,7 @@ public interface ReadService {
     public void setRcreaBall(Create bcreaBall);
     public void setBcreaPosition(Position p);
     public void setRcreaPosition(Position p);
+
+    public Destructive getBdestBall();
+    public Destructive getRdestBall();
 }

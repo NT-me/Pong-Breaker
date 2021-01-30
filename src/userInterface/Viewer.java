@@ -31,7 +31,7 @@ public class Viewer implements ViewerService, RequireReadService{
   private ReadService data;
   private Factory factory = new Factory();
   private ImageView paletteView;
-  private Circle creaBallRed;
+  private Circle creaBallRed, creaBallBlue, destBallRed, destBallBlue;
   private ArrayList<Shape> field;
   private ArrayList<Brick> brickList;
 
@@ -58,11 +58,30 @@ public class Viewer implements ViewerService, RequireReadService{
     //Crée l'image de la balle classique
     data.getMainBall().setAvatar(factory.createBall(data.getMainBall()));
 
+    destBallRed = new Circle(data.getRdestBall().getPosition().x,
+            data.getRdestBall().getPosition().y,
+            data.getRdestBall().getRayon(),
+            Color.rgb(120,40,100));
+
+    destBallBlue = new Circle(data.getBdestBall().getPosition().x,
+            data.getBdestBall().getPosition().y,
+            data.getBdestBall().getRayon(),
+            Color.rgb(120,40,100));
+
     try{
       data.getRcreaBall().setAvatar(factory.createBall(data.getRcreaBall()));
+      creaBallRed = data.getRcreaBall().getAvatar();
     }
     catch(NullPointerException E){
       creaBallRed = new Circle(-100,-100, 0, Color.rgb(0,0,0));
+    }
+
+    try{
+      data.getBcreaBall().setAvatar(factory.createBall(data.getBcreaBall()));
+      creaBallBlue = data.getBcreaBall().getAvatar();
+    }
+    catch(NullPointerException E){
+      creaBallBlue = new Circle(-100,-100, 0, Color.rgb(0,0,0));
     }
 
     //Recuperation des images de palettes
@@ -82,8 +101,13 @@ public class Viewer implements ViewerService, RequireReadService{
       panel.getChildren().add(factory.createBrick(new Point((int)B.getPosition().x,(int)B.getPosition().y),B.getColor()));
     }
 
-    panel.getChildren().addAll(data.getMainBall().getAvatar(),data.getRed().getAvatar()
-            ,data.getBlue().getAvatar(),creaBallRed);
+    panel.getChildren().addAll(data.getMainBall().getAvatar(),
+            data.getRed().getAvatar(),
+            data.getBlue().getAvatar(),
+            creaBallRed,
+            creaBallBlue,
+            destBallRed,
+            destBallBlue);
     return panel;
   }
 
