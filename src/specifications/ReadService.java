@@ -46,4 +46,7 @@ public interface ReadService {
 
     public Destructive getBdestBall();
     public Destructive getRdestBall();
+
+    public int getScoreB();
+    public int getScoreR();
 }

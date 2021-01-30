@@ -31,4 +31,6 @@ public interface WriteService {
     public  void setdestBallsPos(Position pos, Player pla);
     public void setBdestBall(Destructive bdestBall);
     public void setRdestBall(Destructive bdestBall);
+    public void setScoreR(int scoreR);
+    public void setScoreB(int scoreB);
 }

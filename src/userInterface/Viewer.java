@@ -13,6 +13,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import specifications.ReadService;
 import specifications.RequireReadService;
 import specifications.ViewerService;
@@ -53,7 +56,16 @@ public class Viewer implements ViewerService, RequireReadService{
 
   @Override
   public Parent getPanel(){
-    direction = Math.random();
+    Text scoreBlue = new Text();
+    scoreBlue.setText("Blue Score : " + Integer.toString(data.getScoreB()));
+    scoreBlue.setX(0);
+    scoreBlue.setY(10);
+    scoreBlue.setFill(Color.WHITE);
+    Text scoreRed = new Text();
+    scoreRed.setText("Red Score : " + Integer.toString(data.getScoreR()));
+    scoreRed.setX(0);
+    scoreRed.setY(25);
+    scoreRed.setFill(Color.WHITE);
 
     //Crée l'image de la balle classique
     data.getMainBall().setAvatar(factory.createBall(data.getMainBall()));
@@ -98,7 +110,7 @@ public class Viewer implements ViewerService, RequireReadService{
 
     panel.getChildren().addAll(field);
     for (Brick B : brickList){
-      panel.getChildren().add(factory.createBrick(new Point((int)B.getPosition().x,(int)B.getPosition().y),B.getColor()));
+      panel.getChildren().add(factory.createBrick(new Point((int)B.getPosition().x,(int)B.getPosition().y),B.getColor())  );
     }
 
     panel.getChildren().addAll(data.getMainBall().getAvatar(),
@@ -107,7 +119,9 @@ public class Viewer implements ViewerService, RequireReadService{
             creaBallRed,
             creaBallBlue,
             destBallRed,
-            destBallBlue);
+            destBallBlue,
+            scoreBlue,
+            scoreRed);
     return panel;
   }
 

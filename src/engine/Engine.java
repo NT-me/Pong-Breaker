@@ -145,11 +145,17 @@ public class Engine implements EngineService, RequireDataService{
             }
           }
         }
+
         if (collisionWallMainBall()){
             ballVY = -ballVY;
         }
         if (collisionGoalMainBall()){
-          System.out.println(data.getMainBall().getPlayer() + " a marqué");
+          if (data.getMainBall().getPlayer() == Player.BLUE && data.getMainBallPosition().x > HardCodedParameters.defaultWidth/2){
+            data.setScoreB(data.getScoreB() + 1);
+          }
+          else if (data.getMainBall().getPlayer() == Player.RED && data.getMainBallPosition().x < HardCodedParameters.defaultWidth/2){
+            data.setScoreR(data.getScoreR() + 1);
+          }
           ballVY = 0;
           data.setMainBallPlayer(Player.NONE);
           int chooseSide = new Random().nextInt(2);
@@ -172,6 +178,7 @@ public class Engine implements EngineService, RequireDataService{
             bri.setPv(bri.getPv()-1);
             if (bri.getPv() <= 0){
               bricksList.remove(bri);
+              data.setMatrice(bri.getMatrixPos().getKey(), bri.getMatrixPos().getValue(), 0);
             }
             data.setdestBallsPos(new Position(-200, -200), Player.BLUE);
           }
@@ -179,6 +186,7 @@ public class Engine implements EngineService, RequireDataService{
             bri.setPv(bri.getPv()-1);
             if (bri.getPv() <= 0){
               bricksList.remove(bri);
+              data.setMatrice(bri.getMatrixPos().getKey(), bri.getMatrixPos().getValue(), 0);
             }
             data.setdestBallsPos(new Position(-200, -200), Player.RED);
           }
@@ -446,13 +454,14 @@ public class Engine implements EngineService, RequireDataService{
   public void createBrick(Ball b) {
     int x = (int) (b.getPosition().x - 320) / 80;// position exploitable sur les x
     int y = (int) (b.getPosition().y / 90);//position exploitable sur les y
+    Pair<Integer, Integer> matrixPos = new Pair<Integer, Integer>(x,y);
 
   if(b.getPosition().x > HardCodedParameters.defaultWidth / 4 && b.getPosition().x < 3*HardCodedParameters.defaultWidth / 4) {
       if (b.getPosition().x < HardCodedParameters.defaultWidth / 2
               && b.getPlayer() == Player.BLUE
               && data.getMatrice()[x][y] != 1) {
         data.setMatrice(x, y, 1);
-        Brick brick = new Brick(Player.BLUE, true);
+        Brick brick = new Brick(Player.BLUE, true, matrixPos);
         brick.setPosition(new Position(320 + (x * 80), y * 90));
         data.getBricks().add(brick);
       }
@@ -460,9 +469,8 @@ public class Engine implements EngineService, RequireDataService{
               && b.getPlayer() == Player.RED
               && data.getMatrice()[x][y] != 1) {
         data.setMatrice(x, y, 1);
-        Brick brick = new Brick(Player.RED, true);
+        Brick brick = new Brick(Player.RED, true, matrixPos);
         brick.setPosition(new Position(320 + (x * 80), y * 90));
-        System.out.println(brick.getPosition());
         data.getBricks().add(brick);
       }
     }

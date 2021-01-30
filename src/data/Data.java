@@ -32,6 +32,8 @@ public class Data implements DataService{
   private double speed;
   private ArrayList<Brick> bricks;
 
+  private int scoreB;
+  private int scoreR;
   public Data(){
 
   }
@@ -73,6 +75,9 @@ public class Data implements DataService{
     SO = new Position(0,HardCodedParameters.defaultHeight);
     SE = new Position(HardCodedParameters.defaultWidth,HardCodedParameters.defaultHeight);
 
+    scoreB = 0;
+    scoreR = 0;
+
     north = new Wall(NO, NE, true, "");
     south = new Wall(SO, SE, true, "");
     west = new Goal(NO, SO, true, "", Player.BLUE);
@@ -100,6 +105,26 @@ public class Data implements DataService{
 
     BdestBall = new Destructive(new Position(-200, -200), 1, dir0, 5, Player.BLUE);
     RdestBall = new Destructive(new Position(-200, -200), 1, dir0, 5, Player.RED);
+  }
+
+  @Override
+  public int getScoreB() {
+    return scoreB;
+  }
+
+  @Override
+  public void setScoreB(int scoreB) {
+    this.scoreB = scoreB;
+  }
+
+  @Override
+  public int getScoreR() {
+    return scoreR;
+  }
+
+  @Override
+  public void setScoreR(int scoreR) {
+    this.scoreR = scoreR;
   }
 
   @Override
