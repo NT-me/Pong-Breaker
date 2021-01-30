@@ -60,11 +60,12 @@ public class Factory {
                 pal.getPosition().y,
                 pal.getHeight(),
                 pal.getWidth());
+        System.out.println((double)pal.getPV()/(double)HardCodedParameters.palettePV);
         if(pal.getPlayer() == Player.RED){
-            palette.setFill(Color.RED);
+            palette.setFill(new Color(1.0,0,0,((double)pal.getPV()/(double)HardCodedParameters.palettePV)));
         }
         if(pal.getPlayer() == Player.BLUE){
-            palette.setFill(Color.BLUE);
+            palette.setFill(new Color(0,0,1.0,((double)pal.getPV()/(double)HardCodedParameters.palettePV)));
         }
         return palette;
     }

@@ -13,6 +13,9 @@ import data.Ball;
 import data.Wall;
 import data.Goal;
 
+import data.Destructive;
+import data.Player;
+
 import tools.Position;
 import tools.Sound;
 
@@ -22,6 +25,7 @@ import javafx.util.Pair;
 public interface WriteService {
     public void setStepNumber(int n);
     public void setMainBallPosition(Position p);
+    public void setMainBallPlayer(Player p);
     public void setRayon(double r);
     public void setMainBall(Ball ball);
     public void setSpeed(double speed);
@@ -40,4 +44,9 @@ public interface WriteService {
     public void setRcreaBall(Create bcreaBall);
     public void setBcreaPosition(Position p);
     public void setRcreaPosition(Position p);
+    public void setdestBallsPos(Position pos, Player pla);
+    public void setBdestBall(Destructive bdestBall);
+    public void setRdestBall(Destructive bdestBall);
+    public void setScoreR(int scoreR);
+    public void setScoreB(int scoreB);
 }
