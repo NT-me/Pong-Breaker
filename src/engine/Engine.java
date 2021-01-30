@@ -29,8 +29,6 @@ public class Engine implements EngineService, RequireDataService{
   private boolean RmoveLeft,RmoveRight,RmoveUp,RmoveDown;
   private boolean RcreaBallLaucnh, BcreaBallLaunch;
   private boolean RcreaBallToBrick, BcreaBallToBrick;
-  private double blueVX,blueVY,redVX,redVY;
-  private double ballVX,ballVY;
   private double BcreaVX,BcreaVY;
   private double RcreaVX,RcreaVY;
 
@@ -50,19 +48,13 @@ public class Engine implements EngineService, RequireDataService{
     moveDown = false;
     command = User.COMMAND.NONE;
 
-    blueVX = 0;
-    blueVY = 0;
-
-    redVX = 0;
-    redVY = 0;
     int chooseSide = new Random().nextInt(2);
     if (chooseSide == 0){
-      ballVX = HardCodedParameters.paletteHeight-0.1;
+      data.setMainBallDirection(new Position(HardCodedParameters.paletteHeight-0.1,0));
     }
     else if (chooseSide == 1){
-      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+      data.setMainBallDirection(new Position(-HardCodedParameters.paletteHeight-0.1,0));
     }
-    ballVY = 0;
 
     BcreaVX = 10;
     BcreaVY = 0;
@@ -85,44 +77,38 @@ public class Engine implements EngineService, RequireDataService{
         updatePositionCreaBall();
 
         if (collisionPaletteMainBall(data.getBlue())){
-          ballVX = blueVX+10;
-          ballVY = blueVY;
+          data.setMainBallDirection(new Position(data.getBlueDirection().x+10,data.getBlueDirection().y));
           if (data.getSpeed() <= 1.3){
             data.setSpeed(data.getSpeed()*1.08);
           }
-          blueVX = 0;
-          blueVY = 0;
+          data.setBlueDirection(new Position(0,0));
           data.getMainBall().setPlayer(Player.BLUE);
         }
         if (collisionPaletteMainBall(data.getRed())){
-          ballVX = redVX-10;
-          ballVY = redVY;
+          data.setMainBallDirection(new Position(data.getRedDirection().x-10,data.getRedDirection().y));
           if (data.getSpeed() <= 1.3){
             data.setSpeed(data.getSpeed()*1.08);
           }
-          redVX = 0;
-          redVY = 0;
-
+          data.setRedDirection(new Position(0,0));
+          data.getMainBall().setPlayer(Player.RED);
         }
         if (collisionWallMainBall()){
-            ballVY = -ballVY;
+          data.setMainBallDirection(new Position(data.getMainBallDirection().x,-data.getMainBallDirection().y));
         }
         if (collisionGoalMainBall()){
           System.out.println(data.getMainBall().getPlayer() + " a marqué");
-          ballVY = 0;
           int chooseSide = new Random().nextInt(2);
           if (chooseSide == 0){
-            ballVX = HardCodedParameters.paletteHeight-0.1;
+            data.setMainBallDirection(new Position(HardCodedParameters.paletteHeight-0.1,0));
           }
           else if (chooseSide == 1){
-            ballVX = -(HardCodedParameters.paletteHeight-0.1);
+            data.setMainBallDirection(new Position(-HardCodedParameters.paletteHeight-0.1,0));
           }
           data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
         }
         for (Brick bri : data.getBricks()){
           if (collisionBallBrick(data.getMainBall(), bri)){
-            ballVX = -ballVX;
-            ballVY = -ballVY;
+            data.setMainBallDirection(new Position(-data.getMainBallDirection().x,-data.getMainBallDirection().y));
           }
         }
         data.setStepNumber(data.getStepNumber()+1);
@@ -213,47 +199,43 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updateSpeedPalette(){
-    blueVX*=HardCodedParameters.friction;
-    blueVY*=HardCodedParameters.friction;
-
-    redVX*=HardCodedParameters.friction;
-    redVY*=HardCodedParameters.friction;
+    data.setBlueDirection(new Position(data.getBlueDirection().x*HardCodedParameters.friction,data.getBlueDirection().y*HardCodedParameters.friction));
+    data.setRedDirection(new Position(data.getRedDirection().x*HardCodedParameters.friction,data.getRedDirection().y*HardCodedParameters.friction));
   }
 
   private void updateCommandPalette(){
-    if (moveLeft) blueVX-=HardCodedParameters.paletteStep;
-    if (moveRight) blueVX+=HardCodedParameters.paletteStep;
-    if (moveUp) blueVY-=HardCodedParameters.paletteStep;
-    if (moveDown) blueVY+=HardCodedParameters.paletteStep;
+    if (moveLeft) data.setBlueDirection(new Position(data.getBlueDirection().x-HardCodedParameters.paletteStep,data.getBlueDirection().y));
+    if (moveRight) data.setBlueDirection(new Position(data.getBlueDirection().x+HardCodedParameters.paletteStep,data.getBlueDirection().y));
+    if (moveUp) data.setBlueDirection(new Position(data.getBlueDirection().x,data.getBlueDirection().y-HardCodedParameters.paletteStep));
+    if (moveDown) data.setBlueDirection(new Position(data.getBlueDirection().x,data.getBlueDirection().y+HardCodedParameters.paletteStep));
 
-    if (RmoveLeft) redVX-=HardCodedParameters.paletteStep;
-    if (RmoveRight) redVX+=HardCodedParameters.paletteStep;
-    if (RmoveUp) redVY-=HardCodedParameters.paletteStep;
-    if (RmoveDown) redVY+=HardCodedParameters.paletteStep;
+    if (RmoveLeft) data.setRedDirection(new Position(data.getRedDirection().x-HardCodedParameters.paletteStep,data.getRedDirection().y));
+    if (RmoveRight) data.setRedDirection(new Position(data.getRedDirection().x+HardCodedParameters.paletteStep,data.getRedDirection().y));
+    if (RmoveUp) data.setRedDirection(new Position(data.getRedDirection().x,data.getRedDirection().y-HardCodedParameters.paletteStep));
+    if (RmoveDown) data.setRedDirection(new Position(data.getRedDirection().x,data.getRedDirection().y+HardCodedParameters.paletteStep));
   }
 
   private void updatePositionPalette(){
-    data.setBluePosition(new Position(data.getBluePosition().x + blueVX, data.getBluePosition().y + blueVY));
-    data.setRedPosition(new Position(data.getRedPosition().x + redVX, data.getRedPosition().y + redVY));
+    data.setBluePosition(new Position(data.getBluePosition().x + data.getBlueDirection().x, data.getBluePosition().y + data.getBlueDirection().y));
+    data.setRedPosition(new Position(data.getRedPosition().x + data.getRedDirection().x, data.getRedPosition().y + data.getRedDirection().y));
 }
 
   private void updateSpeedBall(){
     if (data.getSpeed() > 1){
       data.setSpeed(data.getSpeed()*0.99);
     }
-    ballVX*=data.getSpeed();
-    ballVY*=data.getSpeed();
+    data.setMainBallDirection(new Position(data.getMainBallDirection().x*data.getSpeed(),data.getMainBallDirection().y*data.getSpeed()));
   }
 
   private void updatePositionBall(){
 
-    if (ballVX >= HardCodedParameters.paletteHeight){
-      ballVX = HardCodedParameters.paletteHeight-0.1;
+    if (data.getMainBallDirection().x >= HardCodedParameters.paletteHeight){
+      data.setMainBallDirection(new Position(HardCodedParameters.paletteHeight-0.1,data.getMainBallDirection().y));
     }
-    if (ballVX <= -HardCodedParameters.paletteHeight){
-      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+    if (data.getMainBallDirection().x <= -HardCodedParameters.paletteHeight){
+      data.setMainBallDirection(new Position(-(HardCodedParameters.paletteHeight-0.1),data.getMainBallDirection().y));
     }
-    data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
+    data.setMainBallPosition(new Position(data.getMainBallPosition().x+data.getMainBallDirection().x,data.getMainBallPosition().y+data.getMainBallDirection().y));
 
   }
 
