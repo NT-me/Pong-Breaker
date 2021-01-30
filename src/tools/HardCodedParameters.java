@@ -14,6 +14,8 @@ public class HardCodedParameters {
 
   public static final int enginePaceMillis = 50,
                           spriteSlowDownRate = 7;
+  public static final int palettePV = 3, paletteCooldown = 25;
+  public static final int brickPV = 3;
   public static final double friction = 0.50;
 
   public static <T> T instantiate(final String className, final Class<T> type){
