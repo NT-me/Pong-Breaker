@@ -174,7 +174,7 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updateCreaBallState(){
-    Pair<Integer, Integer> dir0 = new Pair<Integer, Integer>(0,0);
+    Position dir0 = new Position(0,0);
     if(RcreaBallLaucnh){
       Position centR = new Position(data.getRed().getPosition().x+data.getRed().getHeight(), data.getRed().getPosition().y+(data.getRed().getWidth())/2);
       data.setRcreaBall(new Create(centR, 1, dir0, 5, Player.RED));

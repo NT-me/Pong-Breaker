@@ -31,13 +31,12 @@ public interface ReadService {
     public double getRayon();
     public Ball getMainBall();
     public double getSpeed();
-    public Pair<Integer,Integer> getDirection();
+    public Position getMainBallDirection();
+    public Position getBlueDirection();
+    public Position getRedDirection();
     public int[][] getMatrice() ;
-    public void setMatrice(int x,int y, int val) ;
     public ArrayList<Brick> getBricks() ;
-    public void setBricks(ArrayList<Brick> bricks);
     public Create getBcreaBall();
-    public void setBcreaBall(Create bcreaBall);
 
     public Wall getNorth();
     public Wall getSouth();
@@ -45,7 +44,5 @@ public interface ReadService {
     public Goal getWest();
 
     public Create getRcreaBall();
-    public void setRcreaBall(Create bcreaBall);
-    public void setBcreaPosition(Position p);
-    public void setRcreaPosition(Position p);
+
 }

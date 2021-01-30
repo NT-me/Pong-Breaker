@@ -12,7 +12,7 @@ public class Palette extends MobileObject {
     private Integer RespawnCoolDown;
     private Rectangle avatar;
 
-    public Palette(Position position, boolean displayed, String sprite, double speed, Pair<Integer, Integer> direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
+    public Palette(Position position, boolean displayed, String sprite, double speed, Position direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
         super(position, displayed, sprite, speed, direction);
         this.width = width;
         this.player = player;
@@ -21,7 +21,7 @@ public class Palette extends MobileObject {
         RespawnCoolDown = respawnCoolDown;
         this.avatar = null;
     }
-    public Palette(Position position, double speed, Pair<Integer, Integer> direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
+    public Palette(Position position, double speed, Position direction, double width, double height, Player player, Integer PV, Integer respawnCoolDown) {
         super(position, speed, direction);
         this.width = width;
         this.player = player;
