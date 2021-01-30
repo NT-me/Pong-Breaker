@@ -28,7 +28,7 @@ public class Data implements DataService{
   private int stepNumber;
   private Position position;
   private Ball mainBall;
-  private Pair<Integer,Integer> direction;
+  private Position direction;
   private double speed;
   private ArrayList<Brick> bricks;
 
@@ -86,12 +86,12 @@ public class Data implements DataService{
     matrice = new int[8][8];
     matrice[3][4] = 1;matrice[3][3] = 1;matrice[4][4] = 1;matrice[4][3] = 1;
     bricks = new ArrayList<>();
-    direction = new Pair<Integer,Integer>(0,0);
+    direction = new Position(0,0);
 
     stepNumber = 0;
     double paletteWidth = 200;
     double paletteHeight = HardCodedParameters.paletteHeight;
-    Pair<Integer, Integer> dir0 = new Pair<Integer, Integer>(0,0);
+    Position dir0 = new Position(0,0);
     Position posBlue = new Position((double)paletteHeight*2,(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
     this.blue = new Palette(posBlue, (double)0, dir0, paletteWidth, paletteHeight, Player.BLUE, HardCodedParameters.palettePV, -1);
 
@@ -192,7 +192,13 @@ public class Data implements DataService{
   public double getSpeed(){return mainBall.getSpeed();}
 
   @Override
-  public Pair<Integer,Integer> getDirection(){return mainBall.getDirection();}
+  public Position getMainBallDirection(){return mainBall.getDirection();}
+
+  @Override
+  public Position getBlueDirection(){return blue.getDirection();}
+
+  @Override
+  public Position getRedDirection(){return red.getDirection();}
 
   @Override
   public void setStepNumber(int n){ stepNumber=n; }
@@ -265,8 +271,18 @@ public class Data implements DataService{
   public void setSpeed(double speed){mainBall.setSpeed(speed);}
 
   @Override
-  public void setDirection(Pair<Integer, Integer> direction){
+  public void setMainBallDirection(Position direction){
     mainBall.setDirection(direction);
+  }
+
+  @Override
+  public void setBlueDirection(Position direction){
+    blue.setDirection(direction);
+  }
+
+  @Override
+  public void setRedDirection(Position direction){
+    red.setDirection(direction);
   }
 
   @Override

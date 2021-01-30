@@ -6,10 +6,16 @@
  * ******************************************************/
 package specifications;
 
-import data.Ball;
-import data.Destructive;
+import data.Brick;
+import data.Create;
 import data.Palette;
+import data.Ball;
+import data.Wall;
+import data.Goal;
+
+import data.Destructive;
 import data.Player;
+
 import tools.Position;
 import tools.Sound;
 
@@ -23,12 +29,22 @@ public interface WriteService {
     public void setRayon(double r);
     public void setMainBall(Ball ball);
     public void setSpeed(double speed);
-    public void setDirection(Pair<Integer,Integer> direction); // Va servir a rien
+    public void setMainBallDirection(Position direction);
+    public void setBlueDirection(Position direction);
+    public void setRedDirection(Position direction);
     public void setBlue(Palette blue);
     public void setBluePosition(Position p);
     public void setRed(Palette red);
     public void setRedPosition(Position p);
-    public  void setdestBallsPos(Position pos, Player pla);
+
+    public void setMatrice(int x,int y, int val) ;
+    public void setBricks(ArrayList<Brick> bricks);
+    public void setBcreaBall(Create bcreaBall);
+
+    public void setRcreaBall(Create bcreaBall);
+    public void setBcreaPosition(Position p);
+    public void setRcreaPosition(Position p);
+    public void setdestBallsPos(Position pos, Player pla);
     public void setBdestBall(Destructive bdestBall);
     public void setRdestBall(Destructive bdestBall);
     public void setScoreR(int scoreR);

@@ -10,7 +10,7 @@ public class Ball extends MobileObject {
     private Player player;
     private Circle avatar;
 
-    public Ball(Position position, double speed, Pair<Integer,Integer> direction, double rayon, Player player) {
+    public Ball(Position position, double speed, Position direction, double rayon, Player player) {
         super(position, speed, direction);
         this.rayon = rayon;
         this.player = player;

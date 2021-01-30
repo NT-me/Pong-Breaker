@@ -31,8 +31,6 @@ public class Engine implements EngineService, RequireDataService{
   private boolean RcreaBallLaucnh, BcreaBallLaunch;
   private boolean RdestBallLaucnh, BdestBallLaunch;
   private boolean RcreaBallToBrick, BcreaBallToBrick;
-  private double blueVX,blueVY,redVX,redVY;
-  private double ballVX,ballVY;
   private double BcreaVX,BcreaVY;
   private double RcreaVX,RcreaVY;
   private double RdestVX,RdestVY;
@@ -54,19 +52,13 @@ public class Engine implements EngineService, RequireDataService{
     moveDown = false;
     command = User.COMMAND.NONE;
 
-    blueVX = 0;
-    blueVY = 0;
-
-    redVX = 0;
-    redVY = 0;
     int chooseSide = new Random().nextInt(2);
     if (chooseSide == 0){
-      ballVX = HardCodedParameters.paletteHeight-0.1;
+      data.setMainBallDirection(new Position(HardCodedParameters.paletteHeight-0.1,0));
     }
     else if (chooseSide == 1){
-      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+      data.setMainBallDirection(new Position(-HardCodedParameters.paletteHeight-0.1,0));
     }
-    ballVY = 0;
 
     BcreaVX = 10;
     BcreaVY = 0;
@@ -147,7 +139,7 @@ public class Engine implements EngineService, RequireDataService{
         }
 
         if (collisionWallMainBall()){
-            ballVY = -ballVY;
+          data.setMainBallDirection(new Position(data.getMainBallDirection().x,-data.getMainBallDirection().y));
         }
         if (collisionGoalMainBall()){
           if (data.getMainBall().getPlayer() == Player.BLUE && data.getMainBallPosition().x > HardCodedParameters.defaultWidth/2){
@@ -160,10 +152,10 @@ public class Engine implements EngineService, RequireDataService{
           data.setMainBallPlayer(Player.NONE);
           int chooseSide = new Random().nextInt(2);
           if (chooseSide == 0){
-            ballVX = HardCodedParameters.paletteHeight-0.1;
+            data.setMainBallDirection(new Position(HardCodedParameters.paletteHeight-0.1,0));
           }
           else if (chooseSide == 1){
-            ballVX = -(HardCodedParameters.paletteHeight-0.1);
+            data.setMainBallDirection(new Position(-HardCodedParameters.paletteHeight-0.1,0));
           }
           data.setMainBallPosition(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2));
         }
@@ -171,8 +163,7 @@ public class Engine implements EngineService, RequireDataService{
         ArrayList<Brick> bricksList = (ArrayList<Brick>) data.getBricks().clone();
         for (Brick bri : data.getBricks()){
           if (collisionBallBrick(data.getMainBall(), bri)){
-            ballVX = -ballVX;
-            ballVY = -ballVY;
+            data.setMainBallDirection(new Position(-data.getMainBallDirection().x,-data.getMainBallDirection().y));
           }
           if (collisionBallBrick(data.getBdestBall(), bri)){
             bri.setPv(bri.getPv()-1);
@@ -261,7 +252,7 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updateCreaBallState(){
-    Pair<Integer, Integer> dir0 = new Pair<Integer, Integer>(0,0);
+    Position dir0 = new Position(0,0);
     if(RcreaBallLaucnh){
       Position centR = new Position(data.getRed().getPosition().x+data.getRed().getHeight(), data.getRed().getPosition().y+(data.getRed().getWidth())/2);
       data.setRcreaBall(new Create(centR, 1, dir0, 5, Player.RED));
@@ -300,28 +291,25 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updateSpeedPalette(){
-    blueVX*=HardCodedParameters.friction;
-    blueVY*=HardCodedParameters.friction;
-
-    redVX*=HardCodedParameters.friction;
-    redVY*=HardCodedParameters.friction;
+    data.setBlueDirection(new Position(data.getBlueDirection().x*HardCodedParameters.friction,data.getBlueDirection().y*HardCodedParameters.friction));
+    data.setRedDirection(new Position(data.getRedDirection().x*HardCodedParameters.friction,data.getRedDirection().y*HardCodedParameters.friction));
   }
 
   private void updateCommandPalette(){
-    if (moveLeft) blueVX-=HardCodedParameters.paletteStep;
-    if (moveRight) blueVX+=HardCodedParameters.paletteStep;
-    if (moveUp) blueVY-=HardCodedParameters.paletteStep;
-    if (moveDown) blueVY+=HardCodedParameters.paletteStep;
+    if (moveLeft) data.setBlueDirection(new Position(data.getBlueDirection().x-HardCodedParameters.paletteStep,data.getBlueDirection().y));
+    if (moveRight) data.setBlueDirection(new Position(data.getBlueDirection().x+HardCodedParameters.paletteStep,data.getBlueDirection().y));
+    if (moveUp) data.setBlueDirection(new Position(data.getBlueDirection().x,data.getBlueDirection().y-HardCodedParameters.paletteStep));
+    if (moveDown) data.setBlueDirection(new Position(data.getBlueDirection().x,data.getBlueDirection().y+HardCodedParameters.paletteStep));
 
-    if (RmoveLeft) redVX-=HardCodedParameters.paletteStep;
-    if (RmoveRight) redVX+=HardCodedParameters.paletteStep;
-    if (RmoveUp) redVY-=HardCodedParameters.paletteStep;
-    if (RmoveDown) redVY+=HardCodedParameters.paletteStep;
+    if (RmoveLeft) data.setRedDirection(new Position(data.getRedDirection().x-HardCodedParameters.paletteStep,data.getRedDirection().y));
+    if (RmoveRight) data.setRedDirection(new Position(data.getRedDirection().x+HardCodedParameters.paletteStep,data.getRedDirection().y));
+    if (RmoveUp) data.setRedDirection(new Position(data.getRedDirection().x,data.getRedDirection().y-HardCodedParameters.paletteStep));
+    if (RmoveDown) data.setRedDirection(new Position(data.getRedDirection().x,data.getRedDirection().y+HardCodedParameters.paletteStep));
   }
 
   private void updatePositionPalette(){
-    data.setBluePosition(new Position(data.getBluePosition().x + blueVX, data.getBluePosition().y + blueVY));
-    data.setRedPosition(new Position(data.getRedPosition().x + redVX, data.getRedPosition().y + redVY));
+    data.setBluePosition(new Position(data.getBluePosition().x + data.getBlueDirection().x, data.getBluePosition().y + data.getBlueDirection().y));
+    data.setRedPosition(new Position(data.getRedPosition().x + data.getRedDirection().x, data.getRedPosition().y + data.getRedDirection().y));
 }
 
   private void updateSpeedBall(){
@@ -331,19 +319,18 @@ public class Engine implements EngineService, RequireDataService{
     else{
       data.setSpeed(1);
     }
-    ballVX*=data.getSpeed();
-    ballVY*=data.getSpeed();
+    data.setMainBallDirection(new Position(data.getMainBallDirection().x*data.getSpeed(),data.getMainBallDirection().y*data.getSpeed()));
   }
 
   private void updatePositionBall(){
 
-    if (ballVX >= HardCodedParameters.paletteHeight){
-      ballVX = HardCodedParameters.paletteHeight-0.1;
+    if (data.getMainBallDirection().x >= HardCodedParameters.paletteHeight){
+      data.setMainBallDirection(new Position(HardCodedParameters.paletteHeight-0.1,data.getMainBallDirection().y));
     }
-    if (ballVX <= -HardCodedParameters.paletteHeight){
-      ballVX = -(HardCodedParameters.paletteHeight-0.1);
+    if (data.getMainBallDirection().x <= -HardCodedParameters.paletteHeight){
+      data.setMainBallDirection(new Position(-(HardCodedParameters.paletteHeight-0.1),data.getMainBallDirection().y));
     }
-    data.setMainBallPosition(new Position(data.getMainBallPosition().x+ballVX,data.getMainBallPosition().y+ballVY));
+    data.setMainBallPosition(new Position(data.getMainBallPosition().x+data.getMainBallDirection().x,data.getMainBallPosition().y+data.getMainBallDirection().y));
 
   }
 
