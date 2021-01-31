@@ -41,7 +41,5 @@ public class Ball extends MobileObject {
         this.avatar = avatar;
     }
 
-    public void Collision(){
 
-    }
 }

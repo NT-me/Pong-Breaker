@@ -60,7 +60,6 @@ public class Factory {
                 pal.getPosition().y,
                 pal.getHeight(),
                 pal.getWidth());
-        System.out.println((double)pal.getPV()/(double)HardCodedParameters.palettePV);
         if(pal.getPlayer() == Player.RED){
             palette.setFill(new Color(1.0,0,0,((double)pal.getPV()/(double)HardCodedParameters.palettePV)));
         }

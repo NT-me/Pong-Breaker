@@ -2,6 +2,7 @@ package data;
 
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+import tools.HardCodedParameters;
 import tools.Position;
 
 public class Palette extends MobileObject {
@@ -77,5 +78,15 @@ public class Palette extends MobileObject {
 
     public void setRespawnCoolDown(Integer respawnCoolDown) {
         RespawnCoolDown = respawnCoolDown;
+    }
+
+    public void updateSpeedPalette(){
+        this.setDirection(new Position(this.getDirection().x* HardCodedParameters.friction,this.getDirection().y*HardCodedParameters.friction));
+        }
+
+
+    public void updatePositionPalette(){
+        this.setPosition(new Position(this.getPosition().x + this.getDirection().x,
+                this.getPosition().y + this.getDirection().y));
     }
 }

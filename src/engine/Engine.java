@@ -10,6 +10,7 @@ import data.*;
 
 import javafx.util.Pair;
 import tools.HardCodedParameters;
+import tools.PBUtils;
 import tools.User;
 import tools.Position;
 
@@ -31,10 +32,6 @@ public class Engine implements EngineService, RequireDataService{
   private boolean RcreaBallLaucnh, BcreaBallLaunch;
   private boolean RdestBallLaucnh, BdestBallLaunch;
   private boolean RcreaBallToBrick, BcreaBallToBrick;
-  private double BcreaVX,BcreaVY;
-  private double RcreaVX,RcreaVY;
-  private double RdestVX,RdestVY;
-  private double BdestVX,BdestVY;
 
   public Engine(){}
 
@@ -60,17 +57,11 @@ public class Engine implements EngineService, RequireDataService{
       data.setMainBallDirection(new Position(-HardCodedParameters.paletteHeight-0.1,0));
     }
 
-    BcreaVX = 10;
-    BcreaVY = 0;
+    data.getRcreaBall().setDirection(new Position(-10,0));
+    data.getBcreaBall().setDirection(new Position(10,0));
 
-    RcreaVX = -10;
-    RcreaVY = 0;
-
-    RdestVX = -20;
-    RdestVY = 0;
-
-    BdestVX = 20;
-    BdestVY = 0;
+    data.getRdestBall().setDirection(new Position(-10,0));
+    data.getBdestBall().setDirection(new Position(10,0));
   }
 
   @Override
@@ -78,40 +69,41 @@ public class Engine implements EngineService, RequireDataService{
     engineClock.schedule(new TimerTask(){
       public void run() {
 
-        updateSpeedPalette();
+
         updateCommandPalette();
-        updatePositionPalette();
         updateSpeedBall();
         updatePositionBall();
         updateCreaBallState();
-        updatePositionCreaBall();
+        data.getRcreaBall().updatePositionCreaBall();
+        data.getBcreaBall().updatePositionCreaBall();
         updateDestBallState();
-        updatePositionDestBall();
+        data.getRdestBall().updatePositionDestBall();
+        data.getBdestBall().updatePositionDestBall();
 
         Palette[] tabPalette = {data.getBlue(), data.getRed()};
-
-        if (collisionPaletteBalls(data.getBlue(), data.getMainBall())){
-          data.setMainBallDirection(new Position(data.getRedDirection().x+10,
-                                                    data.getRedDirection().y));
-          if (data.getSpeed() <= 1.3){
-            data.setSpeed(data.getSpeed()*1.08);
-          }
-          data.setBlueDirection(new Position(0, 0));
-          data.setMainBallPlayer(Player.BLUE);
-        }
-
-        if (collisionPaletteBalls(data.getRed(), data.getMainBall())){
-          data.setMainBallDirection(new Position(data.getBlueDirection().x-10,
-                                                    data.getBlueDirection().y));
-          if (data.getSpeed() <= 1.3){
-            data.setSpeed(data.getSpeed()*1.08);
-          }
-          data.setRedDirection(new Position(0,0));
-          data.setMainBallPlayer(Player.RED);
-        }
-
         Destructive[] tabdestBall = {data.getRdestBall(), data.getBdestBall()};
+
         for (Palette pals : tabPalette){
+          pals.updateSpeedPalette();
+          pals.updatePositionPalette();
+          if (collisionPaletteBalls(pals, data.getMainBall())){
+            if (pals.getPlayer() == Player.BLUE){
+              data.setMainBallDirection(new Position(data.getRedDirection().x+10,
+                      data.getRedDirection().y));
+            }
+            else if (pals.getPlayer() == Player.RED){
+              data.setMainBallDirection(new Position(data.getRedDirection().x-10,
+                      data.getRedDirection().y));
+            }
+
+            if (data.getSpeed() <= 1.3){
+              data.setSpeed(data.getSpeed()*1.08);
+            }
+            data.setBlueDirection(new Position(0, 0));
+            data.setMainBallPlayer(pals.getPlayer());
+          }
+
+
           if (pals.getRespawnCoolDown() != -1){
             if (pals.getRespawnCoolDown() == 0){
               if (pals.getPlayer() == Player.BLUE){
@@ -241,57 +233,36 @@ public class Engine implements EngineService, RequireDataService{
     if(RdestBallLaucnh){
       Position centR = new Position(data.getRed().getPosition().x,
               data.getRed().getPosition().y+(data.getRed().getWidth())/2);
-      data.setRdestBall(new Destructive(centR, 1, dir0, 5, Player.RED));
+      data.getRdestBall().setPosition(centR);
     }
 
     if(BdestBallLaunch){
-      Position centR = new Position(data.getBlue().getPosition().x+data.getBlue().getHeight(), data.getBlue().getPosition().y+(data.getBlue().getWidth())/2);
-      data.setBdestBall(new Destructive(centR, 1, dir0, 5, Player.BLUE));
+      Position centR = new Position(data.getBlue().getPosition().x+data.getBlue().getHeight(),
+              data.getBlue().getPosition().y+(data.getBlue().getWidth())/2);
+      data.getBdestBall().setPosition(centR);
     }
   }
 
   private void updateCreaBallState(){
-    Position dir0 = new Position(0,0);
     if(RcreaBallLaucnh){
-      Position centR = new Position(data.getRed().getPosition().x+data.getRed().getHeight(), data.getRed().getPosition().y+(data.getRed().getWidth())/2);
-      data.setRcreaBall(new Create(centR, 1, dir0, 5, Player.RED));
+      Position centR = new Position(data.getRed().getPosition().x, data.getRed().getPosition().y+(data.getRed().getWidth())/2);
+      data.setRcreaPosition(centR);
     }
 
     if(RcreaBallToBrick){
       createBrick(data.getRcreaBall());
       data.setRcreaPosition(new Position(-200,-200));
-      System.out.println(data.getRcreaBall().getPosition());
     }
 
     if(BcreaBallLaunch){
       Position centR = new Position(data.getBlue().getPosition().x+data.getBlue().getHeight(), data.getBlue().getPosition().y+(data.getBlue().getWidth())/2);
-      data.setBcreaBall(new Create(centR, 1, dir0, 5, Player.BLUE));
+      data.setBcreaPosition(centR);
     }
 
     if(BcreaBallToBrick){
       createBrick(data.getBcreaBall());
       data.setBcreaPosition(new Position(-200,-200));
     }
-  }
-
-  private void updatePositionCreaBall(){
-    data.setRcreaPosition(new Position(data.getRcreaBall().getPosition().x+RcreaVX,data.getRcreaBall().getPosition().y+RcreaVY));
-    data.setBcreaPosition(new Position(data.getBcreaBall().getPosition().x+BcreaVX,data.getBcreaBall().getPosition().y+BcreaVY));
-  }
-
-  private void updatePositionDestBall(){
-    data.setdestBallsPos(new Position(data.getRdestBall().getPosition().x+RdestVX,
-                                      data.getRdestBall().getPosition().y+RdestVY),
-            Player.RED);
-
-    data.setdestBallsPos(new Position(data.getBdestBall().getPosition().x+BdestVX,
-                                      data.getBdestBall().getPosition().y+BdestVY),
-            Player.BLUE);
-  }
-
-  private void updateSpeedPalette(){
-    data.setBlueDirection(new Position(data.getBlueDirection().x*HardCodedParameters.friction,data.getBlueDirection().y*HardCodedParameters.friction));
-    data.setRedDirection(new Position(data.getRedDirection().x*HardCodedParameters.friction,data.getRedDirection().y*HardCodedParameters.friction));
   }
 
   private void updateCommandPalette(){
@@ -305,11 +276,6 @@ public class Engine implements EngineService, RequireDataService{
     if (RmoveUp) data.setRedDirection(new Position(data.getRedDirection().x,data.getRedDirection().y-HardCodedParameters.paletteStep));
     if (RmoveDown) data.setRedDirection(new Position(data.getRedDirection().x,data.getRedDirection().y+HardCodedParameters.paletteStep));
   }
-
-  private void updatePositionPalette(){
-    data.setBluePosition(new Position(data.getBluePosition().x + data.getBlueDirection().x, data.getBluePosition().y + data.getBlueDirection().y));
-    data.setRedPosition(new Position(data.getRedPosition().x + data.getRedDirection().x, data.getRedPosition().y + data.getRedDirection().y));
-}
 
   private void updateSpeedBall(){
     if (data.getSpeed() > 1){
@@ -339,56 +305,11 @@ public class Engine implements EngineService, RequireDataService{
     Position SE = new Position(NO.x+pal.getHeight(),NO.y+ pal.getWidth());
     Position SO = new Position(NO.x,NO.y+ pal.getWidth());
 
-    return pointInRectangle(NO, NE, SE, SO, ba.getPosition())
-            || intersectCercle(ba.getPosition(), ba.getRayon(), NO, NE)
-            || intersectCercle(ba.getPosition(), ba.getRayon(), NE, SE)
-            || intersectCercle(ba.getPosition(), ba.getRayon(), SE, SO)
-            || intersectCercle(ba.getPosition(), ba.getRayon(), SO, NO);
-  }
-
-  private double crossproduct(Position p, Position q, Position s, Position t){
-    return (((q.x-p.x)*(t.y-s.y))-((q.y-p.y)*(t.x-s.x)));
-  }
-
-  public double dotProd(Position p, Position q, Position s, Position t){
-    return ((q.x-p.x)*(t.x-s.x)+(q.y-p.y)*(t.y-s.y));
-  }
-
-  /**
-   * Soit AB une droite et C quelconque
-   */
-  public static Position getPerpendicular(Position A, Position B, Position C){
-    double vx = B.x-A.x; //x du vecteur AB
-    double vy = B.y-A.y; //y du vecteur AB
-    double ab2 = vx*vx + vy*vy; //norme au carré de AB
-    double u = ((C.x - A.x) * vx + (C.y - A.y) * vy) / (ab2);
-    return new Position ((int)Math.round(A.x + u * vx), (int)Math.round(A.y + u * vy)); //D appartient à AB
-  }
-
-  public boolean intersectCercle(Position centreCercle, double rayonCercle, Position A, Position B ){
-    Position intersectPoint = getPerpendicular(A, B, centreCercle);
-    if (0 <= dotProd(A, B, A, intersectPoint) && dotProd(A, B, A, intersectPoint) <= dotProd(A, B, A, B)){
-      if (centreCercle.distance(intersectPoint) <= rayonCercle){
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Soit ABCD les points du rectangle et P le centre du cercle et rayon le rayon du cercle
-   */
-  private boolean pointInRectangle(Position A, Position B, Position C, Position D, Position P){
-    // 0 ≤ AP·AB ≤ AB·AB and 0 ≤ AP·AD ≤ AD·AD
-    double firstCP = dotProd(A, P, A, B);
-    double firstComp = dotProd(A, B, A, B);
-
-    double secondCP = dotProd(A, P, A, D);
-    double secondComp = dotProd(A, D, A, D);
-
-    return (0 <= firstCP && firstCP <= firstComp) && (0 <= secondCP && secondCP <= secondComp);
-
+    return PBUtils.pointInRectangle(NO, NE, SE, SO, ba.getPosition())
+            || PBUtils.intersectCercle(ba.getPosition(), ba.getRayon(), NO, NE)
+            || PBUtils.intersectCercle(ba.getPosition(), ba.getRayon(), NE, SE)
+            || PBUtils.intersectCercle(ba.getPosition(), ba.getRayon(), SE, SO)
+            || PBUtils.intersectCercle(ba.getPosition(), ba.getRayon(), SO, NO);
   }
 
   private boolean collisionBallBrick(Ball b, Brick bri){
@@ -397,11 +318,11 @@ public class Engine implements EngineService, RequireDataService{
     Position SE = new Position(NO.x+90,NO.y+ 80);
     Position SO = new Position(NO.x,NO.y+ 80);
 
-    return (pointInRectangle(NO, NE, SE, SO, b.getPosition())
-            || intersectCercle(b.getPosition(), b.getRayon(), NO, NE)
-            || intersectCercle(b.getPosition(), b.getRayon(), NE, SE)
-            || intersectCercle(b.getPosition(), b.getRayon(), SE, SO)
-            || intersectCercle(b.getPosition(), b.getRayon(), SO, NO)
+    return (PBUtils.pointInRectangle(NO, NE, SE, SO, b.getPosition())
+            || PBUtils.intersectCercle(b.getPosition(), b.getRayon(), NO, NE)
+            || PBUtils.intersectCercle(b.getPosition(), b.getRayon(), NE, SE)
+            || PBUtils.intersectCercle(b.getPosition(), b.getRayon(), SE, SO)
+            || PBUtils.intersectCercle(b.getPosition(), b.getRayon(), SO, NO)
             ) && b.getPlayer() != bri.getColor();
   }
 

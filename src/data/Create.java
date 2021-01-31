@@ -11,4 +11,9 @@ public class Create extends Ball{
         active = false;
     }
 
+    public void updatePositionCreaBall(){
+        Position dirR = this.getDirection();
+        this.setPosition(new Position(this.getPosition().x+dirR.x,this.getPosition().y+dirR.y));
+    }
+
 }
