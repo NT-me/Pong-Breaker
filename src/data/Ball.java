@@ -2,6 +2,7 @@ package data;
 
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
+import tools.HardCodedParameters;
 import tools.Position;
 
 public class Ball extends MobileObject {
@@ -17,10 +18,10 @@ public class Ball extends MobileObject {
         this.avatar = null;
     }
 
-
     public double getRayon() {
         return rayon;
     }
+
     public void setRayon(double rayon) {
         this.rayon = rayon;
     }
@@ -41,5 +42,30 @@ public class Ball extends MobileObject {
         this.avatar = avatar;
     }
 
+    public void updateSpeedBall(){
+        if (getSpeed() > 1){
+            setSpeed(getSpeed()*0.99);
+        }
+        else{
+            setSpeed(1);
+        }
+        setDirection(new Position(getDirection().x*getSpeed(),
+                getDirection().y*getSpeed()));
+    }
+
+    public void updatePositionBall(){
+
+        if (getDirection().x >= HardCodedParameters.paletteHeight){
+            setDirection(new Position(HardCodedParameters.paletteHeight-0.1,
+                                         getDirection().y));
+        }
+        if (getDirection().x <= -HardCodedParameters.paletteHeight){
+            setDirection(new Position(-(HardCodedParameters.paletteHeight-0.1),
+                                        getDirection().y));
+        }
+        setPosition(new Position(getPosition().x+getDirection().x,
+                                 getPosition().y+getDirection().y));
+
+    }
 
 }

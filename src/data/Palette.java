@@ -83,10 +83,4 @@ public class Palette extends MobileObject {
     public void updateSpeedPalette(){
         this.setDirection(new Position(this.getDirection().x* HardCodedParameters.friction,this.getDirection().y*HardCodedParameters.friction));
         }
-
-
-    public void updatePositionPalette(){
-        this.setPosition(new Position(this.getPosition().x + this.getDirection().x,
-                this.getPosition().y + this.getDirection().y));
-    }
 }
