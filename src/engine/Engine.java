@@ -60,8 +60,8 @@ public class Engine implements EngineService, RequireDataService{
     data.getRcreaBall().setDirection(new Position(-10,0));
     data.getBcreaBall().setDirection(new Position(10,0));
 
-    data.getRdestBall().setDirection(new Position(-10,0));
-    data.getBdestBall().setDirection(new Position(10,0));
+    data.getRdestBall().setDirection(new Position(-20,0));
+    data.getBdestBall().setDirection(new Position(20,0));
   }
 
   @Override
@@ -233,10 +233,10 @@ public class Engine implements EngineService, RequireDataService{
             if (pals.getPV() <= 0){
               pals.setPV((HardCodedParameters.palettePV));
               pals.setRespawnCoolDown(HardCodedParameters.paletteCooldown);
-              pals.setPosition(new Position(-200,-200));
+              pals.setPosition(new Position(-200,-2000));
             }
           }
-          dests.setPosition(new Position(-200, -200));
+          dests.setPosition(new Position(-200, -2000));
         }
       }
     }
