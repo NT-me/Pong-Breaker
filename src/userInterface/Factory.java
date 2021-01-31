@@ -1,8 +1,5 @@
 package userInterface;
-import data.Ball;
-import data.Create;
-import data.Palette;
-import data.Player;
+import data.*;
 import javafx.scene.effect.Lighting;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -42,14 +39,18 @@ public class Factory {
     }
 
     public Circle createBall(Ball b){
-        if(b instanceof Create) {
-            return new Circle(b.getPosition().x,
-                    b.getPosition().y,
-                    b.getRayon(),
-                    Color.rgb(0, 255, 0));
+        Circle avatar =  new Circle(b.getPosition().x,b.getPosition().y, b.getRayon());
+
+        if (b instanceof Create){
+            avatar.setFill(Color.rgb(0, 255, 0));
         }
-        Circle avatar =  new Circle(b.getPosition().x,b.getPosition().y, b.getRayon(),Color.rgb(0,156,156));
-        avatar.setEffect(new Lighting());
+        else if (b instanceof Destructive){
+            avatar.setFill(Color.rgb(120,40,100));
+        }
+        else if (b instanceof Ball){
+            avatar.setFill(Color.rgb(0,156,156));
+            avatar.setEffect(new Lighting());
+        }
         return avatar;
     }
 
@@ -69,13 +70,13 @@ public class Factory {
         return palette;
     }
 
-    public Rectangle createBrick(Point p, Player s){
+    public Rectangle createBrick(Brick bri){
         Rectangle brique = new Rectangle();
-        brique.setY(p.getY()+10);
-        brique.setX(p.getX()+10);
+        brique.setY(bri.getPosition().y+10);
+        brique.setX(bri.getPosition().x+10);
         brique.setWidth(70);
         brique.setHeight(80);
-        if(s.toString() == "RED"){
+        if(bri.getColor().toString() == "RED"){
             brique.setFill(Color.RED);
         }else{
             brique.setFill(Color.BLUE);

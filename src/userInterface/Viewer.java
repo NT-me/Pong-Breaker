@@ -6,6 +6,7 @@
  * ******************************************************/
 package userInterface;
 
+import data.Ball;
 import data.Brick;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -25,16 +26,11 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Viewer implements ViewerService, RequireReadService{
-  private static final int spriteSlowDownRate=HardCodedParameters.spriteSlowDownRate;
-
   private static double xShrink;
   private static double yShrink;
 
-  private double direction;
   private ReadService data;
   private Factory factory = new Factory();
-  private ImageView paletteView;
-  private Circle creaBallRed, creaBallBlue, destBallRed, destBallBlue;
   private ArrayList<Shape> field;
   private ArrayList<Brick> brickList;
 
@@ -67,38 +63,18 @@ public class Viewer implements ViewerService, RequireReadService{
     scoreRed.setY(25);
     scoreRed.setFill(Color.WHITE);
 
-    //Crée l'image de la balle classique
-    data.getMainBall().setAvatar(factory.createBall(data.getMainBall()));
-
-    destBallRed = new Circle(data.getRdestBall().getPosition().x,
-            data.getRdestBall().getPosition().y,
-            data.getRdestBall().getRayon(),
-            Color.rgb(120,40,100));
-
-    destBallBlue = new Circle(data.getBdestBall().getPosition().x,
-            data.getBdestBall().getPosition().y,
-            data.getBdestBall().getRayon(),
-            Color.rgb(120,40,100));
-
-    try{
-      data.getRcreaBall().setAvatar(factory.createBall(data.getRcreaBall()));
-      creaBallRed = data.getRcreaBall().getAvatar();
-    }
-    catch(NullPointerException E){
-      creaBallRed = new Circle(-100,-100, 0, Color.rgb(0,0,0));
-    }
-
-    try{
-      data.getBcreaBall().setAvatar(factory.createBall(data.getBcreaBall()));
-      creaBallBlue = data.getBcreaBall().getAvatar();
-    }
-    catch(NullPointerException E){
-      creaBallBlue = new Circle(-100,-100, 0, Color.rgb(0,0,0));
-    }
-
-    //Recuperation des images de palettes
+    //Set des images de palettes
     data.getBlue().setAvatar(factory.createPalette(data.getBlue()));
     data.getRed().setAvatar(factory.createPalette(data.getRed()));
+
+    //Set des balles
+    data.getRdestBall().setAvatar(factory.createBall(data.getRdestBall()));
+    data.getBdestBall().setAvatar(factory.createBall(data.getBdestBall()));
+
+    data.getRcreaBall().setAvatar(factory.createBall(data.getRcreaBall()));
+    data.getBcreaBall().setAvatar(factory.createBall(data.getBcreaBall()));
+
+    data.getMainBall().setAvatar(factory.createBall(data.getMainBall()));
 
     //Creation du terrain
     field = factory.createField();
@@ -110,16 +86,16 @@ public class Viewer implements ViewerService, RequireReadService{
 
     panel.getChildren().addAll(field);
     for (Brick B : brickList){
-      panel.getChildren().add(factory.createBrick(new Point((int)B.getPosition().x,(int)B.getPosition().y),B.getColor())  );
+      panel.getChildren().add(factory.createBrick(B));
     }
 
     panel.getChildren().addAll(data.getMainBall().getAvatar(),
             data.getRed().getAvatar(),
             data.getBlue().getAvatar(),
-            creaBallRed,
-            creaBallBlue,
-            destBallRed,
-            destBallBlue,
+            data.getBcreaBall().getAvatar(),
+            data.getRcreaBall().getAvatar(),
+            data.getBdestBall().getAvatar(),
+            data.getRdestBall().getAvatar(),
             scoreBlue,
             scoreRed);
     return panel;
