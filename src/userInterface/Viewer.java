@@ -30,7 +30,7 @@ public class Viewer implements ViewerService, RequireReadService{
   private static double yShrink;
 
   private ReadService data;
-  private Factory factory = new Factory();
+  private final Factory factory = new Factory();
   private ArrayList<Shape> field;
   private ArrayList<Brick> brickList;
 
@@ -53,12 +53,12 @@ public class Viewer implements ViewerService, RequireReadService{
   @Override
   public Parent getPanel(){
     Text scoreBlue = new Text();
-    scoreBlue.setText("Blue Score : " + Integer.toString(data.getScoreB()));
+    scoreBlue.setText("Blue Score : " + data.getScoreB());
     scoreBlue.setX(0);
     scoreBlue.setY(10);
     scoreBlue.setFill(Color.WHITE);
     Text scoreRed = new Text();
-    scoreRed.setText("Red Score : " + Integer.toString(data.getScoreR()));
+    scoreRed.setText("Red Score : " + data.getScoreR());
     scoreRed.setX(0);
     scoreRed.setY(25);
     scoreRed.setFill(Color.WHITE);

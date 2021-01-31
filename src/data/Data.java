@@ -92,11 +92,11 @@ public class Data implements DataService{
     double paletteWidth = 200;
     double paletteHeight = HardCodedParameters.paletteHeight;
     Position dir0 = new Position(0,0);
-    Position posBlue = new Position((double)paletteHeight*2,(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
-    this.blue = new Palette(posBlue, (double)0, dir0, paletteWidth, paletteHeight, Player.BLUE, HardCodedParameters.palettePV, -1);
+    Position posBlue = new Position(paletteHeight *2,(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
+    this.blue = new Palette(posBlue, 0, dir0, paletteWidth, paletteHeight, Player.BLUE, HardCodedParameters.palettePV, -1);
 
     Position posRed = new Position(HardCodedParameters.defaultWidth-(paletteHeight*4),(double)(HardCodedParameters.defaultHeight/2)-(paletteWidth/2));
-    this.red = new Palette(posRed, (double)0, dir0, paletteWidth, paletteHeight, Player.RED, HardCodedParameters.palettePV, -1);
+    this.red = new Palette(posRed, 0, dir0, paletteWidth, paletteHeight, Player.RED, HardCodedParameters.palettePV, -1);
     position = new Position(0,0);
     mainBall = new Ball(new Position(HardCodedParameters.defaultWidth/2,HardCodedParameters.defaultHeight/2), 1, direction, 10, Player.BLUE);
 
@@ -303,7 +303,6 @@ public class Data implements DataService{
     }
     else if (pla == Player.BLUE){
       this.BdestBall.setPosition(pos);
-      System.out.println(pos);
     }
   }
 

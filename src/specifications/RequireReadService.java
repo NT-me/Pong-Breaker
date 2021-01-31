@@ -7,5 +7,5 @@
 package specifications;
 
 public interface RequireReadService {
-  public void bindReadService(ReadService service);
+  void bindReadService(ReadService service);
 }

@@ -23,30 +23,30 @@ import java.util.ArrayList;
 import javafx.util.Pair;
 
 public interface WriteService {
-    public void setStepNumber(int n);
-    public void setMainBallPosition(Position p);
-    public void setMainBallPlayer(Player p);
-    public void setRayon(double r);
-    public void setMainBall(Ball ball);
-    public void setSpeed(double speed);
-    public void setMainBallDirection(Position direction);
-    public void setBlueDirection(Position direction);
-    public void setRedDirection(Position direction);
-    public void setBlue(Palette blue);
-    public void setBluePosition(Position p);
-    public void setRed(Palette red);
-    public void setRedPosition(Position p);
+    void setStepNumber(int n);
+    void setMainBallPosition(Position p);
+    void setMainBallPlayer(Player p);
+    void setRayon(double r);
+    void setMainBall(Ball ball);
+    void setSpeed(double speed);
+    void setMainBallDirection(Position direction);
+    void setBlueDirection(Position direction);
+    void setRedDirection(Position direction);
+    void setBlue(Palette blue);
+    void setBluePosition(Position p);
+    void setRed(Palette red);
+    void setRedPosition(Position p);
 
-    public void setMatrice(int x,int y, int val) ;
-    public void setBricks(ArrayList<Brick> bricks);
-    public void setBcreaBall(Create bcreaBall);
+    void setMatrice(int x, int y, int val) ;
+    void setBricks(ArrayList<Brick> bricks);
+    void setBcreaBall(Create bcreaBall);
 
-    public void setRcreaBall(Create bcreaBall);
-    public void setBcreaPosition(Position p);
-    public void setRcreaPosition(Position p);
-    public void setdestBallsPos(Position pos, Player pla);
-    public void setBdestBall(Destructive bdestBall);
-    public void setRdestBall(Destructive bdestBall);
-    public void setScoreR(int scoreR);
-    public void setScoreB(int scoreB);
+    void setRcreaBall(Create bcreaBall);
+    void setBcreaPosition(Position p);
+    void setRcreaPosition(Position p);
+    void setdestBallsPos(Position pos, Player pla);
+    void setBdestBall(Destructive bdestBall);
+    void setRdestBall(Destructive bdestBall);
+    void setScoreR(int scoreR);
+    void setScoreB(int scoreB);
 }

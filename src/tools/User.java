@@ -7,7 +7,7 @@
 package tools;
 
 public class User {
-  public static enum COMMAND { LEFT,
+  public enum COMMAND { LEFT,
     RIGHT,
     UP,
     DOWN,
@@ -22,5 +22,5 @@ public class User {
     BCREATEBRICK,
     RLAUNCHDEST,
     BLAUNCHDEST
-  };
+  }
 }

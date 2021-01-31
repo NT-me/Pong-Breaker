@@ -55,7 +55,7 @@ public class Main extends Application{
   }
 
   @Override public void start(Stage stage) {
-    final Scene scene = new Scene(((Viewer)viewer).getPanel());
+    final Scene scene = new Scene(viewer.getPanel());
 
     scene.setFill(Color.BLACK);
 
@@ -135,7 +135,7 @@ public class Main extends Application{
 
       timer = new AnimationTimer() {
           @Override public void handle(long l) {
-              scene.setRoot(((Viewer)viewer).getPanel());
+              scene.setRoot(viewer.getPanel());
           }
       };
       timer.start();

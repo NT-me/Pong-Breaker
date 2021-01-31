@@ -218,7 +218,7 @@ public class Engine implements EngineService, RequireDataService{
       if (pals.getRespawnCoolDown() != -1){
         if (pals.getRespawnCoolDown() == 0){
           if (pals.getPlayer() == Player.BLUE){
-            pals.setPosition(new Position((double)pals.getHeight()*2,(double)(HardCodedParameters.defaultHeight/2)-(pals.getWidth()/2)));
+            pals.setPosition(new Position(pals.getHeight() *2,(double)(HardCodedParameters.defaultHeight/2)-(pals.getWidth()/2)));
           }
           if (pals.getPlayer() == Player.RED){
             pals.setPosition(new Position(HardCodedParameters.defaultWidth-(pals.getHeight()*4),(double)(HardCodedParameters.defaultHeight/2)-(pals.getWidth()/2)));
@@ -243,7 +243,6 @@ public class Engine implements EngineService, RequireDataService{
   }
 
   private void updateDestBallState(){
-    Position dir0 = new Position(0,0);
     if(RdestBallLaucnh){
       Position centR = new Position(data.getRed().getPosition().x,
               data.getRed().getPosition().y+(data.getRed().getWidth())/2);

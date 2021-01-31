@@ -15,37 +15,37 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 
 public interface ReadService {
-    public Position getMainBallPosition();
-    public int getStepNumber();
-    public Palette getBlue();
-    public Position getBluePosition();
-    public Palette getRed();
-    public Position getRedPosition();
-    public double getBlueWidth();
-    public double getRedWidth();
-    public double getRayon();
-    public Ball getMainBall();
-    public double getSpeed();
-    public Position getMainBallDirection();
-    public Position getBlueDirection();
-    public Position getRedDirection();
-    public int[][] getMatrice() ;
-    public ArrayList<Brick> getBricks() ;
-    public Create getBcreaBall();
+    Position getMainBallPosition();
+    int getStepNumber();
+    Palette getBlue();
+    Position getBluePosition();
+    Palette getRed();
+    Position getRedPosition();
+    double getBlueWidth();
+    double getRedWidth();
+    double getRayon();
+    Ball getMainBall();
+    double getSpeed();
+    Position getMainBallDirection();
+    Position getBlueDirection();
+    Position getRedDirection();
+    int[][] getMatrice() ;
+    ArrayList<Brick> getBricks() ;
+    Create getBcreaBall();
 
-    public Wall getNorth();
-    public Wall getSouth();
-    public Goal getEast();
-    public Goal getWest();
+    Wall getNorth();
+    Wall getSouth();
+    Goal getEast();
+    Goal getWest();
 
-    public Create getRcreaBall();
-    public void setRcreaBall(Create bcreaBall);
-    public void setBcreaPosition(Position p);
-    public void setRcreaPosition(Position p);
+    Create getRcreaBall();
+    void setRcreaBall(Create bcreaBall);
+    void setBcreaPosition(Position p);
+    void setRcreaPosition(Position p);
 
-    public Destructive getBdestBall();
-    public Destructive getRdestBall();
+    Destructive getBdestBall();
+    Destructive getRdestBall();
 
-    public int getScoreB();
-    public int getScoreR();
+    int getScoreB();
+    int getScoreR();
 }

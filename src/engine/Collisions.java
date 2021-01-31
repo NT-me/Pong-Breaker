@@ -38,11 +38,7 @@ public class Collisions{
         double circleDistanceSouth = south.getPosition().y-ba.getPosition().y;
 
         if (circleDistanceNorth > (20 + ba.getRayon())) {
-            if (circleDistanceSouth > (20 + ba.getRayon())){
-                return false;
-            }
-            else
-                return true;
+            return !(circleDistanceSouth > (20 + ba.getRayon()));
         }
         else
             return true;
@@ -54,8 +50,6 @@ public class Collisions{
 
         if (circleDistanceBlue <= (0 + mainBall.getRayon()))
             return true;
-        if (circleDistanceRed <= (0 + mainBall.getRayon()))
-            return true;
-        return false;
+        return circleDistanceRed <= (0 + mainBall.getRayon());
     }
 }

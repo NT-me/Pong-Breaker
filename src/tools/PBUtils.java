@@ -23,9 +23,7 @@ public class PBUtils {
     public static boolean intersectCercle(Position centreCercle, double rayonCercle, Position A, Position B){
         Position intersectPoint = getPerpendicular(A, B, centreCercle);
         if (0 <= dotProd(A, B, A, intersectPoint) && dotProd(A, B, A, intersectPoint) <= dotProd(A, B, A, B)){
-            if (centreCercle.distance(intersectPoint) <= rayonCercle){
-                return true;
-            }
+            return centreCercle.distance(intersectPoint) <= rayonCercle;
         }
 
         return false;
