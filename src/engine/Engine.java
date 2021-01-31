@@ -199,18 +199,18 @@ public class Engine implements EngineService, RequireDataService{
       pals.updateSpeedPalette();
       if (Collisions.collisionPaletteBalls(pals, data.getMainBall())){
         if (pals.getPlayer() == Player.BLUE){
-          data.setMainBallDirection(new Position(data.getRedDirection().x+10,
-                  data.getRedDirection().y));
+          data.setMainBallDirection(new Position(pals.getDirection().x+10,
+                  pals.getDirection().y));
         }
         else if (pals.getPlayer() == Player.RED){
-          data.setMainBallDirection(new Position(data.getRedDirection().x-10,
-                  data.getRedDirection().y));
+          data.setMainBallDirection(new Position(pals.getDirection().x-10,
+                  pals.getDirection().y));
         }
 
         if (data.getSpeed() <= 1.3){
           data.setSpeed(data.getSpeed()*1.08);
         }
-        data.setBlueDirection(new Position(0, 0));
+        pals.setDirection(new Position(0, 0));
         data.setMainBallPlayer(pals.getPlayer());
       }
 
